@@ -15,7 +15,9 @@ class={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
   <div class="flex h-12 items-center justify-between">
     <div class="text-lg font-bold">URL Shortener</div>
     <nav class="hidden md:flex space-x-4">
-      <Button variant="ghost"><UserIcon /> Log in</Button>
+      <a href="/auth/login">
+        <Button variant="ghost"><UserIcon /> Log in</Button>
+      </a>
     </nav>
     <Button
       variant="ghost"
