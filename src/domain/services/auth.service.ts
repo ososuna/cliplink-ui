@@ -7,7 +7,7 @@ import { User } from '../entities/user.entity';
 * MongoDb, PostgreSQL, Oracle.
 * Each data source must implement the required methods
 */
-export interface AuthDataSource {
+export interface AuthService {
   login(loginUserDto: LoginUserDto): Promise<User>
   register(registerUserDto: RegisterUserDto): Promise<User>
   getUsers(): Promise<User[]>

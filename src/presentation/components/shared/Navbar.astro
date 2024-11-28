@@ -1,5 +1,6 @@
 ---
 import { Button } from '@/presentation/components/ui/button'
+import UserIcon from '@/presentation/icons/UserIcon.astro';
 import { Menu } from 'lucide-react'
 const isScrolled = true;
 ---
@@ -14,7 +15,7 @@ class={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
   <div class="flex h-12 items-center justify-between">
     <div class="text-lg font-bold">URL Shortener</div>
     <nav class="hidden md:flex space-x-4">
-      <Button variant="ghost">Login</Button>
+      <Button variant="ghost"><UserIcon /> Log in</Button>
     </nav>
     <Button
       variant="ghost"

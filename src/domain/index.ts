@@ -9,8 +9,8 @@ export * from './errors/custom.error';
 export * from './entities/user.entity';
 export * from './entities/url.entity';
 
-export * from './datasources/auth.datasource';
-export * from './datasources/url.datasource';
+export * from './services/auth.service';
+export * from './services/url.service';
 
 export * from './repositories/auth.repository';
 export * from './repositories/url.repository';

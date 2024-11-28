@@ -1,6 +1,6 @@
 import { CreateUrlDto, UpdateUrlDto,  Url } from '..';
 
-export interface UrlDataSource {
+export interface UrlService {
   create(createUrlDto: CreateUrlDto): Promise<Url>;
   getUrls(userId: string): Promise<Url[]>;
   getUrl(urlId: string): Promise<Url>;
