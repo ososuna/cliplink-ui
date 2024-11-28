@@ -1,0 +1,28 @@
+---
+import { Button } from '@/presentation/components/ui/button'
+import { Menu } from 'lucide-react'
+const isScrolled = true;
+---
+<header
+class={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
+  isScrolled
+    ? 'bg-background/70 backdrop-blur-md shadow-sm'
+    : 'bg-background'
+}`}
+>
+<div class="container mx-auto px-4">
+  <div class="flex h-12 items-center justify-between">
+    <div class="text-lg font-bold">URL Shortener</div>
+    <nav class="hidden md:flex space-x-4">
+      <Button variant="ghost">Login</Button>
+    </nav>
+    <Button
+      variant="ghost"
+      size="icon"
+      className="md:hidden"
+    >
+      <Menu className="h-6 w-6" />
+    </Button>
+  </div>
+</div>
+</header>
