@@ -1,6 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "lib": ["ES2015", "DOM"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "baseUrl": ".",
