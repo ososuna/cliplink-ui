@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="description" content="Astro description"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator" content="Astro v5.0.0-beta.12"><title>URL Shortener</title><link rel="stylesheet" href="/_astro/login.DUYl7cq7.css"></head> <body>  <header class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background/70 backdrop-blur-md shadow-sm"> <div class="container mx-auto px-4"> <div class="flex h-12 items-center justify-between"> <div class="text-lg font-bold">URL Shortener</div> <nav class="flex space-x-4"> <a href="/auth/login"> <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"> <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path> </svg> Log in</button> </a> </nav> </div> </div> </header> <main class="flex items-center justify-center min-h-[calc(100vh-3rem)]">  <!--[if astro]>server-island-start<![endif]--><link rel="preload" as="fetch" href="/_server-islands/ShortUrlCard?e=default&p=5D0988FC7727CBFD76F41037Lb82gMW1DWY4KArj7vt2YtINa2A60H5jNRXvFKYS&s=%7B%7D" crossorigin="anonymous"><script async type="module" data-island-id="e79aca49-47d2-4ab8-ab2a-4240e686dacd">
+let script = document.querySelector('script[data-island-id="e79aca49-47d2-4ab8-ab2a-4240e686dacd"]');
+
+let response = await fetch('/_server-islands/ShortUrlCard?e=default&p=5D0988FC7727CBFD76F41037Lb82gMW1DWY4KArj7vt2YtINa2A60H5jNRXvFKYS&s=%7B%7D');
+
+if (script) {
+	if(response.status === 200 && response.headers.get('content-type') === 'text/html') {
+		let html = await response.text();
+	
+		// Swap!
+		while(script.previousSibling &&
+			script.previousSibling.nodeType !== 8 &&
+			script.previousSibling.data !== '[if astro]>server-island-start<![endif]') {
+			script.previousSibling.remove();
+		}
+		script.previousSibling?.remove();
+	
+		let frag = document.createRange().createContextualFragment(html);
+		script.before(frag);
+	}
+	script.remove();
+}
+</script>  </main>  </body></html>

@@ -1,0 +1,48 @@
+---
+import { ExternalLink } from 'lucide-react';
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/presentation/components/ui/card';
+
+import { Button } from '@/presentation/components/ui/button';
+import { CopyInput } from '@/presentation/components/ui/copy-input';
+import { Label } from '@/presentation/components/ui/label';
+
+interface Props {
+	id: string
+}
+const { id } = Astro.props;
+
+---
+<Card className="w-full max-w-md mx-auto">
+  <CardHeader>
+    <CardTitle>URL Shortener</CardTitle>
+    <CardDescription>Shortened version of your long URL.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div class="grid w-full items-center gap-4">
+      <div class="flex flex-col space-y-1.5">
+        <Label htmlFor="longUrl">Short URL</Label>
+        <CopyInput value={`https://short.com/${ id }`} />
+      </div>
+    </div>
+  </CardContent>
+  <CardFooter>
+    <div class='flex space-x-4'>
+      <Button type="button">
+        <ExternalLink /> Open Short URL
+      </Button>
+      <a href="/">
+        <Button type="button">
+          Shorten another URL
+        </Button>
+      </a>
+    </div>
+  </CardFooter>
+</Card>
