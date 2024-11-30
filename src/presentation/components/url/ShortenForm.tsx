@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { Loader2 } from 'lucide-react';
 
@@ -43,9 +43,7 @@ const ShortenForm = () => {
     new CreateUrl(new UrlServiceImpl())
       .execute(createUrlDto!)
       .then(data => {
-        console.log('created url !!');
-        console.log(data);
-        setIsLoading(false);
+        window.location.href = `/short/${data.shortId}`;
       })
       .catch(error => {
         console.log(error);
