@@ -3,13 +3,11 @@ import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 import ShortUrlCard from '@/presentation/components/url/ShortUrlCard.astro';
 
-export const prerender = true;
-
-const id = '1asd3';
+const { id } = Astro.params;
 
 ---
 <BaseLayout title='URL Shortener'>
 	<HomeLayout>
-		<ShortUrlCard server:defer id={id} />
+		{ id ? <ShortUrlCard server:defer id={id} /> : <h1>Not found URL</h1> }
 	</HomeLayout>
 </BaseLayout>

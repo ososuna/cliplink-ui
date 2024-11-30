@@ -12,6 +12,10 @@
 			"handle": "filesystem"
 		},
 		{
+			"src": "^\\/short\\/([^/]+?)\\/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^\\/_image\\/?$",
 			"dest": "_render"
 		},

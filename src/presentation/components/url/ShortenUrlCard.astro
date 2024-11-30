@@ -1,16 +1,12 @@
 ---
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/presentation/components/ui/card';
 
-import { Button } from '@/presentation/components/ui/button';
-import { Input } from '@/presentation/components/ui/input';
-import { Label } from '@/presentation/components/ui/label';
+import ShortenForm from '@/presentation/components/url/ShortenForm';
 
 export const prerender = true;
 
@@ -20,23 +16,5 @@ export const prerender = true;
     <CardTitle>URL Shortener</CardTitle>
     <CardDescription>Enter a long URL to get a shortened version.</CardDescription>
   </CardHeader>
-  <CardContent>
-    <div class="grid w-full items-center gap-4">
-      <div class="flex flex-col space-y-1.5">          
-        <Label htmlFor="longUrl">Long URL</Label>
-        <Input
-          id="longUrl"
-          placeholder="https://example.com/very/long/url"
-          required
-        />
-      </div>
-    </div>
-  </CardContent>
-  <CardFooter>
-    <a href="/short/">
-      <Button type="button">
-        Shorten URL
-      </Button>
-    </a>
-  </CardFooter>
+  <ShortenForm client:load />
 </Card>
