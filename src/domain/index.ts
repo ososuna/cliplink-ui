@@ -10,3 +10,5 @@ export * from './entities/user.entity';
 export * from './entities/url.entity';
 
 export * from './services/url.service';
+
+export * from './use-cases/create-url.use-case'

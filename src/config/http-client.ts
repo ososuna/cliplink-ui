@@ -1,6 +1,6 @@
 export class HttpClient {
   
-  private static readonly baseURL = 'http://localhost:3000/api/v1/';
+  private static readonly baseURL = 'http://localhost:3000/api/v1';
 
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseURL}${url}`, {

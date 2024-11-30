@@ -1,14 +1,10 @@
 import type { CreateUrlDto, Url, UrlService } from '@/domain';
-import { HttpClient } from '@/config/http-client';
+import { HttpClient } from '@/config';
 
 export class UrlServiceImpl implements UrlService {
 
-  async create(createUrlDto: CreateUrlDto): Promise<Url> {
-    try {
-      const url = await HttpClient.post<Url>('/url', createUrlDto);
-      return url;
-    } catch (error) {
-      throw error;
-    }
+  create(createUrlDto: CreateUrlDto): Promise<Url> {
+    return HttpClient.post<Url>("/url", createUrlDto);
   }
+
 }
