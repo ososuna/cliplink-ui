@@ -3,16 +3,16 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Loader2 } from 'lucide-react';
 
-import { CreateUrlDto, CreateUrl } from '@/domain';
 import { UrlServiceImpl } from '@/infrastructure';
 
-import { Button } from '../ui/button';
-import { CardContent, CardFooter } from '../ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
+import { Button } from '@/presentation/components/ui/button';
+import { CardContent, CardFooter } from '@/presentation/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
+import { Input } from '@/presentation/components/ui/input';
+
+import { UrlViewService } from '@/presentation/view-services/url.view-service';
 
 const formSchema = z.object({
   originalUrl: z.string().url()
@@ -27,28 +27,13 @@ const ShortenForm = () => {
     defaultValues: {
       originalUrl: '',
     },
-  })
+  });
+
+  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
     const { originalUrl } = values;
-    const [error, createUrlDto] = CreateUrlDto.create({ originalUrl });
-    if (error) {
-      // Show alert to the user
-      console.log(error);
-      setIsLoading(false);
-      return;
-    }
-    // create use case instance
-    new CreateUrl(new UrlServiceImpl())
-      .execute(createUrlDto!)
-      .then(data => {
-        window.location.href = `/short/${data.shortId}`;
-      })
-      .catch(error => {
-        console.log(error);
-        setIsLoading(false);
-      });
+    await viewService.createUrl(originalUrl);
   }
 
   return (
