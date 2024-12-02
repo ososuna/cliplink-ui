@@ -29,15 +29,17 @@ const { id } = Astro.props;
     <div class="grid w-full items-center gap-4">
       <div class="flex flex-col space-y-1.5">
         <Label className="mb-2" htmlFor="longUrl">Short URL</Label>
-        <CopyInput client:load value={`https://short.com/${ id }`} />
+        <CopyInput client:load value={`http://localhost:3000/${ id }`} />
       </div>
     </div>
   </CardContent>
   <CardFooter>
     <div class='flex space-x-4'>
-      <Button type="button">
-        <ExternalLink /> Open Short URL
-      </Button>
+      <a href={`http://localhost:3000/${ id }`} target="_blank">
+        <Button type="button">
+          <ExternalLink /> Open Short URL
+        </Button>
+      </a>
       <a href="/">
         <Button type="button">
           Shorten another URL
