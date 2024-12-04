@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { AuthServiceImpl } from '@/infrastructure';
+
+import { AuthViewService } from '@/presentation';
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
@@ -30,11 +33,11 @@ const LoginForm = () => {
     },
   });
 
-  // const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
- 
+  const viewService = new AuthViewService(new AuthServiceImpl(), setIsLoading);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
-    console.log({ email: emailToLogin.current, password });
+    viewService.loginByEmail(emailToLogin.current!, password)
   }
 
   return (

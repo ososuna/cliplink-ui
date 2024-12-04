@@ -1,3 +1,5 @@
+import { CustomError } from '@/domain';
+
 export class HttpClient {
   
   private static readonly baseURL = 'http://localhost:3000/api/v1';
@@ -13,7 +15,7 @@ export class HttpClient {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Something went wrong');
+      throw new CustomError(response.status, error.error || error.message);
     }
 
     return response.json();

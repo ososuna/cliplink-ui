@@ -1,12 +1,13 @@
-import { CreateUrl, CreateUrlDto, CustomError, type UrlService } from '@/domain';
-import { setUiError } from '@/infrastructure/store/ui.store';
+import { Login, LoginUserDto, type AuthService, CustomError } from '@/domain';
+import { setUiError } from '@/infrastructure';
 
-export class UrlViewService {
+export class AuthViewService {
     
   constructor(
-    private readonly urlService: UrlService,
+    private readonly authService: AuthService,
     private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
   ) {}
+
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
@@ -16,25 +17,23 @@ export class UrlViewService {
     setUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
-  async createUrl(originalUrl: string): Promise<void> {
+  async loginByEmail(email: string, password: string): Promise<void> {
     this.setIsLoading(true);
-    const [error, createUrlDto] = CreateUrlDto.create({ originalUrl });
+    const [ error, loginUserDto ] = LoginUserDto.create({ email, password });
     if (error) {
       setUiError({ type: 'error', message: error });
-      this.setIsLoading(false);
       return;
     }
-    new CreateUrl(this.urlService)
-      .execute(createUrlDto!)
+    new Login(this.authService)
+      .execute(loginUserDto!)
       .then(data => {
-        window.location.href = `/short/${data.shortId}`;
-        console.log('created url!!');
+        console.log('login successful !!');
         console.log(data);
       })
       .catch(error => {
         this.handleError(error);
-        this.setIsLoading(false);
-      });
+      })
+      .finally(() => this.setIsLoading(false));
   }
 
 }

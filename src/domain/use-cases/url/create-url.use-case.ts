@@ -6,7 +6,7 @@ interface CreateUrlUseCase {
 
 export class CreateUrl implements CreateUrlUseCase {
 
-  constructor(private urlService: UrlService) {}
+  constructor(private readonly urlService: UrlService) {}
 
   async execute(createUrlDto: CreateUrlDto): Promise<Url> {
     const url = await this.urlService.create(createUrlDto);
