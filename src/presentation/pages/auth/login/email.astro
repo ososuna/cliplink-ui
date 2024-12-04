@@ -1,0 +1,27 @@
+---
+import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
+import PasswordForm from '@/presentation/components/auth/PasswordForm';
+
+export const prerender = true;
+
+---
+<AuthLayout action="login">
+  <div class="w-full max-w-md mx-auto">
+    <div class="flex flex-col items-center space-y-2">
+      <h1 class="text-2xl font-semibold tracking-tight text-center">
+        Log in to your account
+      </h1>
+      <p class="px-8 text-center text-sm text-muted-foreground">
+        Enter your password to log in
+      </p>
+      <div class="w-full max-w-xs space-y-6">
+        <PasswordForm client:load />
+      </div>
+      <div style="text-align: center;">
+        <a href="/auth/login" data-testid="login/other-options-link" data-zone="null" class="font-normal text-sm text-blue-600 dark:text-blue-500 hover:underline">
+          ← Other Login options
+        </a>
+      </div>
+    </div>
+  </div>
+</AuthLayout>

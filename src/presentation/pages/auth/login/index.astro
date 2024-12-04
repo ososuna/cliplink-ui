@@ -1,7 +1,7 @@
 ---
 import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
 
-import { Input } from '@/presentation/components/ui/input';
+import EmailForm from '@/presentation/components/auth/EmailForm';
 import { Button } from '@/presentation/components/ui/button';
 
 import GitHubIcon from '@/presentation/icons/GitHubIcon.astro';
@@ -17,13 +17,10 @@ export const prerender = true;
         Log in to your account
       </h1>
       <p class="px-8 text-center text-sm text-muted-foreground">
-        Enter your email below to create your account
+        Enter your email below to log in to your account
       </p>
       <div class="w-full max-w-xs space-y-6">
-        <div class="space-y-2">
-          <Input type="email" placeholder="name@example.com" />
-          <Button className="w-full" type="submit"> Sign in with email </Button>
-        </div>
+        <EmailForm client:load />
         <div class="relative space-y-6">
           <div class="absolute inset-0 flex items-center">
             <span class="w-full border-t"></span>
