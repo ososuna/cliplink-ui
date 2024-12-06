@@ -1,6 +1,5 @@
-import { User } from '..';
-import { LoginUserDto } from '../dtos/auth/login-user.dto';
-
+import { LoginUserDto, User } from '@/domain';
 export interface AuthService {
   login(loginUserDto: LoginUserDto): Promise<User>;
+  checkToken(): Promise<User>;
 }

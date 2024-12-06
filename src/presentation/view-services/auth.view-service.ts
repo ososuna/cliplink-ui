@@ -1,11 +1,11 @@
-import { Login, LoginUserDto, type AuthService, CustomError } from '@/domain';
+import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User } from '@/domain';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewService {
     
   constructor(
     private readonly authService: AuthService,
-    private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null,
   ) {}
 
 
@@ -24,16 +24,30 @@ export class AuthViewService {
       setUiError({ type: 'error', message: error });
       return;
     }
-    new Login(this.authService)
+    return new Login(this.authService)
       .execute(loginUserDto!)
       .then(data => {
         console.log('login successful !!');
         console.log(data);
       })
-      .catch(error => {
-        this.handleError(error);
-      })
+      .catch(error => this.handleError(error))
       .finally(() => this.setIsLoading(false));
+  }
+
+  async checkToken(): Promise<User | void> {
+    return new CheckToken(this.authService)
+      .execute()
+      .then(data => {
+        console.log('valid token !!');
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.log(error);
+        if (!(error instanceof CustomError)) {
+          setUiError({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
+        }
+      });
   }
 
 }

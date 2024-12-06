@@ -7,4 +7,8 @@ export class AuthServiceImpl implements AuthService {
     return HttpClient.post<User>('/auth/login', loginUserDto);
   }
 
+  checkToken(): Promise<User> {
+    return HttpClient.get<User>('/auth/token');
+  }
+
 }

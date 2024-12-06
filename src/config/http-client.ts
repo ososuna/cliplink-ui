@@ -7,6 +7,7 @@ export class HttpClient {
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
     const response = await fetch(`${this.baseURL}${url}`, {
       ...options,
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         ...options.headers,
