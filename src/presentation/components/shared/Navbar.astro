@@ -1,19 +1,31 @@
 ---
-import { AuthServiceImpl } from '@/infrastructure';
 
-import { AuthViewService } from '@/presentation';
 import AuthDropdown from '@/presentation/components/shared/AuthDropdown';
-import { Button } from '@/presentation/components/ui/button'
+import { Button } from '@/presentation/components/ui/button';
 import UserIcon from '@/presentation/icons/UserIcon.astro';
 
-const token = Astro.cookies.get('access_token');
+const token = Astro.cookies.get('access_token')?.value;
+
 console.log('token cookie 🍪');
 console.log(token);
 
 const isScrolled = true;
+const user = true;
 
-const viewService = new AuthViewService(new AuthServiceImpl());
-const user = await viewService.checkToken();
+// const viewService = new AuthViewService(new AuthServiceImpl());
+// const user = await viewService.checkToken();
+
+// todo: use middleware to set the cookie
+// const response = await fetch('http://localhost:3000/api/v1/auth/token', {
+//   method: 'GET',
+//   headers: {
+//     'Cookie': `access_token=${token}`, // Send the token as a cookie
+//   },
+// });
+
+// const user = await response.json();
+// console.log('Protected data:', user);
+
 
 ---
 <header
@@ -28,7 +40,7 @@ class={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
     <div class="text-lg font-bold">URL Shortener</div>
     <nav class="flex space-x-4">
       { user
-        ? <AuthDropdown name={ user.name } client:load />
+        ? <AuthDropdown name="Ashish Gor" client:load />
         : <a href="/auth/login"><Button variant="ghost"><UserIcon /> Log in</Button></a>
       }
     </nav>
