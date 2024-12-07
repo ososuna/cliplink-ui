@@ -4,18 +4,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const url = new URL(context.request.url);
 
-  const scopedPaths = ['/dashboard'];
+  const scopedPaths = ['/dashboard', '/'];
   if (!scopedPaths.includes(url.pathname)) {
     return next();
   }
-
+  
   if (!context.cookies.get('access_token')) {
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/auth/login",
-      },
-    });
+
+    if (url.pathname === '/dashboard') {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: "/auth/login",
+        },
+      });
+    } else {
+      return next()
+    }
   }
   
   const token = context.cookies.get('access_token')?.value;
@@ -28,16 +33,29 @@ export const onRequest = defineMiddleware(async (context, next) => {
   });
 
   if (response.status !== 200) {
-    return new Response(null, {
-      status: response.status,
-      headers: {
-        Location: "/auth/login",
-      },
-    });
+    if (url.pathname === '/dashboard') {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: "/auth/login",
+        },
+      });
+    } else {
+      return next()
+    }
   }
 
   const user = await response.json();
   context.locals.user = user;
+
+  if (url.pathname === '/') {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/dashboard",
+      },
+    });
+  }
 
   return next();
 });
