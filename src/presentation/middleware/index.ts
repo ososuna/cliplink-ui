@@ -9,7 +9,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-
   if (!context.cookies.get('access_token')) {
     return new Response(null, {
       status: 302,
@@ -30,7 +29,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (response.status !== 200) {
     return new Response(null, {
-      status: 302,
+      status: response.status,
       headers: {
         Location: "/auth/login",
       },

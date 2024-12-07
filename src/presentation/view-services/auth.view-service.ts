@@ -1,4 +1,4 @@
-import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User } from '@/domain';
+import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout } from '@/domain';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewService {
@@ -34,17 +34,19 @@ export class AuthViewService {
   async checkToken(): Promise<User | void> {
     return new CheckToken(this.authService)
       .execute()
-      .then(data => {
-        console.log('valid token !!');
-        console.log(data);
-        return data;
-      })
+      .then(data => data)
       .catch(error => {
-        console.log(error);
         if (!(error instanceof CustomError)) {
           setUiError({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
         }
       });
+  }
+
+  async logout(): Promise<void> {
+    return new Logout(this.authService)
+      .execute()
+      .then(() => { window.location.href = '/' })
+      .catch(this.handleError)
   }
 
 }

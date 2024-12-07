@@ -1,3 +1,5 @@
+import { AuthServiceImpl } from '@/infrastructure';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,20 +9,23 @@ import {
   DropdownMenuTrigger,
 } from '@/presentation/components/ui/dropdown-menu';
 
-import { Button } from '@/presentation/components/ui/button';
-
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/presentation/components/ui/avatar';
 
+import { AuthViewService } from '@/presentation';
+
 interface Props {
   name: string;
 }
 
-const AuthDropdown = ({ name }: Props) => {
+const onLogout = () => {
+  new AuthViewService(new AuthServiceImpl()).logout();
+}
 
+const AuthDropdown = ({ name }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,7 +40,7 @@ const AuthDropdown = ({ name }: Props) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem onClick={ onLogout }>Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
