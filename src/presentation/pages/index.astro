@@ -1,12 +1,9 @@
 ---
-import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
-import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 import ShortenUrlCard from '@/presentation/components/url/ShortenUrlCard.astro';
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 
 export const prerender = true;
 ---
-<BaseLayout title='URL Shortener'>
-	<HomeLayout>
-		<ShortenUrlCard />
-	</HomeLayout>
-</BaseLayout>
+<HomeLayout>
+	<ShortenUrlCard />
+</HomeLayout>
