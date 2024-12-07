@@ -19,18 +19,18 @@ interface Props {
   name: string;
 }
 
-const AuthDropdown = ({ name = 'Ashish Gor' }: Props) => {
+const AuthDropdown = ({ name }: Props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button variant="ghost">
-        <Avatar className="w-8 h-8">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>AG</AvatarFallback>
-        </Avatar>
-        { name }
-        </Button>
+      <DropdownMenuTrigger asChild>
+        <div className="flex items-center cursor-pointer">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>AG</AvatarFallback>
+          </Avatar>
+          <span className="ml-2">{name}</span>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

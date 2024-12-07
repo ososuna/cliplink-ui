@@ -1,10 +1,44 @@
 import { defineMiddleware } from 'astro:middleware';
 
-export const onRequest = defineMiddleware((context, next) => {
-  // interceptar los datos de una solicitud.
-  // opcionalmente, modifica las propiedades en `locals`.
-  context.locals.title = "Nuevo título";
+export const onRequest = defineMiddleware(async (context, next) => {
 
-  // devuelve una respuesta o el resultado de llamar a `next()`.
+  const url = new URL(context.request.url);
+
+  const scopedPaths = ['/dashboard'];
+  if (!scopedPaths.includes(url.pathname)) {
+    return next();
+  }
+
+
+  if (!context.cookies.get('access_token')) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/auth/login",
+      },
+    });
+  }
+  
+  const token = context.cookies.get('access_token')?.value;
+
+  const response = await fetch("http://localhost:3000/api/v1/auth/token", {
+    method: "GET",
+    headers: {
+      Cookie: `access_token=${token}`,
+    },
+  });
+
+  if (response.status !== 200) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/auth/login",
+      },
+    });
+  }
+
+  const user = await response.json();
+  context.locals.user = user;
+
   return next();
 });

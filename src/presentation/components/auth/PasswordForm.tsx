@@ -38,7 +38,6 @@ const LoginForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
     await viewService.loginByEmail(emailToLogin.current!, password);
-    await viewService.checkToken();
   }
 
   return (

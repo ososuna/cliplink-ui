@@ -26,10 +26,7 @@ export class AuthViewService {
     }
     return new Login(this.authService)
       .execute(loginUserDto!)
-      .then(data => {
-        console.log('login successful !!');
-        console.log(data);
-      })
+      .then(() => { window.location.href = '/dashboard' })
       .catch(error => this.handleError(error))
       .finally(() => this.setIsLoading(false));
   }
