@@ -1,15 +1,15 @@
 import type { AuthService, User } from '@/domain';
 
 interface CheckTokenUse {
-  execute(): Promise<User>;
+  execute(token?: string): Promise<User>;
 }
 
 export class CheckToken implements CheckTokenUse {
 
   constructor(private readonly authService: AuthService) {}
 
-  async execute(): Promise<User> {
-    const user = await this.authService.checkToken();
+  async execute(token?: string): Promise<User> {
+    const user = await this.authService.checkToken(token);
     return user;
   }
 }

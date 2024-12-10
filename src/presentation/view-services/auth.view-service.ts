@@ -31,9 +31,9 @@ export class AuthViewService {
       .finally(() => this.setIsLoading(false));
   }
 
-  async checkToken(): Promise<User | void> {
+  async checkToken(token?: string): Promise<User | void> {
     return new CheckToken(this.authService)
-      .execute()
+      .execute(token)
       .then(data => data)
       .catch(error => {
         if (!(error instanceof CustomError)) {

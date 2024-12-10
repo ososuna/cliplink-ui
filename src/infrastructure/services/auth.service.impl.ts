@@ -7,8 +7,14 @@ export class AuthServiceImpl implements AuthService {
     return HttpClient.post<User>('/auth/login', loginUserDto);
   }
 
-  checkToken(): Promise<User> {
-    return HttpClient.get<User>('/auth/token');
+  checkToken(token?: string): Promise<User> {
+    if (token) {
+      return HttpClient.get<User>('/auth/token', { headers: {
+        Cookie: `access_token=${token}`
+      }});
+    } else {
+      return HttpClient.get<User>('/auth/token');
+    }
   }
 
   logout(): Promise<void> {

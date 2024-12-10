@@ -6,6 +6,19 @@
       "name": "Development server",
       "request": "launch",
       "type": "node-terminal"
+    }, 
+    {
+      "name": "Launch via PNPM",
+      "request": "launch",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "runtimeExecutable": "pnpm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
     }
   ]
 }
