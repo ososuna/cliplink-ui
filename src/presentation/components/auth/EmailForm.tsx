@@ -10,7 +10,12 @@ const formSchema = z.object({
   email: z.string().email()
 });
 
-const LoginForm = () => {
+interface Props {
+  buttonText: string;
+  location: string;
+}
+
+const EmailForm = ({ buttonText, location }: Props) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -19,9 +24,9 @@ const LoginForm = () => {
     },
   });
  
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     const { email } = values;
-    window.location.href = `/auth/login/email?email=${encodeURIComponent(email)}`;
+    window.location.href = `${location}?email=${encodeURIComponent(email)}`;
   }
 
   return (
@@ -40,11 +45,11 @@ const LoginForm = () => {
           )}
         />
         <Button className="w-full mt-2" type="submit">
-          Sign in with email
+          { buttonText }
         </Button>
       </form>
     </Form>    
   );
 };
 
-export default LoginForm;
+export default EmailForm;

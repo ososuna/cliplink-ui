@@ -23,9 +23,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const viewService = new AuthViewService(new AuthServiceImpl);
   const user = await viewService.checkToken(token);
   
-  if ( user && !user.hasOwnProperty('id') ) {
-    return redirectToLogin(url.pathname, next);
-  }
+  if ( !user ) return redirectToLogin(url.pathname, next);
   
   context.locals.user = user;
   

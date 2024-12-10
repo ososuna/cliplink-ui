@@ -15,7 +15,7 @@ const formSchema = z.object({
   password: z.string()
 });
 
-const LoginForm = () => {
+const PasswordForm = () => {
 
   const [ isLoading, setIsLoading ] = useState(false);
 
@@ -67,4 +67,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default PasswordForm;

@@ -20,7 +20,7 @@ export const prerender = true;
         Enter your email below to log in to your account
       </p>
       <div class="w-full max-w-xs space-y-6">
-        <EmailForm client:load />
+        <EmailForm buttonText="Sign in with email" location="/auth/login/email" client:load />
         <div class="relative space-y-6">
           <div class="absolute inset-0 flex items-center">
             <span class="w-full border-t"></span>

@@ -15,6 +15,7 @@ export * from './services/url.service';
 export * from './services/auth.service';
 
 export * from './use-cases/auth/login.use-case';
+export * from './use-cases/auth/register.use-case';
 export * from './use-cases/auth/check-token.use-case';
 export * from './use-cases/auth/logout.use-case';
 
