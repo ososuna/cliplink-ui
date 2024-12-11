@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import { Check, Clipboard, ExternalLink } from 'lucide-react';
+
 import type { Url } from '@/domain';
+
+import { useToast } from '@/presentation/hooks/use-toast';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/presentation/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/presentation/components/ui/tooltip"
@@ -7,7 +12,18 @@ export interface Props {
   url: Url
 }
 
-const ShortUrlCard: React.FC<Props> = ({ url }) => {
+const MyShortUrlCard: React.FC<Props> = ({ url }) => {
+
+  const { toast } = useToast();
+  const [isCopied, setIsCopied] = useState(false);
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(`localhost:3000/${url.shortId}`);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+  };
 
   return (
     <Card key={url.id}>
@@ -45,15 +61,17 @@ const ShortUrlCard: React.FC<Props> = ({ url }) => {
         <p className="text-sm text-muted-foreground">Clicks: 4</p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(url.shortId)}>
-          Copy
+        <Button variant="outline" size="sm" onClick={ onCopy }>
+          {
+            isCopied ? <><Check className="text-green-500" /> Copied </> : <><Clipboard /> Copy</>
+          }
         </Button>
-        <Button variant="outline" size="sm" onClick={() => window.open(url.shortId, '_blank')}>
-          Visit
+        <Button variant="outline" size="sm" onClick={() => window.open(url.originalUrl, '_blank')}>
+          <ExternalLink /> Visit
         </Button>
       </CardFooter>
     </Card>
   );
 }
 
-export default ShortUrlCard;
+export default MyShortUrlCard;
