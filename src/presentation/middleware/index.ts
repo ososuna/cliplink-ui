@@ -47,6 +47,7 @@ function redirectTo(location: string) {
 }
 
 function redirectToLogin(pathname: string, next: MiddlewareNext) {
+  HttpClient.accessToken = '';
   if (pathname === '/dashboard') {
     return redirectTo("/auth/login");
   }

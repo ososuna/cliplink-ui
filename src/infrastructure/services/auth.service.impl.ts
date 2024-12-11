@@ -22,6 +22,7 @@ export class AuthServiceImpl implements AuthService {
   }
 
   logout(): Promise<void> {
+    HttpClient.accessToken = '';
     return HttpClient.get<void>('/auth/logout');
   }
 
