@@ -2,16 +2,25 @@ import { CustomError } from '@/domain';
 
 export class HttpClient {
   
+  public static accessToken = '';
   private static readonly baseURL = 'http://localhost:3000/api/v1';
 
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    
+    const headers = {
+      'Content-Type': 'application/json',
+      'Cookie': '',
+      ...options.headers,
+    };
+
+    if (this.accessToken) {
+      headers.Cookie = `access_token=${this.accessToken}`
+    }
+
     const response = await fetch(`${this.baseURL}${url}`, {
       ...options,
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      headers
     });
 
     if (!response.ok) {

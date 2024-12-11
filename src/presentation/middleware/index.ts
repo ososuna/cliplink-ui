@@ -1,5 +1,6 @@
 import type { MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
+import { HttpClient } from '@/config';
 import { AuthServiceImpl } from '@/infrastructure';
 import { AuthViewService } from '@/presentation';
 
@@ -25,6 +26,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   
   if ( !user ) return redirectToLogin(url.pathname, next);
   
+  HttpClient.accessToken = token;
   context.locals.user = user;
   
   // Redirect '/' to '/dashboard'

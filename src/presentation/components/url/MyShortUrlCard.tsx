@@ -1,15 +1,10 @@
+import type { Url } from '@/domain';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/presentation/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/presentation/components/ui/tooltip"
 
 export interface Props {
-  url: {
-    id: string,
-    name?: string,
-    shortUrl: string,
-    originalUrl: string,
-    clicks: number,
-  }
+  url: Url
 }
 
 const ShortUrlCard: React.FC<Props> = ({ url }) => {
@@ -34,12 +29,12 @@ const ShortUrlCard: React.FC<Props> = ({ url }) => {
               </TooltipProvider>
             ) : (
               <CardTitle className="text-lg truncate flex-1">
-                {url.name || url.shortUrl}
+                {url.name || url.shortId}
               </CardTitle>
             )}
             {url.name && (
               <span className="text-sm text-muted-foreground shrink-0">
-                {url.shortUrl}
+                {url.shortId}
               </span>
             )}
           </div>
@@ -47,13 +42,13 @@ const ShortUrlCard: React.FC<Props> = ({ url }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">Clicks: {url.clicks}</p>
+        <p className="text-sm text-muted-foreground">Clicks: 4</p>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(url.shortUrl)}>
+        <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(url.shortId)}>
           Copy
         </Button>
-        <Button variant="outline" size="sm" onClick={() => window.open(url.shortUrl, '_blank')}>
+        <Button variant="outline" size="sm" onClick={() => window.open(url.shortId, '_blank')}>
           Visit
         </Button>
       </CardFooter>

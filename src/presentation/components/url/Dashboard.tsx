@@ -1,12 +1,13 @@
+import type { Url } from '@/domain';
 import CreateShortUrlDialog from '@/presentation/components/url/CreateShortUrlDialog';
 import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard';
 import UrlSearchBar from '@/presentation/components/url/UrlSearchBar';
 
-const Dashboard = () => {
+interface Props {
+  urls: Url[]
+}
 
-  const mockShortUrls = [
-
-  ] as any;
+const Dashboard = ({ urls }: Props) => {
 
   return (
     <>
@@ -14,15 +15,15 @@ const Dashboard = () => {
         <UrlSearchBar />
         <CreateShortUrlDialog />
       </div>
-      {mockShortUrls.length === 0
+      {urls.length === 0
         ?
         <p className="px-8 text-center text-sm text-muted-foreground">
           You haven't shortened any URLs yet. Click the <strong>"Shorten URL"</strong> button to shorten your first URL.
         </p>
         :
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockShortUrls.map((url: any) => (
-            <MyShortUrlCard url={url} />
+          {urls.map((url: Url) => (
+            <MyShortUrlCard key={url.id} url={url} />
           ))}
         </div>}
     </>

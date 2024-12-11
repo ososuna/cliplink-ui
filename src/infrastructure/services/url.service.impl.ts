@@ -7,4 +7,8 @@ export class UrlServiceImpl implements UrlService {
     return HttpClient.post<Url>("/url", createUrlDto);
   }
 
+  getUrls(): Promise<Url[]> {
+    return HttpClient.get<Url[]>('/url');
+  }
+
 }

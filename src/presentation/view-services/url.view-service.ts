@@ -1,11 +1,11 @@
-import { CreateUrl, CreateUrlDto, CustomError, type UrlService } from '@/domain';
+import { CreateUrl, CreateUrlDto, CustomError, GetUrls, Url, type UrlService } from '@/domain';
 import { setUiError } from '@/infrastructure/store/ui.store';
 
 export class UrlViewService {
     
   constructor(
     private readonly urlService: UrlService,
-    private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null,
   ) {}
 
   private handleError = (error: unknown) => {
@@ -37,4 +37,13 @@ export class UrlViewService {
       });
   }
 
+  async getUrls(): Promise<Url[]> {
+    return new GetUrls(this.urlService)
+      .execute()
+      .then(data => data)
+      .catch(error => {
+        this.handleError(error);
+        return [];
+      });
+  }
 }
