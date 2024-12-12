@@ -1,12 +1,15 @@
+import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { Check, Clipboard, ExternalLink } from 'lucide-react';
 
 import type { Url } from '@/domain';
 
-import { useToast } from '@/presentation/hooks/use-toast';
+import { UrlServiceImpl } from '@/infrastructure';
+
+import { UrlViewService } from '@/presentation';
+import ConfirmationDialog from '@/presentation/components/shared/ConfirmationDialog';
 import { Button } from '@/presentation/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/presentation/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/presentation/components/ui/tooltip"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/presentation/components/ui/tooltip";
 
 export interface Props {
   url: Url
@@ -14,8 +17,10 @@ export interface Props {
 
 const MyShortUrlCard: React.FC<Props> = ({ url }) => {
 
-  const { toast } = useToast();
   const [isCopied, setIsCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
 
   const onCopy = () => {
     navigator.clipboard.writeText(`localhost:3000/${url.shortId}`);
@@ -23,6 +28,11 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
     setTimeout(() => {
       setIsCopied(false);
     }, 3000);
+  };
+
+  const onDelete = async () => {
+    await viewService.deleteUrl(url.id);
+    window.location.href = '/dashboard';
   };
 
   return (
@@ -57,11 +67,8 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
           <CardDescription className="truncate">{url.originalUrl}</CardDescription>
         </div>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">Clicks: 4</p>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={ onCopy }>
+      <CardFooter className="grid grid-cols-3 justify-items-start">
+        <Button className="columns-2" variant="outline" size="sm" onClick={onCopy}>
           {
             isCopied ? <><Check className="text-green-500" /> Copied </> : <><Clipboard /> Copy</>
           }
@@ -69,6 +76,12 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
         <Button variant="outline" size="sm" onClick={() => window.open(url.originalUrl, '_blank')}>
           <ExternalLink /> Visit
         </Button>
+        <ConfirmationDialog
+          action='Delete URL'
+          button={<Button className="justify-self-end" variant="destructive" size="sm"><Trash /></Button>}
+          callback={onDelete}
+          isLoading={isLoading}
+        />
       </CardFooter>
     </Card>
   );

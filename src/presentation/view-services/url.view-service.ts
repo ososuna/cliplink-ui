@@ -1,4 +1,4 @@
-import { CreateUrl, CreateUrlDto, CustomError, GetUrls, Url, type UrlService } from '@/domain';
+import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type UrlService } from '@/domain';
 import { setUiError } from '@/infrastructure/store/ui.store';
 
 export class UrlViewService {
@@ -42,5 +42,14 @@ export class UrlViewService {
         this.handleError(error);
         return [];
       });
+  }
+
+  async deleteUrl(urlId: string): Promise<void> {
+    return new DeleteUrl(this.urlService)
+      .execute(urlId)
+      .catch(this.handleError)
+      .finally(() => {
+        this.setIsLoading(false);
+      })
   }
 }

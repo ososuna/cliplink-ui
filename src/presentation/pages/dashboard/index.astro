@@ -7,7 +7,6 @@ import Dashboard from '@/presentation/components/url/Dashboard';
 
 const viewService = new UrlViewService(new UrlServiceImpl());
 const urls = await viewService.getUrls();
-console.log(urls);
 ---
 
 <HomeLayout>
