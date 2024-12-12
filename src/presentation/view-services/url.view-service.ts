@@ -16,24 +16,21 @@ export class UrlViewService {
     setUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
-  async createUrl(originalUrl: string): Promise<void> {
+  async createUrl(originalUrl: string, name?: string): Promise<Url | undefined> {
     this.setIsLoading(true);
-    const [error, createUrlDto] = CreateUrlDto.create({ originalUrl });
+    const [error, createUrlDto] = CreateUrlDto.create({ originalUrl, name });
     if (error) {
       setUiError({ type: 'error', message: error });
       this.setIsLoading(false);
       return;
     }
-    new CreateUrl(this.urlService)
+    return new CreateUrl(this.urlService)
       .execute(createUrlDto!)
-      .then(data => {
-        window.location.href = `/short/${data.shortId}`;
-        console.log('created url!!');
-        console.log(data);
-      })
+      .then(data => data)
       .catch(error => {
         this.handleError(error);
         this.setIsLoading(false);
+        return undefined;
       });
   }
 

@@ -33,7 +33,8 @@ const ShortenForm = () => {
  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { originalUrl } = values;
-    await viewService.createUrl(originalUrl);
+    const url = await viewService.createUrl(originalUrl);
+    if ( url ) window.location.href = `/short/${url.shortId}`;
   }
 
   return (

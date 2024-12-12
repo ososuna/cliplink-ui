@@ -1,22 +1,42 @@
-import { useState } from 'react'
-import { Button } from '@/presentation/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/presentation/components/ui/dialog'
-import { Input } from '@/presentation/components/ui/input'
-import { Label } from '@/presentation/components/ui/label'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+
+import { UrlServiceImpl } from '@/infrastructure';
+
+import { UrlViewService } from '@/presentation';
+import { Button } from '@/presentation/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
+import { Input } from '@/presentation/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
+
+const formSchema = z.object({
+  name: z.string().max(80).optional(),
+  longUrl: z.string().url()
+});
 
 const CreateShortUrlDialog = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newUrl, setNewUrl] = useState('');
-  const [newUrlName, setNewUrlName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleCreateShortUrl = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the newUrl to your backend to create a short URL
-    console.log('Creating short URL for:', newUrl)
-    setNewUrl('')
-    setIsDialogOpen(false)
+  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
+
+  const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
+    const { name, longUrl } = values;
+    await viewService.createUrl(longUrl, name);
+    window.location.href = ('/dashboard');
   }
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      longUrl: ''
+    },
+  });
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -28,37 +48,45 @@ const CreateShortUrlDialog = () => {
           <DialogTitle>Shorten URL</DialogTitle>
           <DialogDescription>Enter a long URL to get a shortened version.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleCreateShortUrl}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name (optional)
-              </Label>
-              <Input
-                id="name"
-                value={newUrlName}
-                onChange={(e) => setNewUrlName(e.target.value)}
-                placeholder="My awesome link"
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="url" className="text-right">
-                Long URL
-              </Label>
-              <Input
-                id="url"
-                value={newUrl}
-                onChange={(e) => setNewUrl(e.target.value)}
-                placeholder="https://example.com/your/long/url"
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit">Create</Button>
-          </DialogFooter>
-        </form>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onShortenUrl)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name (Optional)</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete='off' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="longUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Long URL</FormLabel>
+                  <FormControl>
+                    <Input type="text" autoComplete='off' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button className="w-full mt-2" type="submit">
+                {isLoading ? (
+                  <><Loader2 className="animate-spin" /> Loading...</>
+                ) : (
+                  'Shorten URL'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
