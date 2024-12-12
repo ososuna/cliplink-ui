@@ -1,16 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
 
-import { UrlServiceImpl } from '@/infrastructure';
-
-import { UrlViewService } from '@/presentation';
+import { getUrlViewService } from '@/presentation/store/service-store';
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
-import { Input } from '@/presentation/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
+import { Input } from '@/presentation/components/ui/input';
 
 const formSchema = z.object({
   name: z.string().max(80).optional(),
@@ -22,11 +20,11 @@ const CreateShortUrlDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
-
   const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
     const { name, longUrl } = values;
-    await viewService.createUrl(longUrl, name);
+    setIsLoading(true);
+    await getUrlViewService().createUrl(longUrl, name);
+    setIsLoading(false);
     window.location.href = ('/dashboard');
   }
 

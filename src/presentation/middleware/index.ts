@@ -1,8 +1,7 @@
 import type { MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 import { HttpClient } from '@/config';
-import { AuthServiceImpl } from '@/infrastructure';
-import { AuthViewService } from '@/presentation';
+import { getAuthViewService } from '@/presentation/store/service-store';
 
 export const onRequest = defineMiddleware(async (context, next) => {
 
@@ -21,8 +20,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return redirectToLogin(url.pathname, next);
   }
 
-  const viewService = new AuthViewService(new AuthServiceImpl);
-  const user = await viewService.checkToken(token);
+  const user = await getAuthViewService().checkToken(token);
   
   if ( !user ) return redirectToLogin(url.pathname, next);
   

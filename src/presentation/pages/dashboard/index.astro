@@ -1,12 +1,9 @@
 ---
-import { UrlServiceImpl } from '@/infrastructure';
-
-import { UrlViewService } from '@/presentation';
+import { getUrlViewService } from '@/presentation/store/service-store';
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import Dashboard from '@/presentation/components/url/Dashboard';
 
-const viewService = new UrlViewService(new UrlServiceImpl());
-const urls = await viewService.getUrls();
+const urls = await getUrlViewService().getUrls();
 ---
 
 <HomeLayout>

@@ -1,5 +1,4 @@
-import { AuthServiceImpl } from '@/infrastructure';
-
+import { getAuthViewService } from '@/presentation/store/service-store';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,22 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/presentation/components/ui/dropdown-menu';
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/presentation/components/ui/avatar';
-
-import { AuthViewService } from '@/presentation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/presentation/components/ui/avatar';
 
 interface Props {
   name: string;
   lastName: string;
 }
 
-const onLogout = () => {
-  new AuthViewService(new AuthServiceImpl()).logout();
+const onLogout = async() => {
+  await getAuthViewService().logout();
 }
 
 const AuthDropdown = ({ name, lastName }: Props) => {

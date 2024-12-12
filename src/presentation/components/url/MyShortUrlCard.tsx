@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
+import { useState } from 'react';
 
 import type { Url } from '@/domain';
 
-import { UrlServiceImpl } from '@/infrastructure';
-
-import { UrlViewService } from '@/presentation';
+import { getUrlViewService } from '@/presentation/store/service-store';
 import ConfirmationDialog from '@/presentation/components/shared/ConfirmationDialog';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
@@ -20,8 +18,6 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
-
   const onCopy = () => {
     navigator.clipboard.writeText(`localhost:3000/${url.shortId}`);
     setIsCopied(true);
@@ -31,7 +27,9 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
   };
 
   const onDelete = async () => {
-    await viewService.deleteUrl(url.id);
+    setIsLoading(true);
+    await getUrlViewService().deleteUrl(url.id);
+    setIsLoading(false);
     window.location.href = '/dashboard';
   };
 

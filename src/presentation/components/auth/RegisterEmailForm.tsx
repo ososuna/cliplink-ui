@@ -1,15 +1,13 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
-import { AuthServiceImpl } from '@/infrastructure';
-
-import { AuthViewService } from '@/presentation';
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
+import { getAuthViewService } from '@/presentation/store/service-store';
 
 const formSchema = z.object({
   name: z.string().min(2).max(60),
@@ -43,11 +41,11 @@ const RegisterEmailForm = () => {
     },
   });
 
-  const viewService = new AuthViewService(new AuthServiceImpl(), setIsLoading);
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, lastName, password } = values;
-    await viewService.registerByEmail(emailToRegister.current!, name, lastName, password);
+    setIsLoading(true);
+    await getAuthViewService().registerByEmail(emailToRegister.current!, name, lastName, password);
+    setIsLoading(false);
   }
 
   return (

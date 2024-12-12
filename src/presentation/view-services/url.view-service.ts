@@ -1,5 +1,5 @@
 import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type UrlService } from '@/domain';
-import { setUiError } from '@/infrastructure/store/ui.store';
+import { setUiError } from '@/presentation/store/ui.store';
 
 export class UrlViewService {
     

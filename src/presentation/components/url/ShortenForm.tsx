@@ -1,18 +1,14 @@
 import { useState } from 'react';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Loader2 } from 'lucide-react';
 
-import { UrlServiceImpl } from '@/infrastructure';
-
+import { getUrlViewService } from '@/presentation/store/service-store';
 import { Button } from '@/presentation/components/ui/button';
 import { CardContent, CardFooter } from '@/presentation/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
-
-import { UrlViewService } from '@/presentation/view-services/url.view-service';
 
 const formSchema = z.object({
   originalUrl: z.string().url()
@@ -28,12 +24,12 @@ const ShortenForm = () => {
       originalUrl: '',
     },
   });
-
-  const viewService = new UrlViewService(new UrlServiceImpl(), setIsLoading);
  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { originalUrl } = values;
-    const url = await viewService.createUrl(originalUrl);
+    setIsLoading(true);
+    const url = await getUrlViewService().createUrl(originalUrl);
+    setIsLoading(false);
     if ( url ) window.location.href = `/short/${url.shortId}`;
   }
 

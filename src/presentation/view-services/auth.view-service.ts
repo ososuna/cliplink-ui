@@ -1,5 +1,5 @@
 import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register } from '@/domain';
-import { AuthServiceImpl, setUiError } from '@/infrastructure';
+import { setUiError } from '@/presentation/store/ui.store';
 
 export class AuthViewService {
     
@@ -43,7 +43,7 @@ export class AuthViewService {
       this.setIsLoading(false);
       return;
     }
-    new Register(new AuthServiceImpl())
+    new Register(this.authService)
       .execute(registerUserDto!)
       .then(() => { window.location.href = '/dashboard' })
       .catch(error => this.handleError(error))
