@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { getAuthViewService } from '@/infrastructure';
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
-import { getAuthViewService } from '@/presentation/store/service-store';
 
 const formSchema = z.object({
   password: z.string()

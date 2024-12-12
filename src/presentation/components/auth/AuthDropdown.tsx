@@ -1,4 +1,4 @@
-import { getAuthViewService } from '@/presentation/store/service-store';
+import { getAuthViewService } from '@/infrastructure';
 import {
   DropdownMenu,
   DropdownMenuContent,

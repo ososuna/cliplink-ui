@@ -1,53 +1,44 @@
 import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register } from '@/domain';
-import { setUiError } from '@/presentation/store/ui.store';
 
 export class AuthViewService {
     
   constructor(
     private readonly authService: AuthService,
-    private readonly setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null,
+    private readonly uiErrorHandler: (error: { type: string; message: string }) => void
   ) {}
-
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
-      setUiError({ type: 'error', message: error.message });
+      this.uiErrorHandler({ type: 'error', message: error.message });
       return;
     }
-    setUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
-    this.setIsLoading(false);
+    this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
   async loginByEmail(email: string, password: string): Promise<void> {
-    this.setIsLoading(true);
     const [ error, loginUserDto ] = LoginUserDto.create({ email, password });
     if (error) {
-      setUiError({ type: 'error', message: error });
-      this.setIsLoading(false);
+      this.uiErrorHandler({ type: 'error', message: error });
       return;
     }
     return new Login(this.authService)
       .execute(loginUserDto!)
       .then(() => { window.location.href = '/dashboard' })
-      .catch(error => this.handleError(error))
-      .finally(() => this.setIsLoading(false));
+      .catch(error => this.handleError(error));
   }
 
   async registerByEmail(email: string, name: string, lastName: string, password: string): Promise<User | void> {
-    this.setIsLoading(true);
     const [ error, registerUserDto ] = RegisterUserDto.create({
       name, lastName, email, password
     });
     if (error) {
-      setUiError({ type: 'error', message: error });
-      this.setIsLoading(false);
+      this.uiErrorHandler({ type: 'error', message: error });
       return;
     }
     new Register(this.authService)
       .execute(registerUserDto!)
       .then(() => { window.location.href = '/dashboard' })
       .catch(error => this.handleError(error))
-      .finally(() => this.setIsLoading(false));
   }
 
   async checkToken(token?: string): Promise<User | void> {
@@ -56,7 +47,7 @@ export class AuthViewService {
       .then(data => data)
       .catch(error => {
         if (!(error instanceof CustomError)) {
-          setUiError({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
+          this.uiErrorHandler({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
         }
       });
   }

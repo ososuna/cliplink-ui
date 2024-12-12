@@ -4,7 +4,8 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { getUrlViewService } from '@/presentation/store/service-store';
+import { getUrlViewService } from '@/infrastructure';
+
 import { Button } from '@/presentation/components/ui/button';
 import { CardContent, CardFooter } from '@/presentation/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';

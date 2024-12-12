@@ -1,7 +1,7 @@
 import type { MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 import { HttpClient } from '@/config';
-import { getAuthViewService } from '@/presentation/store/service-store';
+import { getAuthViewService } from '@/infrastructure';
 
 export const onRequest = defineMiddleware(async (context, next) => {
 

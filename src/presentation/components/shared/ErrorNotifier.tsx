@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 
-import { uiError } from '@/presentation/store/ui.store';
+import { uiError } from '@/infrastructure';
 
 import { Toaster } from '@/presentation/components/ui/toaster';
 import { useToast } from '@/presentation/hooks/use-toast';

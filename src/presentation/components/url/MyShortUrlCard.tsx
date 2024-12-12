@@ -3,7 +3,8 @@ import { useState } from 'react';
 
 import type { Url } from '@/domain';
 
-import { getUrlViewService } from '@/presentation/store/service-store';
+import { getUrlViewService } from '@/infrastructure';
+
 import ConfirmationDialog from '@/presentation/components/shared/ConfirmationDialog';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
