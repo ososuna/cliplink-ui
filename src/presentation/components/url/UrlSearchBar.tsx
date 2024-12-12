@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import { Input } from '@/presentation/components/ui/input';
 
-const UrlSearchBar = () => {
+interface Props {
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+}
 
-  const [searchTerm, setSearchTerm] = useState('');
-
+const UrlSearchBar = ({ searchTerm, setSearchTerm }: Props) => {
   return (
     <div className="flex-grow">
     <Input

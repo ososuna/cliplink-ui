@@ -1,5 +1,5 @@
-import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
 
 import type { Url } from '@/domain';
 
