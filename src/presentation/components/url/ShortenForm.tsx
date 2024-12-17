@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 
-import { getUrlViewService } from '@/infrastructure';
+import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
+import { useService } from '@/presentation/hooks/use-service';
 import { Button } from '@/presentation/components/ui/button';
 import { CardContent, CardFooter } from '@/presentation/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
@@ -17,30 +18,31 @@ const formSchema = z.object({
 
 const ShortenForm = () => {
 
-  const [ isLoading, setIsLoading ] = useState(false);
-  
-   const form = useForm<z.infer<typeof formSchema>>({
+  const [isLoading, setIsLoading] = useState(false);
+  const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
+
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       originalUrl: '',
     },
   });
- 
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { originalUrl } = values;
     setIsLoading(true);
-    const url = await getUrlViewService().createUrl(originalUrl);
+    const url = await urlService?.createUrl(originalUrl);
     setIsLoading(false);
-    if ( url ) window.location.href = `/short/${url.shortId}`;
+    if (url) window.location.href = `/short/${url.shortId}`;
   }
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={ form.handleSubmit(onSubmit) }>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col">          
+              <div className="flex flex-col">
                 <FormField
                   control={form.control}
                   name="originalUrl"
@@ -59,7 +61,7 @@ const ShortenForm = () => {
           </CardContent>
           <CardFooter>
             <Button type="submit">
-              { isLoading ? (
+              {isLoading ? (
                 <><Loader2 className="animate-spin" /> Shortening...</>
               ) : (
                 'Shorten URL'

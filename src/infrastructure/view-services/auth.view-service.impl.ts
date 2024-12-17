@@ -1,24 +1,23 @@
-import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register } from '@/domain';
+import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register, type AuthViewService } from '@/domain';
 
-export class AuthViewService {
+export class AuthViewServiceImpl implements AuthViewService {
     
   constructor(
-    private readonly authService: AuthService,
-    private readonly uiErrorHandler: (error: { type: string; message: string }) => void
+    private readonly authService: AuthService
   ) {}
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
-      this.uiErrorHandler({ type: 'error', message: error.message });
+      // this.uiErrorHandler({ type: 'error', message: error.message });
       return;
     }
-    this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
+    // this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
   async loginByEmail(email: string, password: string): Promise<void> {
     const [ error, loginUserDto ] = LoginUserDto.create({ email, password });
     if (error) {
-      this.uiErrorHandler({ type: 'error', message: error });
+      // this.uiErrorHandler({ type: 'error', message: error });
       return;
     }
     return new Login(this.authService)
@@ -32,7 +31,7 @@ export class AuthViewService {
       name, lastName, email, password
     });
     if (error) {
-      this.uiErrorHandler({ type: 'error', message: error });
+      // this.uiErrorHandler({ type: 'error', message: error });
       return;
     }
     new Register(this.authService)
@@ -47,7 +46,7 @@ export class AuthViewService {
       .then(data => data)
       .catch(error => {
         if (!(error instanceof CustomError)) {
-          this.uiErrorHandler({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
+          // this.uiErrorHandler({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
         }
       });
   }

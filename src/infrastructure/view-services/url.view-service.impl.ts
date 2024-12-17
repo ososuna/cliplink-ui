@@ -1,24 +1,23 @@
 import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type UrlService } from '@/domain';
 
-export class UrlViewService {
+export class UrlViewServiceImpl {
     
   constructor(
     private readonly urlService: UrlService,
-    private readonly uiErrorHandler: (error: { type: string; message: string }) => void
   ) {}
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
-      this.uiErrorHandler({ type: 'error', message: error.message });
+      // this.uiErrorHandler({ type: 'error', message: error.message });
       return;
     }
-    this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
+    // this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
   async createUrl(originalUrl: string, name?: string): Promise<Url | undefined> {
     const [error, createUrlDto] = CreateUrlDto.create({ originalUrl, name });
     if (error) {
-      this.uiErrorHandler({ type: 'error', message: error });
+      // this.uiErrorHandler({ type: 'error', message: error });
       return;
     }
     return new CreateUrl(this.urlService)

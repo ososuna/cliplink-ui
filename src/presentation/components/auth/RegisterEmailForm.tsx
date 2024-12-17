@@ -1,14 +1,15 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 
-import { getAuthViewService } from '@/infrastructure';
+import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
+import { useService } from '@/presentation/hooks/use-service';
 
 const formSchema = z.object({
   name: z.string().min(2).max(60),
@@ -24,8 +25,8 @@ const formSchema = z.object({
 const RegisterEmailForm = () => {
 
   const [ isLoading, setIsLoading ] = useState(false);
-
   const emailToRegister = useRef<string | null>('');
+  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
   
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -45,7 +46,7 @@ const RegisterEmailForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, lastName, password } = values;
     setIsLoading(true);
-    await getAuthViewService().registerByEmail(emailToRegister.current!, name, lastName, password);
+    await authService?.registerByEmail(emailToRegister.current!, name, lastName, password);
     setIsLoading(false);
   }
 

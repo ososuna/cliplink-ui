@@ -3,8 +3,9 @@ import { useState } from 'react';
 
 import type { Url } from '@/domain';
 
-import { getUrlViewService } from '@/infrastructure';
+import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
+import { useService } from '@/presentation/hooks/use-service';
 import ConfirmationDialog from '@/presentation/components/shared/ConfirmationDialog';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
@@ -18,6 +19,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
 
   const [isCopied, setIsCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
 
   const onCopy = () => {
     navigator.clipboard.writeText(`localhost:3000/${url.shortId}`);
@@ -29,7 +31,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
 
   const onDelete = async () => {
     setIsLoading(true);
-    await getUrlViewService().deleteUrl(url.id);
+    await urlService?.deleteUrl(url.id);
     setIsLoading(false);
     window.location.href = '/dashboard';
   };
