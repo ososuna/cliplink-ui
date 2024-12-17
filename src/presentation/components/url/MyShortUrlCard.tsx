@@ -79,7 +79,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
         </Button>
         <ConfirmationDialog
           action='Delete URL'
-          button={<Button className="justify-self-end" variant="destructive" size="sm"><Trash /></Button>}
+          button={<Button className="justify-self-end border-red-500" variant="outline" size="sm"><Trash className="text-red-500" /></Button>}
           callback={onDelete}
           isLoading={isLoading}
         />
