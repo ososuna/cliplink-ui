@@ -1,7 +1,9 @@
+import { LogOut, User } from 'lucide-react';
+
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
-import { Avatar, AvatarFallback, AvatarImage } from '@/presentation/components/ui/avatar';
+import { Avatar } from '@/presentation/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,18 +29,15 @@ const AuthDropdown = ({ name, lastName }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center cursor-pointer">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>{`${name.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}</AvatarFallback>
-          </Avatar>
-          <span className="ml-2">{`${name} ${lastName}`}</span>
-        </div>
+        <Avatar className="w-8 h-8 bg-zinc-100 flex items-center justify-center">
+          {`${name.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{`${name} ${lastName}`}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onLogout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem>My Account</DropdownMenuItem>
+        <DropdownMenuItem onClick={onLogout}><LogOut /> Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
