@@ -1,6 +1,6 @@
-import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService } from '@/domain';
+import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService, type UrlViewService } from '@/domain';
 
-export class UrlViewServiceImpl {
+export class UrlViewServiceImpl implements UrlViewService {
     
   constructor(
     private readonly urlService: UrlService,
@@ -28,9 +28,9 @@ export class UrlViewServiceImpl {
       });
   }
 
-  async getUrls(page: number, limit: number): Promise<Page<Url> | void> {
+  async getUrls(page: number, limit: number, search: string = ''): Promise<Page<Url> | void> {
     return new GetUrls(this.urlService)
-      .execute(page, limit)
+      .execute(page, limit, search)
       .then(data => data)
       .catch(this.handleError);
   }

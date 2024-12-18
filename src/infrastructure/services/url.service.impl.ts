@@ -7,8 +7,8 @@ export class UrlServiceImpl implements UrlService {
     return HttpClient.post<Url>('/url', createUrlDto);
   }
 
-  getUrls(page: number, limit: number): Promise<Page<Url>> {
-    return HttpClient.get<Page<Url>>(`/url?page=${page}&limit=${limit}`);
+  getUrls(page: number, limit: number, search: string): Promise<Page<Url>> {
+    return HttpClient.get<Page<Url>>(`/url?page=${page}&limit=${limit}&search=${search}`);
   }
 
   delete(urlId: string): Promise<void> {
