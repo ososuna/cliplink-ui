@@ -68,22 +68,27 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
           <CardDescription className="truncate">{url.originalUrl}</CardDescription>
         </div>
       </CardHeader>
-      <CardFooter className="grid grid-cols-3 justify-items-start">
-        <Button className="columns-2" variant="outline" size="sm" onClick={onCopy}>
-          {
-            isCopied ? <><Check className="text-green-500" /> Copied </> : <><Clipboard /> Copy</>
-          }
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => window.open(url.originalUrl, '_blank')}>
-          <ExternalLink /> Visit
-        </Button>
+      <CardFooter className="flex justify-between">
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={onCopy}>
+            {isCopied ? <Check className="text-green-500" /> : <Clipboard />}
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => window.open(url.originalUrl, '_blank')}>
+            <ExternalLink />
+          </Button>
+        </div>
         <ConfirmationDialog
-          action='Delete URL'
-          button={<Button className="justify-self-end border-red-500" variant="outline" size="sm"><Trash className="text-red-500" /></Button>}
+          action="Delete URL"
+          button={
+            <Button className="border-red-500" variant="outline" size="sm">
+              <Trash className="text-red-500" />
+            </Button>
+          }
           callback={onDelete}
           isLoading={isLoading}
         />
       </CardFooter>
+
     </Card>
   );
 }
