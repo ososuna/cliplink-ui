@@ -1,4 +1,4 @@
-import { LogOut, User } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 

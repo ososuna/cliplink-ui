@@ -4,7 +4,8 @@ import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import Dashboard from '@/presentation/components/url/Dashboard';
 
-const urls = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls();
+const data = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 9);
+const urls = data ? data.items : [];
 ---
 
 <HomeLayout>

@@ -25,3 +25,5 @@ export * from './use-cases/url/delete-url.use-case';
 
 export * from './view-services/auth.view-service';
 export * from './view-services/url.view-service';
+
+export * from './interfaces/page';

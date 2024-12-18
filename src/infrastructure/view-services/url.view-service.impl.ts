@@ -1,4 +1,4 @@
-import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type UrlService } from '@/domain';
+import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService } from '@/domain';
 
 export class UrlViewServiceImpl {
     
@@ -9,7 +9,6 @@ export class UrlViewServiceImpl {
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
       // this.uiErrorHandler({ type: 'error', message: error.message });
-      return;
     }
     // this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
@@ -29,14 +28,11 @@ export class UrlViewServiceImpl {
       });
   }
 
-  async getUrls(): Promise<Url[]> {
+  async getUrls(page: number, limit: number): Promise<Page<Url> | void> {
     return new GetUrls(this.urlService)
-      .execute()
+      .execute(page, limit)
       .then(data => data)
-      .catch(error => {
-        this.handleError(error);
-        return [];
-      });
+      .catch(this.handleError);
   }
 
   async deleteUrl(urlId: string): Promise<void> {

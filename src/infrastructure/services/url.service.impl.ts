@@ -1,4 +1,4 @@
-import type { CreateUrlDto, Url, UrlService } from '@/domain';
+import type { CreateUrlDto, Page, Url, UrlService } from '@/domain';
 import { HttpClient } from '@/config';
 
 export class UrlServiceImpl implements UrlService {
@@ -7,8 +7,8 @@ export class UrlServiceImpl implements UrlService {
     return HttpClient.post<Url>('/url', createUrlDto);
   }
 
-  getUrls(): Promise<Url[]> {
-    return HttpClient.get<Url[]>('/url');
+  getUrls(page: number, limit: number): Promise<Page<Url>> {
+    return HttpClient.get<Page<Url>>(`/url?page=${page}&limit=${limit}`);
   }
 
   delete(urlId: string): Promise<void> {

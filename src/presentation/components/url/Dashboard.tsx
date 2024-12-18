@@ -28,7 +28,6 @@ const Dashboard = ({ urls }: Props) => {
     );
   }, [searchTerm, urls]);
 
-
   return (
     <>
       <div className="flex justify-between items-center mb-6 gap-4">
