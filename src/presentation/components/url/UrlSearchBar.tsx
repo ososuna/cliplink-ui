@@ -18,7 +18,6 @@ const UrlSearchBar = ({ searchTerm, handleSearchChange }: Props) => {
     />
     </div>
   );
-
 }
 
 export default UrlSearchBar;

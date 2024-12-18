@@ -24,7 +24,6 @@ const Dashboard = ({ page: initialPage }: Props) => {
 
   const itemsPerPage = 9;
 
-  // Fetch URLs for the current page
   const fetchUrls = async (page: number, term: string) => {
     const data = await urlService.getUrls(page, itemsPerPage, term);
     if (data) {
@@ -33,16 +32,14 @@ const Dashboard = ({ page: initialPage }: Props) => {
     }
   };
 
-  // Handle search term updates
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
     if (initialPage.total > 0) {
-      fetchUrls(1, event.target.value); // Fetch results for the search term
+      fetchUrls(1, event.target.value);
     }
   };
 
-  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     fetchUrls(page, searchTerm);
