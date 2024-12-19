@@ -30,7 +30,7 @@ export const prerender = true;
           </div>
         </div>
         <div class="flex space-x-2">
-          <Button className="w-full" type="submit">
+          <Button id="githubAuthButton" className="w-full" type="submit">
             <GitHubIcon /> GitHub
           </Button>
           <Button className="w-full" type="submit">
@@ -41,3 +41,10 @@ export const prerender = true;
     </div>
   </div>
 </AuthLayout>
+
+<script>
+  const githubAuthButton = document.getElementById('githubAuthButton');
+  if (githubAuthButton) {
+    githubAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/github';
+  }
+  </script>
