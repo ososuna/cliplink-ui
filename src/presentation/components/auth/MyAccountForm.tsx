@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -39,6 +39,18 @@ const MyAccountForm = ({user: initialUser}: Props) => {
   const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
   const { toast } = useToast();
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('updated') === 'true') {
+      toast({
+        title: 'Profile updated',
+        description: 'Your profile has been successfully updated.',
+      });
+      url.searchParams.delete('updated');
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  }, [toast]);
+
   const defaultValues = {
     name: initialUser.name,
     lastName: initialUser.lastName,
@@ -51,31 +63,29 @@ const MyAccountForm = ({user: initialUser}: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { name, lastName, email } = values;
+    
+    // Filter modified values
+    const fieldsToUpdate = Object.fromEntries(
+      Object.entries(values).filter(
+        ([key, value]) => value !== initialUser[key as keyof typeof initialUser]
+      )
+    );
 
-    const fieldsToUpdate: {name: string | undefined, lastName: string | undefined, email: string | undefined}
-      = {name: undefined, lastName: undefined, email: undefined};
-
-    if (name !== initialUser.name) {
-      fieldsToUpdate.name = name;
-    }
-
-    if (lastName !== initialUser.lastName) {
-      fieldsToUpdate.lastName = lastName;
-    }
-
-    if (email !== initialUser.email) {
-      fieldsToUpdate.email = email;
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      toast({
+        title: 'No changes detected',
+        description: 'Please modify at least one field before updating.',
+      });
+      return;
     }
 
     setIsLoading(true);
     const user = await authService.update(fieldsToUpdate.name, fieldsToUpdate.lastName, fieldsToUpdate.email);
     setIsLoading(false);
     if ( user ) {
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been successfully updated.",
-      });
+      const url = new URL(window.location.href);
+      url.searchParams.set('updated', 'true');
+      window.location.href = url.toString();
     }
   };
 
