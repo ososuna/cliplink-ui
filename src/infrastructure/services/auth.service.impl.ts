@@ -30,4 +30,8 @@ export class AuthServiceImpl implements AuthService {
     return HttpClient.put<User>('/auth', updateUserDto);
   }
 
+  authGithub(): Promise<void> {
+    return HttpClient.get<void>('/auth/github');
+  }
+
 }

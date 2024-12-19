@@ -1,4 +1,4 @@
-import { CheckToken, CustomError, Login, LoginUserDto, Logout, Register, RegisterUserDto, UpdateUser, UpdateUserDto, User, type AuthService, type AuthViewService } from '@/domain';
+import { CheckToken, CustomError, Login, LoginUserDto, Logout, Register, RegisterUserDto, UpdateUser, UpdateUserDto, User, type AuthService, type AuthViewService, AuthGithub } from '@/domain';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewServiceImpl implements AuthViewService {
@@ -70,6 +70,11 @@ export class AuthViewServiceImpl implements AuthViewService {
     .execute(updateUserDto!)
       .then(data => data)
       .catch(this.handleError)
+  }
+
+  async authGithub(): Promise<void> {
+    new AuthGithub(this.authService)
+      .execute();
   }
 
 }

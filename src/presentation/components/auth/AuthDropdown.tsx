@@ -30,11 +30,17 @@ const AuthDropdown = ({ name, lastName }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="w-8 h-8 bg-zinc-100 flex items-center justify-center">
-          {`${name.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`}
+          { lastName
+            ? `${name.charAt(0).toUpperCase()} ${lastName.charAt(0).toUpperCase()}`
+            : `${name.charAt(0).toUpperCase()}`
+          }
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>{`${name} ${lastName}`}</DropdownMenuLabel>
+        {lastName
+          ? <DropdownMenuLabel>{`${name} ${lastName}`}</DropdownMenuLabel>
+          : <DropdownMenuLabel>{`${name}`}</DropdownMenuLabel>
+        }
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => window.location.href='/dashboard'}>Dashboard</DropdownMenuItem>
         <DropdownMenuItem onClick={() => window.location.href='/my-account'}>My Account</DropdownMenuItem>

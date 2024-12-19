@@ -5,4 +5,5 @@ export interface AuthService {
   checkToken(token?: string): Promise<User>;
   logout(): Promise<void>;
   update(updateUserDto: UpdateUserDto): Promise<User>;
+  authGithub(): Promise<void>;
 }

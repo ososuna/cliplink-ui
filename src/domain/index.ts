@@ -18,6 +18,7 @@ export * from './use-cases/auth/register.use-case';
 export * from './use-cases/auth/check-token.use-case';
 export * from './use-cases/auth/logout.use-case';
 export * from './use-cases/auth/update-user.use-case';
+export * from './use-cases/auth/auth-github.use-case';
 
 export * from './use-cases/url/create-url.use-case';
 export * from './use-cases/url/get-urls.use-case';
