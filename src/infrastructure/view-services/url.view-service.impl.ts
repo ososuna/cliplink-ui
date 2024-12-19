@@ -1,16 +1,18 @@
 import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService, type UrlViewService } from '@/domain';
+import { setUiError } from '@/infrastructure';
 
 export class UrlViewServiceImpl implements UrlViewService {
     
   constructor(
     private readonly urlService: UrlService,
+    private readonly notifyUiError: (error: {message: string, type: string}) => void = setUiError
   ) {}
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
-      // this.uiErrorHandler({ type: 'error', message: error.message });
+      this.notifyUiError({ type: 'error', message: error.message });
     }
-    // this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
+    this.notifyUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
   async createUrl(originalUrl: string, name?: string): Promise<Url | undefined> {

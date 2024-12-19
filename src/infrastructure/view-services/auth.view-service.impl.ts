@@ -1,17 +1,19 @@
-import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register, type AuthViewService, UpdateUserDto, UpdateUser } from '@/domain';
+import { CheckToken, CustomError, Login, LoginUserDto, Logout, Register, RegisterUserDto, UpdateUser, UpdateUserDto, User, type AuthService, type AuthViewService } from '@/domain';
+import { setUiError } from '@/infrastructure';
 
 export class AuthViewServiceImpl implements AuthViewService {
     
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly notifyUiError: (error: {message: string, type: string}) => void = setUiError
   ) {}
 
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
-      // this.uiErrorHandler({ type: 'error', message: error.message });
+      this.notifyUiError({ type: 'error', message: error.message });
       return;
     }
-    // this.uiErrorHandler({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
+    this.notifyUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
   }
 
   async loginByEmail(email: string, password: string): Promise<void> {
