@@ -36,7 +36,8 @@ const AuthDropdown = ({ name, lastName }: Props) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{`${name} ${lastName}`}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>My Account</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => window.location.href='/dashboard'}>Dashboard</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => window.location.href='/my-account'}>My Account</DropdownMenuItem>
         <DropdownMenuItem onClick={onLogout}><LogOut /> Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
