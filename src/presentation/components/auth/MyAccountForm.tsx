@@ -29,7 +29,7 @@ const formSchema = z.object({
   name: z.string().min(2).max(60),
   lastName: z.string().min(2).max(120),
   email: z.string().email({
-    message: 'Please enter a valid email address.',
+    message: 'Please enter a valid email address',
   }),
 });
 
@@ -43,8 +43,8 @@ const MyAccountForm = ({user: initialUser}: Props) => {
     const url = new URL(window.location.href);
     if (url.searchParams.get('updated') === 'true') {
       toast({
-        title: 'Profile updated',
-        description: 'Your profile has been successfully updated.',
+        title: 'Profile updated 🎉',
+        description: 'Your profile has been successfully updated',
       });
       url.searchParams.delete('updated');
       window.history.replaceState({}, document.title, url.toString());
@@ -74,7 +74,7 @@ const MyAccountForm = ({user: initialUser}: Props) => {
     if (Object.keys(fieldsToUpdate).length === 0) {
       toast({
         title: 'No changes detected',
-        description: 'Please modify at least one field before updating.',
+        description: 'Please modify at least one field before updating',
       });
       return;
     }

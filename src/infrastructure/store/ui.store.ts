@@ -8,5 +8,8 @@ export type UiError = {
 export const uiError = map<UiError>({ message: '', type: '' });
 
 export const setUiError = (error: UiError) => {
+  if (error.message) {
+    error.message = error.message.charAt(0).toUpperCase() + error.message.slice(1);
+  }
   uiError.set(error);
 }
