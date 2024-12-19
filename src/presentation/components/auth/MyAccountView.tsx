@@ -1,12 +1,13 @@
-import type { User } from '@/domain'
+import type { User } from '@/domain';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card'
-import { Avatar } from '@/presentation/components/ui/avatar'
+import { Avatar } from '@/presentation/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 
 interface Props {
-  user: User
+  user: User;
+  urlsCount: number;
 }
-const ProfileView = ({ user }: Props) => {
+const ProfileView = ({ user, urlsCount }: Props) => {
 
   return (
     <Card>
@@ -25,7 +26,7 @@ const ProfileView = ({ user }: Props) => {
         </div>
         <div>
           <p className="flex items-center">
-            <span className="text-2xl font-bold mr-2">42</span>
+            <span className="text-2xl font-bold mr-2">{urlsCount}</span>
             URLs shortened
           </p>
         </div>
