@@ -56,12 +56,12 @@ const Dashboard = ({ page: initialPage }: Props) => {
         searchTerm && initialPage.total > 0 ? (
           <p className="px-8 text-center text-sm text-muted-foreground">
             No URLs found matching "<strong>{searchTerm}</strong>". Please try a
-            different search term.
+            different search term
           </p>
         ) : (
           <p className="px-8 text-center text-sm text-muted-foreground">
             You haven't shortened any URLs yet. Click the <strong>"Shorten
-              URL"</strong> button to shorten your first URL.
+              URL"</strong> button to shorten your first URL
           </p>
         )
       ) : (

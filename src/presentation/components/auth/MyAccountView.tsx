@@ -1,10 +1,11 @@
-import { GithubIcon } from 'lucide-react';
+import { GithubIcon, Trash2Icon } from 'lucide-react';
 
 import type { User } from '@/domain';
 
 import { Avatar } from '@/presentation/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import { Badge } from '@/presentation/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
+import { Button } from '@/presentation/components/ui/button';
 
 interface Props {
   user: User;
@@ -46,6 +47,9 @@ const ProfileView = ({ user, urlsCount }: Props) => {
             URLs shortened
           </p>
         </div>
+        <Button className="border-red-500 w-full" variant="outline">
+          <Trash2Icon className="mr-2 h-4 w-4 text-red-500" /><span className='text-red-500'>Delete Account</span>
+        </Button>
       </CardContent>
     </Card>
   )
