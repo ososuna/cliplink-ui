@@ -7,7 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentat
 import { Input } from '@/presentation/components/ui/input';
 
 const formSchema = z.object({
-  email: z.string().email()
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  })
 });
 
 interface Props {

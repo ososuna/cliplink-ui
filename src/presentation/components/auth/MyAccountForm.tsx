@@ -23,12 +23,8 @@ interface Props {
 }
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  lastName: z.string().min(2, {
-    message: "Last name must be at least 2 characters.",
-  }),
+  name: z.string().min(2).max(60),
+  lastName: z.string().min(2).max(120),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
