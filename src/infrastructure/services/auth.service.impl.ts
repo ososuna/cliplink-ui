@@ -1,5 +1,5 @@
+import type { AuthService, LoginUserDto, RegisterUserDto, UpdateUserDto, User } from '@/domain';
 import { HttpClient } from '@/config';
-import type { AuthService, LoginUserDto, RegisterUserDto, User } from '@/domain';
 
 export class AuthServiceImpl implements AuthService {
 
@@ -24,6 +24,10 @@ export class AuthServiceImpl implements AuthService {
   logout(): Promise<void> {
     HttpClient.accessToken = '';
     return HttpClient.get<void>('/auth/logout');
+  }
+
+  update(updateUserDto: UpdateUserDto): Promise<User> {
+    return HttpClient.put<User>('/auth', updateUserDto);
   }
 
 }

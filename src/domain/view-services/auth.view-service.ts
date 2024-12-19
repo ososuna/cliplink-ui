@@ -5,4 +5,5 @@ export interface AuthViewService {
   registerByEmail(email: string, name: string, lastName: string, password: string): Promise<User | void>;
   checkToken(token?: string): Promise<User | void>;
   logout(): Promise<void>;
+  update(name?: string, lastName?: string, email?: string): Promise<User | void>;
 }

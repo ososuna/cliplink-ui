@@ -1,4 +1,4 @@
-import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register, type AuthViewService } from '@/domain';
+import { Login, LoginUserDto, type AuthService, CustomError, CheckToken, User, Logout, RegisterUserDto, Register, type AuthViewService, UpdateUserDto, UpdateUser } from '@/domain';
 
 export class AuthViewServiceImpl implements AuthViewService {
     
@@ -55,6 +55,18 @@ export class AuthViewServiceImpl implements AuthViewService {
     return new Logout(this.authService)
       .execute()
       .then(() => { window.location.href = '/' })
+      .catch(this.handleError)
+  }
+
+  async update(name?: string, lastName?: string, email?: string): Promise<User | void> {
+    const [error, updateUserDto] = UpdateUserDto.create({name, lastName, email});
+    if (error) {
+      // this.uiErrorHandler({ type: 'error', message: error });
+      return;
+    }
+    return new UpdateUser(this.authService)
+    .execute(updateUserDto!)
+      .then(data => data)
       .catch(this.handleError)
   }
 
