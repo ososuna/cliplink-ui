@@ -1,0 +1,15 @@
+---
+import { Button } from '@/presentation/components/ui/button';
+import GitHubIcon from '@/presentation/icons/GitHubIcon.astro';
+---
+
+<Button id="githubAuthButton" className="w-full" type="submit">
+  <GitHubIcon /> GitHub
+</Button>
+
+<script>
+  const githubAuthButton = document.getElementById('githubAuthButton');
+  if (githubAuthButton) {
+    githubAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/github';
+  }
+</script>

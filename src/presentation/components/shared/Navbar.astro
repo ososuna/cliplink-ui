@@ -2,6 +2,7 @@
 import type { User } from '@/domain';
 
 import AuthDropdown from '@/presentation/components/auth/AuthDropdown';
+import ModeToggle from '@/presentation/components/shared/ModeToggle';
 import { Button } from '@/presentation/components/ui/button';
 import UserIcon from '@/presentation/icons/UserIcon.astro';
 
@@ -9,26 +10,20 @@ interface Props {
   user: User
 }
 
-const isScrolled = true;
 const { user } = Astro.props;
 
 ---
-<header
-class={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
-  isScrolled
-    ? 'bg-background/70 backdrop-blur-md shadow-sm'
-    : 'bg-background'
-}`}
->
-<div class="container mx-auto px-4">
-  <div class="flex h-12 items-center justify-between">
-    <div class="text-lg font-bold">URL Shortener</div>
-    <nav  class="flex space-x-4">
-      { user
-        ? <AuthDropdown name={ user.name } lastName={ user.lastName } client:load />
-        : <a href="/auth/login"><Button variant="ghost"><UserIcon /> Log in</Button></a>
-      }
-    </nav>
+<header class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background">
+  <div class="container mx-auto px-4">
+    <div class="flex h-12 items-center justify-between">
+      <div class="text-lg font-bold">URL Shortener</div>
+      <nav class="flex justify-center items-center gap-x-4">
+        { user
+          ? <AuthDropdown name={ user.name } lastName={ user.lastName } client:load />
+          : <a href="/auth/login"><Button variant="ghost"><UserIcon /> Log in</Button></a>
+        }
+        <ModeToggle client:load />
+      </nav>
+    </div>
   </div>
-</div>
 </header>

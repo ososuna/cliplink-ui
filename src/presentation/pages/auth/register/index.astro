@@ -5,7 +5,8 @@ import { Button } from "@/presentation/components/ui/button";
 
 import EmailForm from "@/presentation/components/auth/EmailForm";
 import GitHubIcon from "@/presentation/icons/GitHubIcon.astro";
-import GoogleIcon from "@/presentation/icons/GoogleIcon.astro";
+import GoogleAuthButton from "@/presentation/components/auth/GoogleAuthButton.astro";
+import GithubAuthButton from "@/presentation/components/auth/GithubAuthButton.astro";
 
 export const prerender = true;
 ---
@@ -30,25 +31,10 @@ export const prerender = true;
           </div>
         </div>
         <div class="flex space-x-2">
-          <Button id="githubAuthButton" className="w-full" type="submit">
-            <GitHubIcon /> GitHub
-          </Button>
-          <Button id="googleAuthButton" className="w-full" type="submit">
-            <GoogleIcon /> Google
-          </Button>
+          <GithubAuthButton />
+          <GoogleAuthButton />
         </div>
       </div>
     </div>
   </div>
 </AuthLayout>
-
-<script>
-const githubAuthButton = document.getElementById('githubAuthButton');
-if (githubAuthButton) {
-  githubAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/github';
-}
-const googleAuthButton = document.getElementById('googleAuthButton');
-if (googleAuthButton) {
-  googleAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/google';
-}
-</script>
