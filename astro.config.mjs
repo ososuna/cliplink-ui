@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig, passthroughImageService, envField } from 'astro/config';
 
 import react from '@astrojs/react';
 
@@ -21,4 +21,9 @@ export default defineConfig({
   image: {
     service: passthroughImageService(),
   },
+  env: {
+    schema: {
+      PUBLIC_API_BASE_URL: envField.string({ context: "client", access: "public" }),
+    }
+  }
 });

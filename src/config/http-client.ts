@@ -3,7 +3,7 @@ import { CustomError } from '@/domain';
 export class HttpClient {
   
   public static accessToken = '';
-  private static readonly baseURL = 'http://localhost:3000/api/v1';
+  private static readonly baseURL = import.meta.env.PUBLIC_API_BASE_URL;
 
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
     
