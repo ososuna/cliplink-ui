@@ -32,7 +32,7 @@ export const prerender = true;
         </div>
         <div class="flex space-x-2">
           <Button id="githubAuthButton" className="w-full" type="submit"> <GitHubIcon /> GitHub </Button>
-          <Button className="w-full" type="submit"> <GoogleIcon />  Google </Button>
+          <Button id="googleAuthButton" className="w-full" type="submit"> <GoogleIcon />  Google </Button>
         </div>
       </div>
     </div>
@@ -43,5 +43,9 @@ export const prerender = true;
 const githubAuthButton = document.getElementById('githubAuthButton');
 if (githubAuthButton) {
   githubAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/github';
+}
+const googleAuthButton = document.getElementById('googleAuthButton');
+if (googleAuthButton) {
+  googleAuthButton.onclick = () => window.location.href = 'http://localhost:3000/api/v1/auth/google';
 }
 </script>

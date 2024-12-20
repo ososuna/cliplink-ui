@@ -6,6 +6,7 @@ import { Avatar } from '@/presentation/components/ui/avatar';
 import { Badge } from '@/presentation/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import { Button } from '@/presentation/components/ui/button';
+import GoogleIcon from '@/presentation/icons/GoogleIcon';
 
 interface Props {
   user: User;
@@ -35,6 +36,11 @@ const ProfileView = ({ user, urlsCount }: Props) => {
               {user.githubId && (
                 <Badge variant="secondary" className="flex items-center space-x-1">
                   <GithubIcon className="h-3 w-3" /><span>GitHub</span>
+                </Badge>
+              )}
+              {user.googleId && (
+                <Badge variant="secondary" className="flex items-center space-x-1">
+                  <GoogleIcon className="h-3 w-3" /><span>Google</span>
                 </Badge>
               )}
             </div>
