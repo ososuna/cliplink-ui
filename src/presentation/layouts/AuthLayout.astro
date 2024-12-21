@@ -1,11 +1,12 @@
 ---
+import { envs } from '@/config';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 interface Props {
 	action: 'register' | 'login'
 }
 const { action } = Astro.props;
 ---
-<BaseLayout title='URL Shortener'>
+<BaseLayout title={envs.PUBLIC_APP_NAME}>
   <nav class="absolute right-4 top-4 md:right-8 md:top-8 space-y-4">
     <div class="flex space-x-4">
       <a

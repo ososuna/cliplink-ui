@@ -1,7 +1,9 @@
-import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
 
 import type { Url } from '@/domain';
+
+import { envs } from '@/config';
 
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
@@ -22,7 +24,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
   const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
 
   const onCopy = () => {
-    navigator.clipboard.writeText(`${import.meta.env.PUBLIC_API_DOMAIN}/${url.shortId}`);
+    navigator.clipboard.writeText(`${envs.PUBLIC_API_DOMAIN}/${url.shortId}`);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);

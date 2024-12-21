@@ -8,8 +8,9 @@ import GitHubIcon from '@/presentation/icons/GitHubIcon.astro';
 </Button>
 
 <script>
+  import { envs } from '@/config';
   const githubAuthButton = document.getElementById('githubAuthButton');
   if (githubAuthButton) {
-    githubAuthButton.onclick = () => window.location.href = import.meta.env.PUBLIC_API_BASE_URL + '/auth/github';
+    githubAuthButton.onclick = () => window.location.href = envs.PUBLIC_API_BASE_URL + '/auth/github';
   }
 </script>

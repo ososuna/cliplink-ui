@@ -8,8 +8,9 @@ import GoogleIcon from '@/presentation/icons/GoogleIcon.astro';
 </Button>
 
 <script>
+  import { envs } from '@/config';
   const googleAuthButton = document.getElementById('googleAuthButton');
   if (googleAuthButton) {
-    googleAuthButton.onclick = () => window.location.href = import.meta.env.PUBLIC_API_BASE_URL + '/auth/google';
+    googleAuthButton.onclick = () => window.location.href = envs.PUBLIC_API_BASE_URL + '/auth/google';
   }
 </script>

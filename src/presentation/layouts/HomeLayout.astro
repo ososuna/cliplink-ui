@@ -1,11 +1,12 @@
 ---
+import { envs } from '@/config';
 import Navbar from '@/presentation/components/shared/Navbar.astro';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 
 const user = Astro.locals.user;
 
 ---
-<BaseLayout title='URL Shortener'>
+<BaseLayout title=={envs.PUBLIC_APP_NAME}>
   <Navbar user={ user } />
   <main class="flex items-center justify-center min-h-[calc(100vh-3rem)]">
     <slot />
