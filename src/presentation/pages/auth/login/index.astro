@@ -1,11 +1,8 @@
 ---
 import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
-
 import EmailForm from '@/presentation/components/auth/EmailForm';
-import { Button } from '@/presentation/components/ui/button';
-
-import GitHubIcon from '@/presentation/icons/GitHubIcon.astro';
 import GoogleAuthButton from '@/presentation/components/auth/GoogleAuthButton.astro';
+import GithubAuthButton from '@/presentation/components/auth/GithubAuthButton.astro';
 
 export const prerender = true;
 
@@ -31,18 +28,15 @@ export const prerender = true;
           </div>
         </div>
         <div class="flex space-x-2">
-          <Button id="githubAuthButton" className="w-full" type="submit"> <GitHubIcon /> GitHub </Button>
+          <GithubAuthButton />
           <GoogleAuthButton />
+        </div>
+        <div style="text-align: center;">
+          <a href="/auth/forgot-password" class="font-normal text-sm text-blue-600 dark:text-blue-500 hover:underline">
+            Forgot your password?
+          </a>
         </div>
       </div>
     </div>
   </div>
 </AuthLayout>
-
-<script>
-import { envs } from '@/config';
-const githubAuthButton = document.getElementById('githubAuthButton');
-if (githubAuthButton) {
-  githubAuthButton.onclick = () => window.location.href = envs.PUBLIC_API_BASE_URL + '/auth/github';
-}
-</script>
