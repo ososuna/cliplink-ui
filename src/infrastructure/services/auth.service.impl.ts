@@ -34,4 +34,8 @@ export class AuthServiceImpl implements AuthService {
     return HttpClient.get<void>('/auth/github');
   }
 
+  deleteAccount(): Promise<void> {
+    return HttpClient.delete<void>('/auth');
+  }
+
 }

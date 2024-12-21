@@ -1,4 +1,5 @@
 import { CheckToken, CustomError, Login, LoginUserDto, Logout, Register, RegisterUserDto, UpdateUser, UpdateUserDto, User, type AuthService, type AuthViewService, AuthGithub } from '@/domain';
+import { DeleteAccount } from '@/domain/use-cases/auth/delete-account.use-case';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewServiceImpl implements AuthViewService {
@@ -48,7 +49,7 @@ export class AuthViewServiceImpl implements AuthViewService {
       .then(data => data)
       .catch(error => {
         if (!(error instanceof CustomError)) {
-          // this.uiErrorHandler({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
+          this.notifyUiError({ type: 'error', message: 'An unexpected error has happened. If the issue persists please talk to the admin.' });
         }
       });
   }
@@ -75,6 +76,13 @@ export class AuthViewServiceImpl implements AuthViewService {
   async authGithub(): Promise<void> {
     new AuthGithub(this.authService)
       .execute();
+  }
+
+  async deleteAccount(): Promise<void> {
+    new DeleteAccount(this.authService)
+      .execute()
+      .then(() => { window.location.href = '/' })
+      .catch(this.handleError)
   }
 
 }

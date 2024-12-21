@@ -63,7 +63,6 @@ const MyAccountForm = ({user: initialUser}: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    
     // Filter modified values
     const fieldsToUpdate = Object.fromEntries(
       Object.entries(values).filter(

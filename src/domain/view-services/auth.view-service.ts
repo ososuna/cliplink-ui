@@ -6,5 +6,7 @@ export interface AuthViewService {
   checkToken(token?: string): Promise<User | void>;
   logout(): Promise<void>;
   update(name?: string, lastName?: string, email?: string): Promise<User | void>;
-  authGithub(): void
+  authGithub(): void;
+  deleteAccount(): Promise<void>;
+
 }

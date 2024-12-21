@@ -6,4 +6,5 @@ export interface AuthService {
   logout(): Promise<void>;
   update(updateUserDto: UpdateUserDto): Promise<User>;
   authGithub(): Promise<void>;
+  deleteAccount(): Promise<void>;
 }
