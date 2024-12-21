@@ -22,7 +22,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
   const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
 
   const onCopy = () => {
-    navigator.clipboard.writeText(`localhost:3000/${url.shortId}`);
+    navigator.clipboard.writeText(`${import.meta.env.PUBLIC_API_DOMAIN}/${url.shortId}`);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
