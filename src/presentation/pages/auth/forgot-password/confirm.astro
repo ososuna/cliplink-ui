@@ -1,8 +1,10 @@
 ---
-import AuthLayout from "@/presentation/layouts/AuthLayout.astro";
-import { Mail } from "lucide-react";
----
+import { Mail } from 'lucide-react';
+import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
 
+export const prerender = true;
+
+---
 <AuthLayout action="forgot-password">
   <div class="w-full max-w-md mx-auto">
     <div class="flex flex-col items-center space-y-2">
@@ -10,11 +12,11 @@ import { Mail } from "lucide-react";
         Please check your email
       </h1>
       <p class="px-8 text-center text-sm text-muted-foreground">
-        We've sent you instructions to reset your password
+        We have sent you instructions to reset your password
       </p>
       <div class="w-full max-w-xs space-y-2">
         <Mail className="mx-auto h-12 w-12 text-blue-500 mb-4" />
-        <p class="text-sm text-muted-foreground mb-2 text-center">We've sent an email to:</p>
+        <p class="text-sm text-muted-foreground mb-2 text-center">We have sent an email to:</p>
         <p id="email-display" class="font-medium mb-4 text-center">Your email</p>
         <p class="text-sm text-center text-muted-foreground">
           Click the link in the email to reset your password. If you don't see

@@ -4,9 +4,9 @@ import Navbar from '@/presentation/components/shared/Navbar.astro';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 
 const user = Astro.locals.user;
-
+const appName = envs.PUBLIC_APP_NAME;
 ---
-<BaseLayout title=={envs.PUBLIC_APP_NAME}>
+<BaseLayout title={appName}>
   <Navbar user={ user } />
   <main class="flex items-center justify-center min-h-[calc(100vh-3rem)]">
     <slot />
