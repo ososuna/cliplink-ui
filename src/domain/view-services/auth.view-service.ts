@@ -10,4 +10,5 @@ export interface AuthViewService {
   deleteAccount(): Promise<void>;
   forgotPassword(email: string): Promise<void>;
   checkPasswordToken(token: string): Promise<ResetPasswordToken | void>;
+  updatePassword(token: string, password: string): Promise<User | void>;
 }

@@ -20,7 +20,11 @@ const formSchema = z.object({
   }
 );
 
-const ResetPasswordForm = () => {
+interface Props {
+  token: string;
+}
+
+const ResetPasswordForm = ({ token }: Props) => {
 
   const [ isLoading, setIsLoading ] = useState(false);
   const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
@@ -36,8 +40,13 @@ const ResetPasswordForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
     setIsLoading(true);
-    // todo: reset password
+    const user = await authService.updatePassword(token, password);
     setIsLoading(false);
+    if ( user ) {
+      const url = new URL(`${window.location.protocol}//${window.location.host}/dashboard`);
+      url.searchParams.set('updated-password', 'true');
+      window.location.href = url.toString();
+    }
   }
 
   return (

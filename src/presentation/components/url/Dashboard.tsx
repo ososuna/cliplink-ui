@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, useEffect } from 'react';
 
 import type { Page, Url } from '@/domain';
 
@@ -9,6 +9,7 @@ import CreateShortUrlDialog from '@/presentation/components/url/CreateShortUrlDi
 import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard';
 import UrlSearchBar from '@/presentation/components/url/UrlSearchBar';
 import { useService } from '@/presentation/hooks/use-service';
+import { useToast } from '@/presentation/hooks/use-toast';
 
 interface Props {
   page: Page<Url>;
@@ -21,6 +22,19 @@ const Dashboard = ({ page: initialPage }: Props) => {
   const [currentPage, setCurrentPage] = useState(initialPage.page);
   const [totalPages, setTotalPages] = useState(initialPage.totalPages);
   const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('updated-password') === 'true') {
+      toast({
+        title: 'Password updated 🎉',
+        description: 'Your password has been successfully updated',
+      });
+      url.searchParams.delete('updated-password');
+      window.history.replaceState({}, document.title, url.toString());
+    }
+  }, [toast]);
 
   const itemsPerPage = 9;
 

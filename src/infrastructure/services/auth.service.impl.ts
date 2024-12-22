@@ -45,4 +45,8 @@ export class AuthServiceImpl implements AuthService {
   checkPasswordToken(token: string): Promise<ResetPasswordToken> {
     return HttpClient.get<ResetPasswordToken>(`/auth/password-token/${token}`);
   }
+
+  updatePassword(token: string, password: string): Promise<User> {
+    return HttpClient.put<User>('/auth/update-password', { token, password });
+  }
 }

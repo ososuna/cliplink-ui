@@ -1,4 +1,3 @@
-import { envs } from '@/config';
 import {
   CheckToken,
   CustomError,
@@ -17,16 +16,14 @@ import {
   ForgotPassword,
   ResetPasswordToken,
   CheckPasswordToken,
+  UpdatePassword,
 } from '@/domain';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewServiceImpl implements AuthViewService {
   constructor(
     private readonly authService: AuthService,
-    private readonly notifyUiError: (error: {
-      message: string;
-      type: string;
-    }) => void = setUiError
+    private readonly notifyUiError: (error: { message: string; type: string; }) => void = setUiError
   ) {}
 
   private handleError = (error: unknown) => {
@@ -114,7 +111,7 @@ export class AuthViewServiceImpl implements AuthViewService {
       email,
     });
     if (error) {
-      // this.uiErrorHandler({ type: 'error', message: error });
+      this.notifyUiError({ type: "error", message: error });
       return;
     }
     return new UpdateUser(this.authService)
@@ -140,15 +137,36 @@ export class AuthViewServiceImpl implements AuthViewService {
     new ForgotPassword(this.authService)
       .execute(email)
       .then(() => {
-        window.location.href = "/auth/forgot-password/confirm";
+        window.location.href = `/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`;
       })
-      .catch(this.handleError);
+      .catch(error => {
+        if (error.statusCode !== 500) {
+          window.location.href = `/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`;
+          return;
+        }
+        if (error instanceof CustomError) {
+          this.notifyUiError({ type: "error", message: error.message });
+          return;
+        }
+        this.notifyUiError({
+          type: "error",
+          message:
+            "Please try again later. If the issue persists talk to the admin.",
+        });
+      });
   }
 
   async checkPasswordToken(token: string): Promise<ResetPasswordToken | void> {
     return new CheckPasswordToken(this.authService)
       .execute(token)
       .then((data) => data)
+      .catch(this.handleError);
+  }
+
+  async updatePassword(token: string, password: string): Promise<User | void> {
+    return new UpdatePassword(this.authService)
+      .execute(token, password)
+      .then(data => data)
       .catch(this.handleError);
   }
 }
