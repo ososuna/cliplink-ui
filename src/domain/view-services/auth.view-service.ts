@@ -1,4 +1,4 @@
-import type { User } from '@/domain';
+import type { ResetPasswordToken, User } from '@/domain';
 
 export interface AuthViewService {
   loginByEmail(email: string, password: string): Promise<void>;
@@ -8,5 +8,6 @@ export interface AuthViewService {
   update(name?: string, lastName?: string, email?: string): Promise<User | void>;
   authGithub(): void;
   deleteAccount(): Promise<void>;
-
+  forgotPassword(email: string): Promise<void>;
+  checkPasswordToken(token: string): Promise<ResetPasswordToken | void>;
 }

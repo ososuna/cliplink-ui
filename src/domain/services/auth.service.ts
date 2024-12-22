@@ -1,4 +1,4 @@
-import { LoginUserDto, RegisterUserDto, UpdateUserDto, User } from '@/domain';
+import { LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User } from '@/domain';
 export interface AuthService {
   login(loginUserDto: LoginUserDto): Promise<User>;
   register(registerUSerDto: RegisterUserDto): Promise<User>;
@@ -7,4 +7,6 @@ export interface AuthService {
   update(updateUserDto: UpdateUserDto): Promise<User>;
   authGithub(): Promise<void>;
   deleteAccount(): Promise<void>;
+  forgotPassword(email: string): Promise<void>;
+  checkPasswordToken(token: string): Promise<ResetPasswordToken>;
 }

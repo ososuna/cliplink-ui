@@ -1,4 +1,4 @@
-import type { AuthService, LoginUserDto, RegisterUserDto, UpdateUserDto, User } from '@/domain';
+import type { AuthService, LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User } from '@/domain';
 import { HttpClient } from '@/config';
 
 export class AuthServiceImpl implements AuthService {
@@ -38,4 +38,11 @@ export class AuthServiceImpl implements AuthService {
     return HttpClient.delete<void>('/auth');
   }
 
+  forgotPassword(email: string): Promise<void> {
+    return HttpClient.post<void>('/auth/forgot-password', { email });
+  }
+
+  checkPasswordToken(token: string): Promise<ResetPasswordToken> {
+    return HttpClient.get<ResetPasswordToken>(`/auth/password-token/${token}`);
+  }
 }

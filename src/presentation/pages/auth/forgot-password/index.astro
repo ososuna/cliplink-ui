@@ -1,6 +1,6 @@
 ---
 import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
-import EmailForm from '@/presentation/components/auth/EmailForm';
+import ForgotPasswordEmailForm from '@/presentation/components/auth/ForgotPasswordEmailForm';
 
 export const prerender = true;
 
@@ -15,7 +15,7 @@ export const prerender = true;
         Enter your email below and we'll send you a link to reset your password
       </p>
       <div class="w-full max-w-xs space-y-6">
-        <EmailForm buttonText="Reset password" location="/auth/forgot-password/confirm" client:load />
+        <ForgotPasswordEmailForm buttonText="Reset password" client:load />
         <div style="text-align: center;">
           <a href="/auth/login" class="font-normal text-sm text-blue-600 dark:text-blue-500 hover:underline">
             ← Back to Login
