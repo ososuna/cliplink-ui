@@ -14,6 +14,7 @@ import {
 import { Button } from '@/presentation/components/ui/button';
 import { CopyInput } from '@/presentation/components/ui/copy-input';
 import { Label } from '@/presentation/components/ui/label';
+import ClipLinkLogo from '@/presentation/components/shared/ClipLinkLogo.astro';
 
 interface Props {
 	id: string
@@ -23,8 +24,8 @@ const { id } = Astro.props;
 ---
 <Card className="w-full max-w-md mx-auto">
   <CardHeader>
-    <CardTitle>{envs.PUBLIC_APP_NAME}</CardTitle>
-    <CardDescription>Shortened version of your long URL.</CardDescription>
+    <CardTitle><ClipLinkLogo class="w-6 h-6" /></CardTitle>
+    <CardDescription>Shortened version of your long URL</CardDescription>
   </CardHeader>
   <CardContent>
     <div class="grid w-full items-center gap-4">

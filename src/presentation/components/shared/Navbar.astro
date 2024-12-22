@@ -1,12 +1,11 @@
 ---
 import type { User } from '@/domain';
 
-import { envs } from '@/config';
-
 import AuthDropdown from '@/presentation/components/auth/AuthDropdown';
 import ModeToggle from '@/presentation/components/shared/ModeToggle';
 import { Button } from '@/presentation/components/ui/button';
 import UserIcon from '@/presentation/icons/UserIcon.astro';
+import ClipLinkLogo from './ClipLinkLogo.astro';
 
 interface Props {
   user: User
@@ -18,7 +17,9 @@ const { user } = Astro.props;
 <header class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background">
   <div class="container mx-auto px-4">
     <div class="flex h-12 items-center justify-between">
-      <div class="text-lg font-bold">{ envs.PUBLIC_APP_NAME }</div>
+      <div class="text-lg font-bold">
+        <ClipLinkLogo class="w-8 h-8" />
+      </div>
       <nav class="flex justify-center items-center gap-x-4">
         { user
           ? <AuthDropdown name={ user.name } lastName={ user.lastName } client:load />

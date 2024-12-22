@@ -7,13 +7,14 @@ import {
   CardTitle
 } from '@/presentation/components/ui/card';
 import ShortenForm from '@/presentation/components/url/ShortenForm';
+import ClipLinkLogo from '@/presentation/components/shared/ClipLinkLogo.astro';
 
 export const prerender = true;
 
 ---
 <Card className="w-full max-w-md mx-auto">
   <CardHeader>
-    <CardTitle>{envs.PUBLIC_APP_NAME}</CardTitle>
+    <CardTitle><ClipLinkLogo class="w-6 h-6" /></CardTitle>
     <CardDescription>Enter a long URL to get a shortened version.</CardDescription>
   </CardHeader>
   <ShortenForm client:load />
