@@ -2,6 +2,7 @@
 import { envs } from '@/config';
 import Navbar from '@/presentation/components/shared/Navbar.astro';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
+import Footer from '@/presentation/components/shared/Footer.astro';
 
 const user = Astro.locals.user;
 const appName = envs.PUBLIC_APP_NAME;
@@ -11,4 +12,5 @@ const appName = envs.PUBLIC_APP_NAME;
   <main class="flex items-center justify-center min-h-[calc(100vh-3rem)]">
     <slot />
   </main>
+  <Footer user={ user } />
 </BaseLayout>

@@ -1,0 +1,63 @@
+---
+import { Heart } from 'lucide-react';
+import type { User } from '@/domain';
+import ClipLinkLogo from '@/presentation/components/shared/ClipLinkLogo.astro';
+
+interface Props {
+  user: User
+}
+const { user } = Astro.props;
+
+---
+<footer class="bg-background border-t">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <div class="flex flex-col items-center md:items-start space-y-2">
+        <p class="font-semibold"><ClipLinkLogo class="h-8 w-8" /></p>
+        <nav>
+          <ul class="flex flex-wrap justify-center md:justify-start space-x-4">
+            <li>
+              <a href="/privacy-policy" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="/terms-of-service" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Terms of Service
+              </a>
+            </li>
+            <li>
+              { user
+                ?
+                  <a href="/dashboard" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    Dashboard
+                  </a>
+                :
+                  <a href="/auth/login" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    Log in
+                  </a>
+              }
+            </li>
+            <li>
+              { user
+                ?
+                  <a href="/my-account" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    My Account
+                  </a>
+                :
+                  <a href="/auth/register" class="text-sm text-muted-foreground hover:text-primary transition-colors">
+                    Register
+                  </a>
+              }
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="flex items-center space-x-1 text-sm text-muted-foreground font-medium">
+        <span>Made with</span>
+        <Heart className="h-4 w-4 text-red-500 fill-current" />
+        <a href="https://oswaldo-osuna.com" target="_blank">by Oswaldo Osuna</a>
+      </div>
+    </div>
+  </div>
+</footer>

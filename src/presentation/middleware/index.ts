@@ -6,7 +6,7 @@ import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 export const onRequest = defineMiddleware(async (context, next) => {
 
   const url = new URL(context.request.url);
-  const scopedPaths = ['/dashboard', '/', '/my-account'];
+  const scopedPaths = ['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service'];
 
   // Check if path is within scoped paths
   if (!scopedPaths.includes(url.pathname)) {
