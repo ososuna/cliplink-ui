@@ -1,8 +1,11 @@
+import { J as ROUTE_TYPE_HEADER, R as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, ad as bold, ae as red, af as yellow, ag as dim, ah as blue, T as clientAddressSymbol, A as AstroError, ai as LocalsNotAnObject, aj as REROUTABLE_STATUS_CODES, X as responseSentSymbol, ak as commonjsGlobal } from './astro/server_C7pNpUfI.mjs';
+import { f as default404Instance, D as DEFAULT_404_ROUTE, h as ensure404Route } from './astro-designed-error-pages_kpkiLEb8.mjs';
+import 'clsx';
+import buffer from 'node:buffer';
+import crypto$1 from 'node:crypto';
 import { Http2ServerResponse } from 'node:http2';
-import { H as ROUTE_TYPE_HEADER, R as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, ab as bold, ac as red, ad as yellow, ae as dim, af as blue, A as AstroError, ag as LocalsNotAnObject, ah as clientLocalsSymbol, O as clientAddressSymbol, ai as REROUTABLE_STATUS_CODES, V as responseSentSymbol, aj as commonjsGlobal } from './astro/server_B4UDqp4t.mjs';
-import { r as requestHasLocale, a as requestIs404Or500, n as notFound, b as redirectToFallback, c as normalizeTheLocale, e as redirectToDefaultLocale, d as defineMiddleware, f as ensureServerIslandRoute, g as createEndpoint, S as SERVER_ISLAND_COMPONENT, h as SERVER_ISLAND_ROUTE, R as RouteCache, s as sequence, i as findRouteToRewrite, m as matchRoute, j as RenderContext, k as getSetCookiesFromResponse } from './index_CSi-0lG4.mjs';
-import { e as ensure404Route, a as default404Instance, D as DEFAULT_404_ROUTE } from './astro-designed-error-pages_ehLxjQx4.mjs';
-import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_KyjFgVNa.mjs';
+import { r as requestHasLocale, a as requestIs404Or500, n as notFound, b as redirectToFallback, c as normalizeTheLocale, e as redirectToDefaultLocale, d as defineMiddleware, f as createEndpoint, S as SERVER_ISLAND_COMPONENT, g as SERVER_ISLAND_ROUTE, R as RouteCache, s as sequence, h as findRouteToRewrite, m as matchRoute, i as RenderContext, P as PERSIST_SYMBOL, j as getSetCookiesFromResponse } from './index_ZlGGatEr.mjs';
+import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_CJetSbYE.mjs';
 import { f as fileExtension, j as joinPaths, s as slash, p as prependForwardSlash, r as removeTrailingForwardSlash, a as appendForwardSlash } from './path_CVKLlyuj.mjs';
 import require$$1 from 'os';
 import require$$0 from 'path';
@@ -11,8 +14,6 @@ import require$$0$2 from 'stream';
 import require$$0$4 from 'events';
 import require$$0$3 from 'fs';
 import nodePath from 'node:path';
-import buffer from 'node:buffer';
-import crypto$1 from 'node:crypto';
 
 function createI18nMiddleware(i18n, base, trailingSlash, format) {
   if (!i18n) return (_, next) => next();
@@ -27,12 +28,12 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
   const _noFoundForNonLocaleRoute = notFound(payload);
   const _requestHasLocale = requestHasLocale(payload.locales);
   const _redirectToFallback = redirectToFallback(payload);
-  const prefixAlways = (context) => {
+  const prefixAlways = (context, response) => {
     const url = context.url;
     if (url.pathname === base + "/" || url.pathname === base) {
       return _redirectToDefaultLocale(context);
     } else if (!_requestHasLocale(context)) {
-      return _noFoundForNonLocaleRoute(context);
+      return _noFoundForNonLocaleRoute(context, response);
     }
     return void 0;
   };
@@ -103,7 +104,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
         break;
       }
       case "pathname-prefix-always": {
-        const result = prefixAlways(context);
+        const result = prefixAlways(context, response);
         if (result) {
           return result;
         }
@@ -111,7 +112,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
       }
       case "domains-prefix-always": {
         if (localeHasntDomain(i18n, currentLocale)) {
-          const result = prefixAlways(context);
+          const result = prefixAlways(context, response);
           if (result) {
             return result;
           }
@@ -142,26 +143,39 @@ function createOriginCheckMiddleware() {
     if (isPrerendered) {
       return next();
     }
-    const contentType = request.headers.get("content-type");
-    if (contentType) {
-      if (FORM_CONTENT_TYPES.includes(contentType.toLowerCase())) {
-        const forbidden = (request.method === "POST" || request.method === "PUT" || request.method === "PATCH" || request.method === "DELETE") && request.headers.get("origin") !== url.origin;
-        if (forbidden) {
-          return new Response(`Cross-site ${request.method} form submissions are forbidden`, {
-            status: 403
-          });
-        }
+    if (request.method === "GET") {
+      return next();
+    }
+    const sameOrigin = (request.method === "POST" || request.method === "PUT" || request.method === "PATCH" || request.method === "DELETE") && request.headers.get("origin") === url.origin;
+    const hasContentType = request.headers.has("content-type");
+    if (hasContentType) {
+      const formLikeHeader = hasFormLikeHeader(request.headers.get("content-type"));
+      if (formLikeHeader && !sameOrigin) {
+        return new Response(`Cross-site ${request.method} form submissions are forbidden`, {
+          status: 403
+        });
+      }
+    } else {
+      if (!sameOrigin) {
+        return new Response(`Cross-site ${request.method} form submissions are forbidden`, {
+          status: 403
+        });
       }
     }
     return next();
   });
 }
-
-function injectDefaultRoutes(ssrManifest, routeManifest) {
-  ensure404Route(routeManifest);
-  ensureServerIslandRoute(ssrManifest, routeManifest);
-  return routeManifest;
+function hasFormLikeHeader(contentType) {
+  if (contentType) {
+    for (const FORM_CONTENT_TYPE of FORM_CONTENT_TYPES) {
+      if (contentType.toLowerCase().includes(FORM_CONTENT_TYPE)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
+
 function createDefaultRoutes(manifest) {
   const root = new URL(manifest.hrefRoot);
   return [
@@ -550,9 +564,10 @@ class App {
   #renderOptionsDeprecationWarningShown = false;
   constructor(manifest, streaming = true) {
     this.#manifest = manifest;
-    this.#manifestData = injectDefaultRoutes(manifest, {
+    this.#manifestData = {
       routes: manifest.routes.map((route) => route.routeData)
-    });
+    };
+    ensure404Route(this.#manifestData);
     this.#baseWithoutTrailingSlash = removeTrailingForwardSlash(this.#manifest.base);
     this.#pipeline = this.#createPipeline(this.#manifestData, streaming);
     this.#adapterLogger = new AstroIntegrationLogger(
@@ -670,7 +685,7 @@ class App {
     let clientAddress;
     let addCookieHeader;
     addCookieHeader = renderOptions?.addCookieHeader;
-    clientAddress = renderOptions?.clientAddress;
+    clientAddress = renderOptions?.clientAddress ?? Reflect.get(request, clientAddressSymbol);
     routeData = renderOptions?.routeData;
     locals = renderOptions?.locals;
     if (routeData) {
@@ -685,12 +700,8 @@ class App {
       if (typeof locals !== "object") {
         const error = new AstroError(LocalsNotAnObject);
         this.#logger.error(null, error.stack);
-        return this.#renderError(request, { status: 500, error });
+        return this.#renderError(request, { status: 500, error, clientAddress });
       }
-      Reflect.set(request, clientLocalsSymbol, locals);
-    }
-    if (clientAddress) {
-      Reflect.set(request, clientAddressSymbol, clientAddress);
     }
     if (!routeData) {
       routeData = this.match(request);
@@ -700,11 +711,12 @@ class App {
     if (!routeData) {
       this.#logger.debug("router", "Astro hasn't found routes that match " + request.url);
       this.#logger.debug("router", "Here's the available routes:\n", this.#manifestData);
-      return this.#renderError(request, { locals, status: 404 });
+      return this.#renderError(request, { locals, status: 404, clientAddress });
     }
     const pathname = this.#getPathnameFromRequest(request);
     const defaultStatus = this.#getDefaultStatusCode(routeData, pathname);
     let response;
+    let session;
     try {
       const mod = await this.#pipeline.getModuleForRoute(routeData);
       const renderContext = await RenderContext.create({
@@ -713,12 +725,16 @@ class App {
         pathname,
         request,
         routeData,
-        status: defaultStatus
+        status: defaultStatus,
+        clientAddress
       });
+      session = renderContext.session;
       response = await renderContext.render(await mod.page());
     } catch (err) {
       this.#logger.error(null, err.stack || err.message || String(err));
-      return this.#renderError(request, { locals, status: 500, error: err });
+      return this.#renderError(request, { locals, status: 500, error: err, clientAddress });
+    } finally {
+      session?.[PERSIST_SYMBOL]();
     }
     if (REROUTABLE_STATUS_CODES.includes(response.status) && response.headers.get(REROUTE_DIRECTIVE_HEADER) !== "no") {
       return this.#renderError(request, {
@@ -727,7 +743,8 @@ class App {
         status: response.status,
         // We don't have an error to report here. Passing null means we pass nothing intentionally
         // while undefined means there's no error
-        error: response.status === 500 ? null : void 0
+        error: response.status === 500 ? null : void 0,
+        clientAddress
       });
     }
     if (response.headers.has(REROUTE_DIRECTIVE_HEADER)) {
@@ -765,7 +782,8 @@ class App {
     status,
     response: originalResponse,
     skipMiddleware = false,
-    error
+    error,
+    clientAddress
   }) {
     const errorRoutePath = `/${status}${this.#manifest.trailingSlash === "always" ? "/" : ""}`;
     const errorRouteData = matchRoute(errorRoutePath, this.#manifestData);
@@ -784,6 +802,7 @@ class App {
         }
       }
       const mod = await this.#pipeline.getModuleForRoute(errorRouteData);
+      let session;
       try {
         const renderContext = await RenderContext.create({
           locals,
@@ -793,8 +812,10 @@ class App {
           request,
           routeData: errorRouteData,
           status,
-          props: { error }
+          props: { error },
+          clientAddress
         });
+        session = renderContext.session;
         const response2 = await renderContext.render(await mod.page());
         return this.#mergeResponses(response2, originalResponse);
       } catch {
@@ -803,9 +824,12 @@ class App {
             locals,
             status,
             response: originalResponse,
-            skipMiddleware: true
+            skipMiddleware: true,
+            clientAddress
           });
         }
+      } finally {
+        session?.[PERSIST_SYMBOL]();
       }
     }
     const response = this.#mergeResponses(new Response(null, { status }), originalResponse);
@@ -828,6 +852,14 @@ class App {
       originalResponse.headers.delete("Content-type");
     } catch {
     }
+    const mergedHeaders = new Map([
+      ...Array.from(newResponse.headers),
+      ...Array.from(originalResponse.headers)
+    ]);
+    const newHeaders = new Headers();
+    for (const [name, value] of mergedHeaders) {
+      newHeaders.set(name, value);
+    }
     return new Response(newResponse.body, {
       status,
       statusText: status === 200 ? newResponse.statusText : originalResponse.statusText,
@@ -836,10 +868,7 @@ class App {
       // If users see something weird, it's because they are setting some headers they should not.
       //
       // Although, we don't want it to replace the content-type, because the error page must return `text/html`
-      headers: new Headers([
-        ...Array.from(newResponse.headers),
-        ...Array.from(originalResponse.headers)
-      ])
+      headers: newHeaders
     });
   }
   #getDefaultStatusCode(routeData, pathname) {
@@ -1031,6 +1060,8 @@ function asyncIterableToBodyProps(iterable) {
     duplex: "half"
   };
 }
+
+apply();
 
 var tasks = {};
 
@@ -8334,13 +8365,7 @@ const ASTRO_PATH_PARAM = 'x_astro_path';
 const ASTRO_LOCALS_HEADER = 'x-astro-locals';
 const ASTRO_MIDDLEWARE_SECRET_HEADER = 'x-astro-middleware-secret';
 
-// Run polyfills immediately so any dependent code can use the globals
-apply();
-// Won't throw if the virtual module is not available because it's not supported in
-// the users's astro version or if astro:env is not enabled in the project
-await import('./setup_Cr6XTFvb.mjs')
-    .then((mod) => mod.setGetEnv((key) => process.env[key]))
-    .catch(() => { });
+// Keep at the top
 const createExports = (manifest, { middlewareSecret, skewProtection }) => {
     const app = new NodeApp(manifest);
     const handler = async (req, res) => {

@@ -17,7 +17,9 @@ export default defineConfig({
       applyBaseStyles: false,
     })
   ],
-  adapter: vercel(),
+  adapter: vercel({
+    imageService: true,
+  }),
   image: {
     service: passthroughImageService(),
   },

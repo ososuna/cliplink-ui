@@ -1,7 +1,7 @@
-import { d as defineMiddleware, s as sequence } from './chunks/index_CSi-0lG4.mjs';
+import { d as defineMiddleware, s as sequence } from './chunks/index_ZlGGatEr.mjs';
 import { A as AuthViewServiceImpl, a as AuthServiceImpl, H as HttpClient } from './chunks/auth.view-service.impl_4eB7NGm5.mjs';
 import './chunks/ui.store_QvZKQ_iI.mjs';
-import './chunks/astro-designed-error-pages_ehLxjQx4.mjs';
+import './chunks/astro-designed-error-pages_kpkiLEb8.mjs';
 
 const onRequest$1 = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);

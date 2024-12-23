@@ -1,5 +1,5 @@
 import { i as isRemotePath, j as joinPaths } from './path_CVKLlyuj.mjs';
-import { A as AstroError, _ as ExpectedImage, $ as LocalImageUsedWrongly, a0 as MissingImageDimension, a1 as UnsupportedImageFormat, a2 as IncompatibleDescriptorOptions, a3 as UnsupportedImageConversion, a4 as NoImageMetadata, a5 as FailedToFetchRemoteImageDimensions, a6 as ExpectedImageOptions, a7 as ExpectedNotESMImage, a8 as InvalidImageService, a9 as toStyleString, c as createComponent, aa as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, d as addAttribute, s as spreadAttributes, b as createAstro } from './astro/server_B4UDqp4t.mjs';
+import { A as AstroError, a0 as ExpectedImage, a1 as LocalImageUsedWrongly, a2 as MissingImageDimension, a3 as UnsupportedImageFormat, a4 as IncompatibleDescriptorOptions, a5 as UnsupportedImageConversion, a6 as NoImageMetadata, a7 as FailedToFetchRemoteImageDimensions, a8 as ExpectedImageOptions, a9 as ExpectedNotESMImage, aa as InvalidImageService, ab as toStyleString, c as createComponent, ac as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, d as addAttribute, s as spreadAttributes, b as createAstro } from './astro/server_C7pNpUfI.mjs';
 /* empty css                           */
 import 'clsx';
 import '../renderers.mjs';
@@ -1234,7 +1234,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './noop_CiEDTB7A.mjs'
+      './build-service_CzSVzJnz.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1423,14 +1423,14 @@ const $$Image = createComponent(async ($$result, $$props, $$slots) => {
   if (image.srcSet.values.length > 0) {
     additionalAttributes.srcset = image.srcSet.attribute;
   }
-  const attributes = useResponsive ? applyResponsiveAttributes({
+  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
     layout,
     image,
     props,
     additionalAttributes
   }) : { ...additionalAttributes, ...image.attributes };
-  return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}>`;
-}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.7_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Image.astro", void 0);
+  return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}>`;
+}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.1.1_jiti@2.4.2_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Image.astro", void 0);
 
 const mimes = {
   "3g2": "video/3gpp2",
@@ -1936,7 +1936,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   if (fallbackImage.srcSet.values.length > 0) {
     imgAdditionalAttributes.srcset = fallbackImage.srcSet.attribute;
   }
-  const attributes = useResponsive ? applyResponsiveAttributes({
+  const { class: className, ...attributes } = useResponsive ? applyResponsiveAttributes({
     layout,
     image: fallbackImage,
     props,
@@ -1945,10 +1945,10 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   return renderTemplate`${maybeRenderHead()}<picture${spreadAttributes(pictureAttributes)}> ${Object.entries(optimizedImages).map(([_, image]) => {
     const srcsetAttribute = props.densities || !props.densities && !props.widths && !useResponsive ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
     return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
-  })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}> </picture>`;
-}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.7_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Picture.astro", void 0);
+  })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}> </picture>`;
+}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.1.1_jiti@2.4.2_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Picture.astro", void 0);
 
-const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"astro/assets/services/noop","config":{}},"domains":[],"remotePatterns":[],"experimentalResponsiveImages":false};
+const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"@astrojs/vercel/build-image-service","config":{"sizes":[640,750,828,1080,1200,1920,2048,3840],"domains":[],"remotePatterns":[]}},"domains":[],"remotePatterns":[],"experimentalResponsiveImages":false};
 					const getImage = async (options) => await getImage$1(options, imageConfig);
 
 const fnv1a52 = (str) => {
