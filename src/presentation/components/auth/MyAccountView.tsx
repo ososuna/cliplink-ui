@@ -1,11 +1,9 @@
-import { GithubIcon } from 'lucide-react';
-
 import type { User } from '@/domain';
 
 import { Avatar } from '@/presentation/components/ui/avatar';
 import { Badge } from '@/presentation/components/ui/badge';
+import GithubIcon from '@/presentation/icons/GithubIcon';
 import GoogleIcon from '@/presentation/icons/GoogleIcon';
-
 
 interface Props {
   user: User;

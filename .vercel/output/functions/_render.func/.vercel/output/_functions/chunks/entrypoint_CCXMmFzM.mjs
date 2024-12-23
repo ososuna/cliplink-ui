@@ -1719,9 +1719,9 @@ function requireToRegexRange () {
 	};
 
 	function collatePatterns(neg, pos, options) {
-	  let onlyNegative = filterPatterns(neg, pos, '-', false) || [];
-	  let onlyPositive = filterPatterns(pos, neg, '', false) || [];
-	  let intersected = filterPatterns(neg, pos, '-?', true) || [];
+	  let onlyNegative = filterPatterns(neg, pos, '-', false);
+	  let onlyPositive = filterPatterns(pos, neg, '', false);
+	  let intersected = filterPatterns(neg, pos, '-?', true);
 	  let subpatterns = onlyNegative.concat(intersected).concat(onlyPositive);
 	  return subpatterns.join('|');
 	}
@@ -7042,19 +7042,19 @@ function requireQueue () {
 	  }
 
 	  function drained () {
-	    if (queue.idle()) {
-	      return new Promise(function (resolve) {
-	        resolve();
-	      })
-	    }
-
-	    var previousDrain = queue.drain;
-
 	    var p = new Promise(function (resolve) {
-	      queue.drain = function () {
-	        previousDrain();
-	        resolve();
-	      };
+	      process.nextTick(function () {
+	        if (queue.idle()) {
+	          resolve();
+	        } else {
+	          var previousDrain = queue.drain;
+	          queue.drain = function () {
+	            if (typeof previousDrain === 'function') previousDrain();
+	            resolve();
+	            queue.drain = previousDrain;
+	          };
+	        }
+	      });
 	    });
 
 	    return p
@@ -8298,7 +8298,7 @@ function requireOut () {
 	        }
 	        win32.convertPathToPattern = convertPathToPattern;
 	    })(FastGlob.win32 || (FastGlob.win32 = {}));
-	})(FastGlob || (FastGlob = {}));
+	})(FastGlob);
 	function getWorks(source, _Provider, options) {
 	    const patterns = [].concat(source);
 	    const settings = new settings_1.default(options);

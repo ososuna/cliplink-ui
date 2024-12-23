@@ -1234,7 +1234,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './noop_BPYWEkga.mjs'
+      './noop_CiEDTB7A.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1430,7 +1430,7 @@ const $$Image = createComponent(async ($$result, $$props, $$slots) => {
     additionalAttributes
   }) : { ...additionalAttributes, ...image.attributes };
   return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}>`;
-}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.6_rollup@4.27.4_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Image.astro", void 0);
+}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.7_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Image.astro", void 0);
 
 const mimes = {
   "3g2": "video/3gpp2",
@@ -1946,7 +1946,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
     const srcsetAttribute = props.densities || !props.densities && !props.widths && !useResponsive ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
     return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
   })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(attributes.class, "class")}> </picture>`;
-}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.6_rollup@4.27.4_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Picture.astro", void 0);
+}, "/Users/nasa_penguin/Documents/projects/url-shortener-ui/node_modules/.pnpm/astro@5.0.0-beta.12_jiti@1.21.7_rollup@4.29.1_typescript@5.7.2_yaml@2.6.1/node_modules/astro/components/Picture.astro", void 0);
 
 const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"astro/assets/services/noop","config":{}},"domains":[],"remotePatterns":[],"experimentalResponsiveImages":false};
 					const getImage = async (options) => await getImage$1(options, imageConfig);
