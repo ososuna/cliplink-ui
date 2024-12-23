@@ -1,0 +1,57 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
+import { ScrollArea } from '@/presentation/components/ui/scroll-area';
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
+
+export const prerender = true;
+---
+
+<HomeLayout>
+  <main class="flex-grow container mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-3xl font-bold">Privacy Policy</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea client:load className="h-[calc(100vh-16rem)] pr-4">
+          <section class="space-y-6">
+            <p class="text-muted-foreground">ClipLink takes your privacy seriously. This document outlines how we handle your information:</p>
+            <h2 class="text-2xl font-semibold">1. Data Collection</h2>
+            <p class="text-muted-foreground">
+              We only collect the minimum information necessary for authentication purposes. This includes:
+            </p>
+            <ul class="list-disc list-inside text-muted-foreground">
+              <li>Your name, last name and email address</li>
+              <li>The URLs you shorten</li>
+              <li>Usage data and analytics</li>
+              <li>Basic profile information provided by your chosen authentication provider (Google or GitHub).</li>
+            </ul>
+            <h2 class="text-2xl font-semibold">2. Data Usage</h2>
+            <p class="text-muted-foreground">
+              The collected data is used solely to provide secure login functionality. We do not sell, share, or distribute your information to third parties.
+            </p>
+            <h2 class="text-2xl font-semibold">3. Third-Party Authentication Providers</h2>
+            <p class="text-muted-foreground">
+              We rely on Google and GitHub for user authentication. By using these services, you agree to their respective privacy policies:
+            </p>
+            <ul class="list-disc list-inside text-muted-foreground">
+              <li><a class="text-blue-600 dark:text-blue-500" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+              <li><a class="text-blue-600 dark:text-blue-500" href="https://docs.github.com/en/github/site-policy/github-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a></li>
+            </ul>
+            <h2 class="text-2xl font-semibold">4. Storage</h2>
+            <p class="text-muted-foreground">
+              Any data collected is stored securely on our servers and is not used beyond its intended purpose.
+            </p>
+            <h2 class="text-2xl font-semibold">5. Contact Us</h2>
+            <p class="text-muted-foreground">
+              If you have any questions about this Privacy Policy, please contact us at <a class="text-blue-600 dark:text-blue-500" href="mailto:oswaldo.adrian35@gmail.com">oswaldo.adrian35@gmail.com</a>.
+            </p>
+            <p class="text-sm text-muted-foreground mt-8">
+              Last Updated: December 2024
+            </p>
+          </section>
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  </main>
+</HomeLayout>
