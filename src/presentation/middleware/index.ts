@@ -17,12 +17,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Redirect to login if token is missing
   if (!token) {
+    console.log('Access token cookie is missing ❌');
     return redirectToLogin(url.pathname, next);
   }
 
   const user = await new AuthViewServiceImpl(new AuthServiceImpl()).checkToken(token);
   
-  if ( !user ) return redirectToLogin(url.pathname, next);
+  if ( !user ) {
+    console.log('User not found ❌');
+    return redirectToLogin(url.pathname, next);
+  }
   
   HttpClient.accessToken = token;
   context.locals.user = user;
