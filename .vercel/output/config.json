@@ -12,15 +12,27 @@
 			"handle": "filesystem"
 		},
 		{
+			"src": "^\\/auth\\/reset-password\\/([^/]+?)\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/dashboard\\/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^\\/my-account\\/?$",
+			"dest": "_render"
+		},
+		{
 			"src": "^\\/short\\/([^/]+?)\\/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/_image\\/?$",
+			"src": "^\\/$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/_server-islands\\/([^/]+?)\\/?$",
+			"src": "^\\/_image\\/?$",
 			"dest": "_render"
 		}
 	]

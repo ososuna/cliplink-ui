@@ -1,4 +1,4 @@
-import type { AuthService, LoginUserDto, User } from '@/domain';
+import type { AuthService } from '@/domain';
 
 interface LogoutUseCase {
   execute(): Promise<void>;

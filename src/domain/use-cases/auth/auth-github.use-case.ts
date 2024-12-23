@@ -1,4 +1,4 @@
-import type { AuthService, User } from '@/domain';
+import type { AuthService } from '@/domain';
 
 interface AuthGithubUseCase {
   execute(): Promise<void>;

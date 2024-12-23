@@ -1,0 +1,32 @@
+---
+import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
+import MyAccountView from '@/presentation/components/auth/MyAccountView';
+import MyAccountForm from '@/presentation/components/auth/MyAccountForm';
+import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
+import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
+
+const user = Astro.locals.user;
+
+const page = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 1);
+const urlsCount = page?.total;
+
+---
+<HomeLayout>
+  <div class="container mx-auto p-4 self-start">
+    <h1 class="text-2xl font-bold mb-8">My Account</h1>
+    <div class="grid gap-8 md:grid-cols-2">    
+      <Card>
+        <CardHeader>
+          <CardTitle>Profile Information</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <MyAccountView user={user} urlsCount={urlsCount || 0} />
+          <DeleteAccountButton client:load />
+        </CardContent>
+      </Card>
+      <MyAccountForm user={user} client:load />
+    </div>
+  </div>
+</HomeLayout>
