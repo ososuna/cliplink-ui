@@ -19,7 +19,6 @@ const user = Astro.locals.user;
         </CardHeader>
         <CardContent className="space-y-4">
           <MyAccountView user={user} />
-          <!-- server island -->
           <div>
             <p class="flex items-center">
               <ShortUrlsCount server:defer>
