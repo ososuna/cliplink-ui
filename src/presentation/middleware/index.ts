@@ -1,57 +1,59 @@
-import type { MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 import { HttpClient } from '@/config';
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import type { MiddlewareNext } from 'astro';
 
-export const onRequest = defineMiddleware(async (context, next) => {
+type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
 
-  const url = new URL(context.request.url);
-  const scopedPaths = ['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service'];
+const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service']);
+const authService = new AuthServiceImpl();
+const authViewService = new AuthViewServiceImpl(authService);
 
-  // Check if path is within scoped paths
-  if (!scopedPaths.includes(url.pathname)) {
+export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
+  const url = new URL(request.url);
+
+  // Exit early for paths not within the scoped paths
+  if (!SCOPED_PATHS.has(url.pathname)) {
     return next();
   }
 
-  const token = context.cookies.get('access_token')?.value;
+  const token = cookies.get('access_token')?.value;
 
-  // Redirect to login if token is missing
   if (!token) {
     console.log('Access token cookie is missing ❌');
-    return redirectToLogin(url.pathname, next);
+    return handleRedirect(url.pathname, redirect, next);
   }
 
-  const user = await new AuthViewServiceImpl(new AuthServiceImpl()).checkToken(token);
-  
-  if ( !user ) {
-    console.log('User not found ❌');
-    return redirectToLogin(url.pathname, next);
+  const user = await validateToken(token);
+  if (!user) {
+    console.log('User not found or token invalid ❌');
+    return handleRedirect(url.pathname, redirect, next);
   }
-  
+
   HttpClient.accessToken = token;
-  context.locals.user = user;
-  
-  // Redirect '/' to '/dashboard'
+  locals.user = user;
+
   if (url.pathname === '/') {
-    return redirectTo('/dashboard');
+    return redirect('/dashboard');
   }
 
   return next();
 });
 
-function redirectTo(location: string) {
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: location,
-    },
-  });
-}
+const validateToken = async (token: string) => {
+  try {
+    return await authViewService.checkToken(token);
+  } catch (error) {
+    console.error('Token validation failed ❌', error);
+    return null;
+  }
+};
 
-function redirectToLogin(pathname: string, next: MiddlewareNext) {
+// Handle redirection based on path
+const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext) => {
   HttpClient.accessToken = '';
-  if (pathname === '/dashboard' || pathname === '/my-account') {
-    return redirectTo("/auth/login");
+  if (['/dashboard', '/my-account'].includes(pathname)) {
+    return redirect('/auth/login');
   }
   return next();
-}
+};
