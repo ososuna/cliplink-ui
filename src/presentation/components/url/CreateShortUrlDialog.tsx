@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { navigate } from 'astro:transitions/client';
 
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
@@ -28,7 +29,7 @@ const CreateShortUrlDialog = () => {
     setIsLoading(true);
     await urlService?.createUrl(longUrl, name);
     setIsLoading(false);
-    window.location.href = ('/dashboard');
+    navigate('/dashboard');
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

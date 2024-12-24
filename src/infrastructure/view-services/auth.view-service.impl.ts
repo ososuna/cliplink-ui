@@ -1,3 +1,4 @@
+import { navigate } from 'astro:transitions/client';
 import {
   CheckToken,
   CustomError,
@@ -23,7 +24,8 @@ import { setUiError } from '@/infrastructure';
 export class AuthViewServiceImpl implements AuthViewService {
   constructor(
     private readonly authService: AuthService,
-    private readonly notifyUiError: (error: { message: string; type: string; }) => void = setUiError
+    private readonly navigateTo: (url: string) => void = navigate,
+    private readonly notifyUiError: (error: { message: string; type: string; }) => void = setUiError,
   ) {}
 
   private handleError = (error: unknown) => {
@@ -33,31 +35,25 @@ export class AuthViewServiceImpl implements AuthViewService {
     }
     this.notifyUiError({
       type: "error",
-      message:
-        "Please try again later. If the issue persists talk to the admin.",
+      message: "Please try again later. If the issue persists talk to the admin.",
     });
   };
 
   async loginByEmail(email: string, password: string): Promise<void> {
     const [error, loginUserDto] = LoginUserDto.create({ email, password });
     if (error) {
-      // this.uiErrorHandler({ type: 'error', message: error });
+      this.notifyUiError({ type: 'error', message: error });
       return;
     }
     return new Login(this.authService)
       .execute(loginUserDto!)
       .then(() => {
-        window.location.href = "/dashboard";
+        this.navigateTo('/dashboard');
       })
       .catch((error) => this.handleError(error));
   }
 
-  async registerByEmail(
-    email: string,
-    name: string,
-    lastName: string,
-    password: string
-  ): Promise<User | void> {
+  async registerByEmail(email: string, name: string, lastName: string, password: string): Promise<User | void> {
     const [error, registerUserDto] = RegisterUserDto.create({
       name,
       lastName,
@@ -65,13 +61,13 @@ export class AuthViewServiceImpl implements AuthViewService {
       password,
     });
     if (error) {
-      // this.uiErrorHandler({ type: 'error', message: error });
+      this.notifyUiError({ type: 'error', message: error });
       return;
     }
     new Register(this.authService)
       .execute(registerUserDto!)
       .then(() => {
-        window.location.href = "/dashboard";
+        this.navigateTo('/dashboard');
       })
       .catch((error) => this.handleError(error));
   }
@@ -83,9 +79,9 @@ export class AuthViewServiceImpl implements AuthViewService {
       .catch((error) => {
         if (!(error instanceof CustomError)) {
           this.notifyUiError({
-            type: "error",
+            type: 'error',
             message:
-              "An unexpected error has happened. If the issue persists please talk to the admin.",
+              'An unexpected error has happened. If the issue persists please talk to the admin.',
           });
         }
       });
@@ -95,23 +91,19 @@ export class AuthViewServiceImpl implements AuthViewService {
     return new Logout(this.authService)
       .execute()
       .then(() => {
-        window.location.href = "/";
+        this.navigateTo('/');
       })
       .catch(this.handleError);
   }
 
-  async update(
-    name?: string,
-    lastName?: string,
-    email?: string
-  ): Promise<User | void> {
+  async update(name?: string, lastName?: string, email?: string): Promise<User | void> {
     const [error, updateUserDto] = UpdateUserDto.create({
       name,
       lastName,
       email,
     });
     if (error) {
-      this.notifyUiError({ type: "error", message: error });
+      this.notifyUiError({ type: 'error', message: error });
       return;
     }
     return new UpdateUser(this.authService)
@@ -128,7 +120,7 @@ export class AuthViewServiceImpl implements AuthViewService {
     new DeleteAccount(this.authService)
       .execute()
       .then(() => {
-        window.location.href = "/";
+        this.navigateTo('/');
       })
       .catch(this.handleError);
   }
@@ -137,21 +129,21 @@ export class AuthViewServiceImpl implements AuthViewService {
     new ForgotPassword(this.authService)
       .execute(email)
       .then(() => {
-        window.location.href = `/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`;
+        this.navigateTo(`/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`);
       })
       .catch(error => {
         if (error.statusCode !== 500) {
-          window.location.href = `/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`;
+          this.navigateTo(`/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`);
           return;
         }
         if (error instanceof CustomError) {
-          this.notifyUiError({ type: "error", message: error.message });
+          this.notifyUiError({ type: 'error', message: error.message });
           return;
         }
         this.notifyUiError({
-          type: "error",
+          type: 'error',
           message:
-            "Please try again later. If the issue persists talk to the admin.",
+            'Please try again later. If the issue persists talk to the admin.',
         });
       });
   }

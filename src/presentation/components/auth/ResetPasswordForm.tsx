@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { navigate } from 'astro:transitions/client';
 
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
@@ -45,7 +46,7 @@ const ResetPasswordForm = ({ token }: Props) => {
     if ( user ) {
       const url = new URL(`${window.location.protocol}//${window.location.host}/dashboard`);
       url.searchParams.set('updated-password', 'true');
-      window.location.href = url.toString();
+      navigate(url.toString());
     }
   }
 

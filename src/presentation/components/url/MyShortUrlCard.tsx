@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check, Clipboard, ExternalLink, Trash } from 'lucide-react';
+import { navigate } from 'astro:transitions/client';
 
 import type { Url } from '@/domain';
 
@@ -35,7 +36,7 @@ const MyShortUrlCard: React.FC<Props> = ({ url }) => {
     setIsLoading(true);
     await urlService?.deleteUrl(url.id);
     setIsLoading(false);
-    window.location.href = '/dashboard';
+    navigate('/dashboard');
   };
 
   return (

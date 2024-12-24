@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
+import { navigate } from 'astro:transitions/client';
 
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
@@ -33,7 +34,7 @@ const ShortenForm = () => {
     setIsLoading(true);
     const url = await urlService?.createUrl(originalUrl);
     setIsLoading(false);
-    if (url) window.location.href = `/short/${url.shortId}`;
+    if ( url ) navigate(`/short/${url.shortId}`);
   }
 
   return (

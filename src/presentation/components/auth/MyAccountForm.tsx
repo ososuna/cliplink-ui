@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { navigate } from 'astro:transitions/client';
 
 import type { User } from '@/domain';
 
@@ -84,7 +85,7 @@ const MyAccountForm = ({user: initialUser}: Props) => {
     if ( user ) {
       const url = new URL(window.location.href);
       url.searchParams.set('updated', 'true');
-      window.location.href = url.toString();
+      navigate(url.toString());
     }
   };
 

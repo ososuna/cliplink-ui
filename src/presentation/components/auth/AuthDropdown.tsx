@@ -42,8 +42,12 @@ const AuthDropdown = ({ name, lastName }: Props) => {
           : <DropdownMenuLabel>{`${name}`}</DropdownMenuLabel>
         }
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => window.location.href='/dashboard'}>Dashboard</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => window.location.href='/my-account'}>My Account</DropdownMenuItem>
+        <a href="/dashboard">
+          <DropdownMenuItem>Dashboard</DropdownMenuItem>
+        </a>
+        <a href="/my-account">
+          <DropdownMenuItem>My Account</DropdownMenuItem>
+        </a>
         <DropdownMenuItem onClick={onLogout}><LogOut /> Log out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
