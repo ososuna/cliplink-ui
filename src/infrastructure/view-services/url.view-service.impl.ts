@@ -18,7 +18,7 @@ export class UrlViewServiceImpl implements UrlViewService {
   async createUrl(originalUrl: string, name?: string): Promise<Url | undefined> {
     const [error, createUrlDto] = CreateUrlDto.create({ originalUrl, name });
     if (error) {
-      // this.uiErrorHandler({ type: 'error', message: error });
+      this.notifyUiError({ type: 'error', message: error });
       return;
     }
     return new CreateUrl(this.urlService)
