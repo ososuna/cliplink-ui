@@ -1,0 +1,8 @@
+---
+import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+
+const page = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 1);
+const urlsCount = page?.total;
+
+---
+<span class="text-2xl font-bold mr-2">{urlsCount}</span>

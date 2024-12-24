@@ -7,9 +7,8 @@ import GoogleIcon from '@/presentation/icons/GoogleIcon';
 
 interface Props {
   user: User;
-  urlsCount: number;
 }
-const ProfileView = ({ user, urlsCount }: Props) => {
+const ProfileView = ({ user }: Props) => {
 
   return (
     <>
@@ -39,12 +38,6 @@ const ProfileView = ({ user, urlsCount }: Props) => {
           </div>
           <p className="text-muted-foreground">{user.email}</p>
         </div>
-      </div>
-      <div>
-        <p className="flex items-center">
-          <span className="text-2xl font-bold mr-2">{urlsCount}</span>
-          URLs shortened
-        </p>
       </div>
     </>
   );

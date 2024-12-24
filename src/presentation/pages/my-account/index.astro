@@ -1,16 +1,12 @@
 ---
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
-
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import MyAccountView from '@/presentation/components/auth/MyAccountView';
 import MyAccountForm from '@/presentation/components/auth/MyAccountForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
+import ShortUrlsCount from '@/presentation/components/url/ShortUrlsCount.astro';
 
 const user = Astro.locals.user;
-
-const page = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 1);
-const urlsCount = page?.total;
 
 ---
 <HomeLayout>
@@ -22,7 +18,16 @@ const urlsCount = page?.total;
           <CardTitle>Profile Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <MyAccountView user={user} urlsCount={urlsCount || 0} />
+          <MyAccountView user={user} />
+          <!-- server island -->
+          <div>
+            <p class="flex items-center">
+              <ShortUrlsCount server:defer>
+                <span slot="fallback" class="text-2xl font-bold mr-2">0</span>
+              </ShortUrlsCount>          
+              URLs shortened
+            </p>
+          </div>
           <DeleteAccountButton client:load />
         </CardContent>
       </Card>
