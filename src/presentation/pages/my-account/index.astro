@@ -1,13 +1,12 @@
 ---
-import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
-import MyAccountView from '@/presentation/components/auth/MyAccountView';
+import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
 import MyAccountForm from '@/presentation/components/auth/MyAccountForm';
 import MyAccountFormPreview from '@/presentation/components/auth/MyAccountFormPreview';
+import MyAccountView from '@/presentation/components/auth/MyAccountView';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
-import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
+import { Skeleton } from '@/presentation/components/ui/skeleton';
 import ShortUrlsCount from '@/presentation/components/url/ShortUrlsCount.astro';
-import { Button } from '@/presentation/components/ui/button';
-import { Trash2Icon } from 'lucide-react';
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 
 const user = Astro.locals.user;
 
@@ -23,17 +22,12 @@ const user = Astro.locals.user;
         <CardContent className="space-y-4">
           <MyAccountView user={user} />
           <div>
-            <p class="flex items-center">
-              <ShortUrlsCount server:defer>
-                <span slot="fallback" class="text-2xl font-bold mr-2">0</span>
-              </ShortUrlsCount>          
-              URLs shortened
-            </p>
+            <ShortUrlsCount server:defer>
+             <Skeleton slot="fallback" className="h-8 w-[150px]" />
+            </ShortUrlsCount>          
           </div>
           <DeleteAccountButton client:only>
-            <Button slot="fallback" disabled className="border-red-500 mt-5" variant="outline">
-              <Trash2Icon className="mr-2 h-4 w-4 text-red-500" /><span class="text-red-500 font-medium text-sm">Loading...</span>
-            </Button>
+            <Skeleton slot="fallback" className="mt-5 h-9 w-[160px]" />
           </DeleteAccountButton>
         </CardContent>
       </Card>
