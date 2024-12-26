@@ -1,12 +1,22 @@
-import type { ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
+import { navigate } from 'astro:transitions/client';
 import { Input } from '@/presentation/components/ui/input';
 
 interface Props {
   searchTerm: string;
-  handleSearchChange: (event: ChangeEvent<HTMLInputElement>) => void
+  pageNumber: number;
+  limit: number;
 }
 
-const UrlSearchBar = ({ searchTerm, handleSearchChange }: Props) => {
+const UrlSearchBar = ({ searchTerm: initialSearchTerm, pageNumber, limit }: Props) => {
+  
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    navigate(`/dashboard?page=${pageNumber}&limit=${limit}&search=${event.target.value}`);
+  }
+
   return (
     <div className="flex-grow">
     <Input

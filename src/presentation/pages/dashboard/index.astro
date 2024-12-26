@@ -1,14 +1,99 @@
 ---
+import type { Url } from '@/domain';
+
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/presentation/components/ui/pagination';
+import CreateShortUrlDialog from '@/presentation/components/url/CreateShortUrlDialog';
+import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard';
+import UrlSearchBar from '@/presentation/components/url/UrlSearchBar';
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
-import Dashboard from '@/presentation/components/url/Dashboard';
 
-const page = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 9);
+const defaultPageNumber = 1;
+const defaultLimit = 9;
+const defaultSearchTerm = '';
+
+const url = new URL(Astro.request.url);
+const pageParam = url.searchParams.get('page');
+const limitParam = url.searchParams.get('limit');
+const searchParam = url.searchParams.get('search');
+
+const pageNumber = pageParam ? parseInt(pageParam, 10) : defaultPageNumber;
+const limit = limitParam ? parseInt(limitParam, 10) : defaultLimit;
+const search = searchParam ? searchParam : defaultSearchTerm;
+
+const page = await new UrlViewServiceImpl(new UrlServiceImpl())
+  .getUrls(pageNumber, limit, search);
+
 ---
 <HomeLayout>
   <div class="container mx-auto p-4 self-start">
-    <h1 class="text-2xl font-bold mb-8">Dashboard</h1>
-    { page && <Dashboard page={ page } client:load /> }
+    <a href="/"><h1 class="text-2xl font-bold mb-8">Dashboard</h1></a>
+    <div class="flex justify-between items-center mb-6 gap-4">
+      <UrlSearchBar
+        searchTerm={search}
+        pageNumber={defaultPageNumber}
+        limit={defaultLimit}
+        transition:persist
+        client:load
+      />
+      <CreateShortUrlDialog />
+    </div>
+    { page && (
+      page.items.length === 0 ? (
+        search ? (
+          <p class="px-8 text-center text-sm text-muted-foreground">
+            No URLs found matching "<strong>{search}</strong>". Please try a
+            different search term
+          </p>
+        ) : (
+          <p class="px-8 text-center text-sm text-muted-foreground">
+            You haven't shortened any URLs yet. Click the <strong>"Shorten
+              URL"</strong> button to shorten your first URL
+          </p>
+        )
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {page.items.map((url: Url) => (
+            <MyShortUrlCard url={url} />
+          ))}
+        </div>
+        <div class="mt-6">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  disabled={pageNumber === 1}
+                  href={`/dashboard?page=${pageNumber-1}&limit=${limit}&search=${search}`}
+                />
+              </PaginationItem>
+              {Array.from({ length: page.totalPages }, (_, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    href={`/dashboard?page=${index+1}&limit=${limit}&search=${search}`}
+                    isActive={index + 1 === pageNumber}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  disabled={pageNumber === page.totalPages}
+                  href={`/dashboard?page=${pageNumber+1}&limit=${limit}&search=${search}`}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>      
+      )
+    )}
   </div>
 </HomeLayout>
