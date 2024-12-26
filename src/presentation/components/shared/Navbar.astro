@@ -29,7 +29,9 @@ const { user } = Astro.props;
             </AuthDropdown>
           : <a href="/auth/login"><Button variant="ghost"><UserIcon /> Log in</Button></a>
         }
-        <ModeToggle client:load />
+        <ModeToggle client:only>
+          <Skeleton slot="fallback" className="w-9 h-9 rounded-md" />
+        </ModeToggle>
       </nav>
     </div>
   </div>
