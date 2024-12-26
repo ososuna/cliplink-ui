@@ -2,9 +2,12 @@
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import MyAccountView from '@/presentation/components/auth/MyAccountView';
 import MyAccountForm from '@/presentation/components/auth/MyAccountForm';
+import MyAccountFormPreview from '@/presentation/components/auth/MyAccountFormPreview';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
 import ShortUrlsCount from '@/presentation/components/url/ShortUrlsCount.astro';
+import { Button } from '@/presentation/components/ui/button';
+import { Trash2Icon } from 'lucide-react';
 
 const user = Astro.locals.user;
 
@@ -27,10 +30,16 @@ const user = Astro.locals.user;
               URLs shortened
             </p>
           </div>
-          <DeleteAccountButton client:load />
+          <DeleteAccountButton client:only>
+            <Button slot="fallback" disabled className="border-red-500 mt-5" variant="outline">
+              <Trash2Icon className="mr-2 h-4 w-4 text-red-500" /><span class="text-red-500 font-medium text-sm">Loading...</span>
+            </Button>
+          </DeleteAccountButton>
         </CardContent>
       </Card>
-      <MyAccountForm user={user} client:load />
+      <MyAccountForm transition:persist user={user} client:only>
+        <MyAccountFormPreview user={user} slot="fallback" />
+      </MyAccountForm>
     </div>
   </div>
 </HomeLayout>

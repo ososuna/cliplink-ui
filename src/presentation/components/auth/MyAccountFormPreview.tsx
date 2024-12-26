@@ -1,12 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { navigate } from 'astro:transitions/client';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import type { User } from '@/domain';
-
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
@@ -19,8 +15,6 @@ import {
   FormMessage
 } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
-import { useService } from '@/presentation/hooks/use-service';
-import { useToast } from '@/presentation/hooks/use-toast';
 
 interface Props {
   user: User
@@ -34,11 +28,7 @@ const formSchema = z.object({
   }),
 });
 
-const MyAccountForm = ({user: initialUser}: Props) => {
-
-  const [isLoading, setIsLoading] = useState(false);
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
-  const { toast } = useToast();
+const MyAccountFormPreview = ({user: initialUser}: Props) => {
 
   const defaultValues = {
     name: initialUser.name,
@@ -51,34 +41,6 @@ const MyAccountForm = ({user: initialUser}: Props) => {
     defaultValues,
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // Filter modified values
-    const fieldsToUpdate = Object.fromEntries(
-      Object.entries(values).filter(
-        ([key, value]) => value !== initialUser[key as keyof typeof initialUser]
-      )
-    );
-
-    if (Object.keys(fieldsToUpdate).length === 0) {
-      toast({
-        title: 'No changes detected',
-        description: 'Please modify at least one field before updating',
-      });
-      return;
-    }
-    setIsLoading(true);
-    const user = await authService.update(fieldsToUpdate.name, fieldsToUpdate.lastName, fieldsToUpdate.email);
-    if ( user ) {
-      toast({
-        title: 'Profile updated 🎉',
-        description: 'Your profile has been successfully updated',
-      });
-      const url = new URL(window.location.href);
-      navigate(url.toString());
-    }
-    setIsLoading(false);
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -86,7 +48,7 @@ const MyAccountForm = ({user: initialUser}: Props) => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -94,7 +56,7 @@ const MyAccountForm = ({user: initialUser}: Props) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,7 +69,7 @@ const MyAccountForm = ({user: initialUser}: Props) => {
                 <FormItem>
                   <FormLabel>Last name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,14 +82,14 @@ const MyAccountForm = ({user: initialUser}: Props) => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Profile"}
+            <Button type="submit" disabled>
+              Loading...
             </Button>
           </form>
         </Form>
@@ -136,4 +98,4 @@ const MyAccountForm = ({user: initialUser}: Props) => {
   )
 }
 
-export default MyAccountForm;
+export default MyAccountFormPreview;
