@@ -22,14 +22,12 @@ const CreateShortUrlDialog = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
 
   const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
     const { name, longUrl } = values;
     setIsLoading(true);
-    await urlService?.createUrl(longUrl, name);
-    setIsLoading(false);
-    navigate('/dashboard');
+    await new UrlViewServiceImpl(new UrlServiceImpl()).createUrl(longUrl, name);
+    navigate(window.location.href);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -79,12 +77,11 @@ const CreateShortUrlDialog = () => {
               )}
             />
             <DialogFooter>
-              <Button className="w-full mt-2" type="submit">
-                {isLoading ? (
-                  <><Loader2 className="animate-spin" /> Loading...</>
-                ) : (
-                  'Shorten URL'
-                )}
+              <Button disabled={isLoading} className="w-full mt-2" type="submit">
+                { isLoading
+                  ? 'Loading...'
+                  : 'Shorten URL'
+                } 
               </Button>
             </DialogFooter>
           </form>

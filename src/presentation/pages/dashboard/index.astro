@@ -2,6 +2,8 @@
 import type { Url } from '@/domain';
 
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { Button } from '@/presentation/components/ui/button';
+import { Input } from '@/presentation/components/ui/input';
 
 import {
   Pagination,
@@ -12,7 +14,7 @@ import {
   PaginationPrevious
 } from '@/presentation/components/ui/pagination';
 import CreateShortUrlDialog from '@/presentation/components/url/CreateShortUrlDialog';
-import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard';
+import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard.astro';
 import UrlSearchBar from '@/presentation/components/url/UrlSearchBar';
 import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 
@@ -42,9 +44,20 @@ const page = await new UrlViewServiceImpl(new UrlServiceImpl())
         pageNumber={defaultPageNumber}
         limit={defaultLimit}
         transition:persist
-        client:load
-      />
-      <CreateShortUrlDialog />
+        client:only
+      >
+        <div class="flex-grow" slot="fallback">
+          <Input
+            disabled
+            type="text"
+            placeholder="Loading..."
+            className="w-full"
+          />
+        </div>
+      </UrlSearchBar>
+      <CreateShortUrlDialog client:only>
+        <Button slot="fallback" disabled className="whitespace-nowrap">Loading...</Button>
+      </CreateShortUrlDialog>
     </div>
     { page && (
       page.items.length === 0 ? (

@@ -9,7 +9,7 @@ import { envs } from '@/config';
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
-import ConfirmationDialog from '@/presentation/components/shared/ConfirmationDialog';
+import ConfirmationDialog from '@/presentation/components/url/DeleteUrlDialog';
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/presentation/components/ui/tooltip";
