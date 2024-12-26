@@ -10,6 +10,7 @@ import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
+import { navigate } from 'astro:transitions/client';
 
 const formSchema = z.object({
   name: z.string().min(2).max(60),
@@ -46,7 +47,11 @@ const RegisterEmailForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { name, lastName, password } = values;
     setIsLoading(true);
-    await authService?.registerByEmail(emailToRegister.current!, name, lastName, password);
+    const user = await authService?.registerByEmail(emailToRegister.current!, name, lastName, password);
+    if (user) {
+      navigate('/dashboard');
+      return;
+    }
     setIsLoading(false);
   }
 
@@ -105,15 +110,11 @@ const RegisterEmailForm = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          { isLoading ? (
-            <><Loader2 className="animate-spin" /> Loading...</>
-          ) : (
-            'Register'
-          )}
+        <Button disabled={isLoading} className="w-full" type="submit">
+          { isLoading ? 'Registering...' : 'Register' }
         </Button>
       </form>
-    </Form>    
+    </Form>
   );
 };
 

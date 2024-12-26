@@ -39,7 +39,7 @@ export class AuthViewServiceImpl implements AuthViewService {
     });
   };
 
-  async loginByEmail(email: string, password: string): Promise<void> {
+  async loginByEmail(email: string, password: string): Promise<void | User> {
     const [error, loginUserDto] = LoginUserDto.create({ email, password });
     if (error) {
       this.notifyUiError({ type: 'error', message: error });
@@ -47,9 +47,7 @@ export class AuthViewServiceImpl implements AuthViewService {
     }
     return new Login(this.authService)
       .execute(loginUserDto!)
-      .then(() => {
-        this.navigateTo('/dashboard');
-      })
+      .then(data => data)
       .catch((error) => this.handleError(error));
   }
 
@@ -66,9 +64,7 @@ export class AuthViewServiceImpl implements AuthViewService {
     }
     new Register(this.authService)
       .execute(registerUserDto!)
-      .then(() => {
-        this.navigateTo('/dashboard');
-      })
+      .then(data => data)
       .catch((error) => this.handleError(error));
   }
 

@@ -1,6 +1,7 @@
 ---
 import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
 import RegisterEmailForm from '@/presentation/components/auth/RegisterEmailForm';
+import RegisterEmailFormSkeleton from '@/presentation/components/auth/RegisterEmailFormSkeleton.astro';
 
 export const prerender = true;
 
@@ -15,8 +16,8 @@ export const prerender = true;
         Enter your name, last name and password to create your account
       </p>
       <div class="w-full max-w-xs space-y-6">
-        <RegisterEmailForm client:load>
-          <p>Loading form...</p>
+        <RegisterEmailForm client:only>
+          <RegisterEmailFormSkeleton slot="fallback" />
         </RegisterEmailForm>
       </div>
       <div style="text-align: center;">

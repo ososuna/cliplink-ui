@@ -1,7 +1,7 @@
 import type { ResetPasswordToken, User } from '@/domain';
 
 export interface AuthViewService {
-  loginByEmail(email: string, password: string): Promise<void>;
+  loginByEmail(email: string, password: string): Promise<void | User>;
   registerByEmail(email: string, name: string, lastName: string, password: string): Promise<User | void>;
   checkToken(token?: string): Promise<User | void>;
   logout(): Promise<void>;

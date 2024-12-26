@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,6 +9,7 @@ import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
+import { navigate } from 'astro:transitions/client';
 
 const formSchema = z.object({
   password: z.string()
@@ -36,7 +36,11 @@ const PasswordForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
     setIsLoading(true);
-    authService?.loginByEmail(emailToLogin.current!, password);
+    const user = await authService?.loginByEmail(emailToLogin.current!, password);
+    if (user) {
+      navigate('/dashboard');
+      return;
+    }
     setIsLoading(false);
   }
 
@@ -55,12 +59,8 @@ const PasswordForm = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full mt-2" type="submit">
-          {isLoading ? (
-            <><Loader2 className="animate-spin" /> Loading...</>
-          ) : (
-            'Log in'
-          )}
+        <Button disabled={isLoading} className="w-full mt-2" type="submit">
+          { isLoading ? 'Logging in...' : 'Log in' }
         </Button>
       </form>
     </Form>
