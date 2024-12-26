@@ -1,0 +1,74 @@
+---
+import type { Url } from '@/domain';
+import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard.astro';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/presentation/components/ui/pagination';
+
+const urlService = new UrlViewServiceImpl(new UrlServiceImpl());
+
+interface Props {
+  pageNumber: number;
+  limit: number;
+  search: string;
+}
+const { pageNumber, limit, search } = Astro.props;
+
+const page = await urlService.getUrls(pageNumber, limit, search);
+
+---
+{ page && (
+  page.items.length === 0 ? (
+    search ? (
+      <p class="px-8 text-center text-sm text-muted-foreground">
+        No URLs found matching "<strong>{search}</strong>". Please try a
+        different search term
+      </p>
+    ) : (
+      <p class="px-8 text-center text-sm text-muted-foreground">
+        You haven't shortened any URLs yet. Click the <strong>"Shorten
+          URL"</strong> button to shorten your first URL
+      </p>
+    )
+  ) : (
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {page.items.map((url: Url) => (
+        <MyShortUrlCard url={url} />
+      ))}
+    </div>
+    <div class="mt-6">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              disabled={pageNumber === 1}
+              href={`/dashboard?page=${pageNumber-1}&limit=${limit}&search=${search}`}
+            />
+          </PaginationItem>
+          {Array.from({ length: page.totalPages }, (_, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink
+                href={`/dashboard?page=${index+1}&limit=${limit}&search=${search}`}
+                isActive={index + 1 === pageNumber}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              disabled={pageNumber === page.totalPages}
+              href={`/dashboard?page=${pageNumber+1}&limit=${limit}&search=${search}`}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
+  )
+)}
