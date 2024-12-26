@@ -49,7 +49,7 @@ const RegisterEmailForm = () => {
     setIsLoading(true);
     const user = await authService?.registerByEmail(emailToRegister.current!, name, lastName, password);
     if (user) {
-      navigate('/dashboard');
+      await navigate('/dashboard');
       return;
     }
     setIsLoading(false);

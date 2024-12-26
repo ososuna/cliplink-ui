@@ -62,7 +62,7 @@ export class AuthViewServiceImpl implements AuthViewService {
       this.notifyUiError({ type: 'error', message: error });
       return;
     }
-    new Register(this.authService)
+    return new Register(this.authService)
       .execute(registerUserDto!)
       .then(data => data)
       .catch((error) => this.handleError(error));
