@@ -4,13 +4,41 @@ import GoogleIcon from '@/presentation/icons/GoogleIcon.astro';
 ---
 
 <Button id="googleAuthButton" className="w-full" type="submit">
-  <GoogleIcon /> Google
+  <GoogleIcon /> <span id="googleButtonLabel">Google</span>
 </Button>
 
 <script>
-  import { envs } from '@/config';
-  const googleAuthButton = document.getElementById('googleAuthButton');
-  if (googleAuthButton) {
-    googleAuthButton.onclick = () => window.location.href = envs.PUBLIC_API_BASE_URL + '/auth/google';
+  import { navigate } from 'astro:transitions/client';
+  import { CustomError } from '@/domain';
+  import { Messages, envs } from '@/config';
+  import { setUiError } from '@/infrastructure';
+
+  function initializeGoogleButton() {
+    const googleAuthButton = document.getElementById('googleAuthButton') as HTMLButtonElement;
+    const googleButtonLabel = document.getElementById('googleButtonLabel');
+
+    if (googleAuthButton && googleButtonLabel) {
+      googleAuthButton.onclick = async () => {
+        googleAuthButton.disabled = true;
+        googleButtonLabel.textContent = 'Loading...';
+        try {
+          await navigate(envs.PUBLIC_API_BASE_URL + '/auth/google');
+        } catch (error) {
+          console.error('Navigation error:', error);
+          googleAuthButton.disabled = false;
+          googleButtonLabel.textContent = 'Google';
+          if (error instanceof CustomError) {
+            setUiError({ type: 'error', message: error.message });
+            return;
+          }
+          setUiError({ type: 'error', message: Messages.INTERNAL_SERVER_ERROR });
+        }
+      };
+    }
   }
+
+  document.addEventListener('astro:page-load', (ev) => {
+    initializeGoogleButton();
+  });
+
 </script>

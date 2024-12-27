@@ -4,13 +4,41 @@ import GitHubIcon from '@/presentation/icons/GitHubIcon.astro';
 ---
 
 <Button id="githubAuthButton" className="w-full" type="submit">
-  <GitHubIcon /> GitHub
+  <GitHubIcon /> <span id="buttonLabel">GitHub</span>
 </Button>
 
 <script>
-  import { envs } from '@/config';
-  const githubAuthButton = document.getElementById('githubAuthButton');
-  if (githubAuthButton) {
-    githubAuthButton.onclick = () => window.location.href = envs.PUBLIC_API_BASE_URL + '/auth/github';
+  import { navigate } from 'astro:transitions/client';
+  import { CustomError } from '@/domain';
+  import { Messages, envs } from '@/config';
+  import { setUiError } from '@/infrastructure';
+
+  function initializeGithubButton() {
+    const githubAuthButton = document.getElementById('githubAuthButton') as HTMLButtonElement;
+    const buttonLabel = document.getElementById('buttonLabel');
+
+    if (githubAuthButton && buttonLabel) {
+      githubAuthButton.onclick = async () => {
+        githubAuthButton.disabled = true;
+        buttonLabel.textContent = 'Loading...';
+        try {
+          await navigate(envs.PUBLIC_API_BASE_URL + '/auth/github');
+        } catch (error) {
+          console.error('Navigation error:', error);
+          githubAuthButton.disabled = false;
+          buttonLabel.textContent = 'GitHub';
+          if (error instanceof CustomError) {
+            setUiError({ type: 'error', message: error.message });
+            return;
+          }
+          setUiError({ type: 'error', message: Messages.INTERNAL_SERVER_ERROR });
+        }
+      };
+    }
   }
+
+  document.addEventListener('astro:page-load', (ev) => {
+    initializeGithubButton();
+  });
+
 </script>

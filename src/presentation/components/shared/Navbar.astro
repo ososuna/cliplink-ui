@@ -15,7 +15,7 @@ interface Props {
 const { user } = Astro.props;
 
 ---
-<header class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background">
+<header transition:persist class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background">
   <div class="container mx-auto px-4">
     <div class="flex h-12 items-center justify-between">
       <div class="text-lg font-bold">

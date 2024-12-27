@@ -1,8 +1,8 @@
 ---
-import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
 import EmailForm from '@/presentation/components/auth/EmailForm';
-import GoogleAuthButton from '@/presentation/components/auth/GoogleAuthButton.astro';
 import GithubAuthButton from '@/presentation/components/auth/GithubAuthButton.astro';
+import GoogleAuthButton from '@/presentation/components/auth/GoogleAuthButton.astro';
+import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
 
 export const prerender = true;
 
@@ -28,8 +28,8 @@ export const prerender = true;
           </div>
         </div>
         <div class="flex space-x-2">
-          <GithubAuthButton />
-          <GoogleAuthButton />
+          <GithubAuthButton transition:persist />
+          <GoogleAuthButton transition:persist />
         </div>
         <div style="text-align: center;">
           <a href="/auth/forgot-password" class="font-normal text-sm text-blue-600 dark:text-blue-500 hover:underline">
