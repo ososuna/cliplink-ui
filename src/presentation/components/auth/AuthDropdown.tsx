@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { LogOut } from 'lucide-react';
 
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
@@ -21,14 +22,17 @@ interface Props {
 const AuthDropdown = ({ name, lastName }: Props) => {
 
   const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  
+  // Workaround for https://github.com/withastro/astro/issues/10863
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const onLogout = async () => {
     await authService?.logout();
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu open={dropdownOpen} onOpenChange={(val) => setDropdownOpen(val)}>
+      <DropdownMenuTrigger asChild onClick={() => { setDropdownOpen((val) => !val); }}>
         <Avatar className="w-8 h-8 flex items-center justify-center bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
           { lastName
             ? `${name.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`
