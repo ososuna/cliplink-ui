@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { navigate } from 'astro:transitions/client';
 
+import { Messages } from '@/config';
+
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
@@ -11,7 +13,7 @@ import { useToast } from '@/presentation/hooks/use-toast';
 
 const formSchema = z.object({
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: Messages.VALID_EMAIL
   })
 });
 

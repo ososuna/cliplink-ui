@@ -4,6 +4,8 @@ import * as z from 'zod';
 
 import type { User } from '@/domain';
 
+import { Messages } from '@/config';
+
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import {
@@ -21,10 +23,18 @@ interface Props {
 }
 
 const formSchema = z.object({
-  name: z.string().min(2).max(60),
-  lastName: z.string().min(2).max(120),
+  name: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('name', 2)
+  }).max(60, {
+    message: Messages.STRING_MAX('name', 60)
+  }),
+  lastName: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('last name', 2)
+  }).max(120, {
+    message: Messages.STRING_MAX('last name', 120)
+  }),
   email: z.string().email({
-    message: 'Please enter a valid email address',
+    message: Messages.VALID_EMAIL
   }),
 });
 

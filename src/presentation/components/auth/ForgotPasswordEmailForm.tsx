@@ -3,6 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Messages } from '@/config';
+
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
@@ -13,7 +15,7 @@ import { useService } from '@/presentation/hooks/use-service';
 
 const formSchema = z.object({
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: Messages.VALID_EMAIL
   })
 });
 

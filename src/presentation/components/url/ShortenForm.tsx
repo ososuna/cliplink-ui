@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { navigate } from 'astro:transitions/client';
 
+import { Messages } from '@/config';
+
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
@@ -14,7 +16,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/presentation/components/ui/input';
 
 const formSchema = z.object({
-  originalUrl: z.string().url()
+  originalUrl: z.string().url({
+    message: Messages.VALID_URL
+  })
 });
 
 const ShortenForm = () => {

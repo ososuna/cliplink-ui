@@ -3,18 +3,21 @@ import { Trash2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Messages } from '@/config';
+
+import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 const confirmPhrase = 'Delete my account';
 
 const formSchema = z.object({
   confirm: z.string().refine((value) => value.toLowerCase() === confirmPhrase.toLowerCase(), {
-    message: `Please type "${confirmPhrase}" to confirm`,
+    message: Messages.CONFIRM_PHRASE(confirmPhrase)
   }),
 });
 

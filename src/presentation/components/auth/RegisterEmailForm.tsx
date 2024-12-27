@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Messages } from '@/config';
+
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
@@ -12,8 +14,16 @@ import { useService } from '@/presentation/hooks/use-service';
 import { navigate } from 'astro:transitions/client';
 
 const formSchema = z.object({
-  name: z.string().min(2).max(60),
-  lastName: z.string().min(2).max(120),
+  name: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('name', 2)
+  }).max(60, {
+    message: Messages.STRING_MAX('name', 60)
+  }),
+  lastName: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('last name', 2)
+  }).max(120, {
+    message: Messages.STRING_MAX('last name', 120)
+  }),
   password: z.string().min(8).max(128),
   confirmPassword: z.string().min(8).max(128)
 }).refine((values) => values.password === values.confirmPassword, {

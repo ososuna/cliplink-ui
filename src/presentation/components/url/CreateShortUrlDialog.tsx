@@ -1,21 +1,25 @@
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
+import { navigate } from 'astro:transitions/client';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { navigate } from 'astro:transitions/client';
+
+import { Messages } from '@/config';
 
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
 
-import { useService } from '@/presentation/hooks/use-service';
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 
 const formSchema = z.object({
-  name: z.string().max(80).optional(),
-  longUrl: z.string().url()
+  name: z.string().trim().max(80, {
+    message: Messages.STRING_MAX('name', 80)
+  }).optional(),
+  longUrl: z.string().url({
+    message: Messages.VALID_URL
+  })
 });
 
 const CreateShortUrlDialog = () => {
