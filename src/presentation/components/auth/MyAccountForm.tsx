@@ -78,12 +78,11 @@ const MyAccountForm = ({user: initialUser}: Props) => {
     setIsLoading(true);
     const user = await authService.update(fieldsToUpdate.name, fieldsToUpdate.lastName, fieldsToUpdate.email);
     if ( user ) {
+      await navigate(window.location.href);
       toast({
         title: 'Profile updated 🎉',
         description: 'Your profile has been successfully updated',
       });
-      const url = new URL(window.location.href);
-      navigate(url.toString());
     }
     setIsLoading(false);
   };
