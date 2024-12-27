@@ -69,7 +69,7 @@ const ForgotPasswordEmailForm = ({ buttonText }: Props) => {
             </FormItem>
           )}
         />
-        <Button className="w-full mt-2" type="submit">
+        <Button disabled={isLoading} className="w-full mt-2" type="submit">
           { isLoading ? 'Sending email...' : buttonText }
         </Button>
       </form>

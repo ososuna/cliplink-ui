@@ -122,7 +122,7 @@ export class AuthViewServiceImpl implements AuthViewService {
   }
 
   async forgotPassword(email: string): Promise<void> {
-    new ForgotPassword(this.authService)
+    return new ForgotPassword(this.authService)
       .execute(email)
       .then(() => {
         this.navigateTo(`/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`);

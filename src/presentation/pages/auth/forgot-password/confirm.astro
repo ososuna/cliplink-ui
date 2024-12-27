@@ -1,6 +1,7 @@
 ---
 import { Mail } from 'lucide-react';
 import AuthLayout from '@/presentation/layouts/AuthLayout.astro';
+import EmailSentTo from '@/presentation/components/auth/EmailSentTo.astro';
 
 export const prerender = true;
 
@@ -17,7 +18,7 @@ export const prerender = true;
       <div class="w-full max-w-xs space-y-2">
         <Mail className="mx-auto h-12 w-12 text-blue-500 mb-4" />
         <p class="text-sm text-muted-foreground mb-2 text-center">If the email was valid, we have sent an email to:</p>
-        <p id="email-display" class="font-medium mb-4 text-center">Your email</p>
+        <EmailSentTo server:defer />
         <p class="text-sm text-center text-muted-foreground">
           Click the link in the email to reset your password. If you don't see
           the email, check your spam folder.

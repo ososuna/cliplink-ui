@@ -11,6 +11,7 @@ import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
+import { useToast } from '@/presentation/hooks/use-toast';
 
 const formSchema = z.object({
   password: z.string().min(8).max(128),
@@ -29,6 +30,7 @@ const ResetPasswordForm = ({ token }: Props) => {
 
   const [ isLoading, setIsLoading ] = useState(false);
   const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,12 +44,15 @@ const ResetPasswordForm = ({ token }: Props) => {
     const { password } = values;
     setIsLoading(true);
     const user = await authService.updatePassword(token, password);
-    setIsLoading(false);
     if ( user ) {
-      const url = new URL(`${window.location.protocol}//${window.location.host}/dashboard`);
-      url.searchParams.set('updated-password', 'true');
-      navigate(url.toString());
+      await navigate('/dashboard');
+      toast({
+        title: 'Password updated 🎉',
+        description: 'Your password has been successfully updated',
+      });
+      return;
     }
+    setIsLoading(false);
   }
 
   return (

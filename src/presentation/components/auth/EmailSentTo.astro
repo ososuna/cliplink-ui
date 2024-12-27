@@ -1,0 +1,5 @@
+---
+const url = new URL(Astro.request.url);
+const email = url.searchParams.get('email');
+---
+<p id="email-display" class="font-medium mb-4 text-center">{email}</p>
