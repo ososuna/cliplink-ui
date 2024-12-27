@@ -19,6 +19,7 @@ import {
   CheckPasswordToken,
   UpdatePassword,
 } from '@/domain';
+import { Messages } from '@/config';
 import { setUiError } from '@/infrastructure';
 
 export class AuthViewServiceImpl implements AuthViewService {
@@ -35,7 +36,7 @@ export class AuthViewServiceImpl implements AuthViewService {
     }
     this.notifyUiError({
       type: "error",
-      message: "Please try again later. If the issue persists talk to the admin.",
+      message: Messages.INTERNAL_SERVER_ERROR,
     });
   };
 

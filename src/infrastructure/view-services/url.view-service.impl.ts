@@ -1,4 +1,5 @@
 import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService, type UrlViewService } from '@/domain';
+import { Messages } from '@/config';
 import { setUiError } from '@/infrastructure';
 
 export class UrlViewServiceImpl implements UrlViewService {
@@ -12,7 +13,7 @@ export class UrlViewServiceImpl implements UrlViewService {
     if (error instanceof CustomError) {
       this.notifyUiError({ type: 'error', message: error.message });
     }
-    this.notifyUiError({ type: 'error', message: 'Please try again later. If the issue persists talk to the admin.' });
+    this.notifyUiError({ type: 'error', message: Messages.INTERNAL_SERVER_ERROR });
   }
 
   async createUrl(originalUrl: string, name?: string): Promise<Url | undefined> {
