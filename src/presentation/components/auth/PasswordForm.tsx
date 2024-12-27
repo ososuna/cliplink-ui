@@ -1,7 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { navigate } from 'astro:transitions/client';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { Messages } from '@/config';
 
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
 
@@ -9,10 +12,11 @@ import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
 import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
-import { navigate } from 'astro:transitions/client';
 
 const formSchema = z.object({
-  password: z.string()
+  password: z.string().nonempty({
+    message: Messages.PASSWORD_REQUIRED
+  })
 });
 
 const PasswordForm = () => {
