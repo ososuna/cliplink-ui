@@ -20,7 +20,9 @@ interface Props {
 }
 const { pageNumber, limit, search } = Astro.props;
 
-const page = await urlService.getUrls(pageNumber, limit, search);
+const token = Astro.cookies.get('access_token')?.value;
+
+const page = await urlService.getUrls(pageNumber, limit, search, token);
 
 ---
 { page && (

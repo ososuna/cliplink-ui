@@ -1,7 +1,6 @@
+import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
-import { HttpClient } from '@/config';
 import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
-import type { MiddlewareNext } from 'astro';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
 
@@ -21,16 +20,16 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
 
   if (!token) {
     console.log('Access token cookie is missing ❌');
-    return handleRedirect(url.pathname, redirect, next);
+    return handleRedirect(url.pathname, redirect, next, cookies);
   }
 
   const user = await validateToken(token);
   if (!user) {
     console.log('User not found or token invalid ❌');
-    return handleRedirect(url.pathname, redirect, next);
+    return handleRedirect(url.pathname, redirect, next, cookies);
   }
 
-  HttpClient.accessToken = token;
+  cookies.set('access_token', token);
   locals.user = user;
 
   if (url.pathname === '/') {
@@ -50,8 +49,8 @@ const validateToken = async (token: string) => {
 };
 
 // Handle redirection based on path
-const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext) => {
-  HttpClient.accessToken = '';
+const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext, cookies: AstroCookies) => {
+  cookies.delete('access_token');
   if (['/dashboard', '/my-account'].includes(pathname)) {
     return redirect('/auth/login');
   }

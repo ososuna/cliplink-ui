@@ -7,7 +7,14 @@ export class UrlServiceImpl implements UrlService {
     return HttpClient.post<Url>('/url', createUrlDto);
   }
 
-  getUrls(page: number, limit: number, search: string): Promise<Page<Url>> {
+  getUrls(page: number, limit: number, search: string, token?: string): Promise<Page<Url>> {
+    if (token) {
+      return HttpClient.get<Page<Url>>(`/url?page=${page}&limit=${limit}&search=${search}`, {
+        headers: {
+          'Cookie': `access_token=${token}`
+        }
+      });
+    }
     return HttpClient.get<Page<Url>>(`/url?page=${page}&limit=${limit}&search=${search}`);
   }
 

@@ -31,9 +31,9 @@ export class UrlViewServiceImpl implements UrlViewService {
       });
   }
 
-  async getUrls(page: number, limit: number, search: string = ''): Promise<Page<Url> | void> {
+  async getUrls(page: number, limit: number, search: string = '', token?: string): Promise<Page<Url> | void> {
     return new GetUrls(this.urlService)
-      .execute(page, limit, search)
+      .execute(page, limit, search, token)
       .then(data => data)
       .catch(this.handleError);
   }

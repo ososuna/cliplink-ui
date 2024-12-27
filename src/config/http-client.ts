@@ -4,7 +4,6 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
 
 export class HttpClient {
   
-  public static accessToken = '';
   private static readonly baseURL = API_BASE_URL;
 
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
@@ -14,10 +13,6 @@ export class HttpClient {
       'Cookie': '',
       ...options.headers,
     };
-
-    if (this.accessToken) {
-      headers.Cookie = `access_token=${this.accessToken}`
-    }
 
     const response = await fetch(`${this.baseURL}${url}`, {
       ...options,
