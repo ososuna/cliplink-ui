@@ -29,7 +29,6 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
     return handleRedirect(url.pathname, redirect, next, cookies);
   }
 
-  cookies.set('access_token', token);
   locals.user = user;
 
   if (url.pathname === '/') {
