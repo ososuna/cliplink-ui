@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import Analytics from '@vercel/analytics/astro'
 import '@/presentation/styles/globals.css';
 import ErrorNotifier from '@/presentation/components/shared/ErrorNotifier';
 interface Props {
@@ -20,6 +21,7 @@ const { title, description } = Astro.props;
 		<title>{title}</title>
 		<ClientRouter />
     <SpeedInsights />
+    <Analytics />
 	</head>
 	<body>
 		<slot />
