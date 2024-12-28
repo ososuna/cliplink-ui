@@ -1,13 +1,15 @@
 ---
-import { envs } from '@/config';
+import { Messages, envs } from '@/config';
 import BaseLayout from '@/presentation/layouts/BaseLayout.astro';
 interface Props {
 	action: 'register' | 'login' | 'forgot-password';
 }
 const { action } = Astro.props;
-const appName = envs.PUBLIC_APP_NAME;
+const appName = envs.PUBLIC_APP_NAME + ' - URL Shortener';
+const description = Messages.APP_DESCRIPTION;
+
 ---
-<BaseLayout title={appName}>
+<BaseLayout title={appName} description={description}>
   <nav class="absolute right-4 top-4 md:right-8 md:top-8 space-y-4">
     <div class="flex space-x-4">
       <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
