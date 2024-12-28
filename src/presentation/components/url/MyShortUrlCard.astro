@@ -23,17 +23,17 @@ const { url } = Astro.props;
         {url.name && url.name.length > 30 ? (
           <MyShortUrlNameTooltip name={url.name} client:only>
             <CardTitle slot="fallback" className="text-lg truncate flex-1">
-              {url.name || url.shortId}
+              {url.name || `/${url.shortId}`}
             </CardTitle>
           </MyShortUrlNameTooltip>
         ) : (
           <CardTitle className="text-lg truncate flex-1">
-            {url.name || url.shortId}
+            {url.name || `/${url.shortId}`}
           </CardTitle>
         )}
         {url.name && (
           <span class="text-sm text-muted-foreground shrink-0">
-            {url.shortId}
+            {`/${url.shortId}`}
           </span>
         )}
       </div>
