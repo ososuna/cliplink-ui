@@ -16,7 +16,6 @@ interface Props {
 const { url } = Astro.props;
 
 ---
-
 <Card key={url.id}>
   <CardHeader>
     <div class="flex flex-col space-y-1.5">
@@ -49,7 +48,7 @@ const { url } = Astro.props;
         </Button>
       </MyShortUrlCopyButton>
       <a href={url.originalUrl} target="_blank">
-        <Button variant="outline" size="sm">
+        <Button aria-label="Navigate" variant="outline" size="sm">
           <ExternalLink />
         </Button>
       </a>

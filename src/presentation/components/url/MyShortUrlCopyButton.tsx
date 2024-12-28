@@ -29,7 +29,7 @@ const MyShortUrlCopyButton = ({ id }: Props) => {
   };
 
   return (
-    <Button variant="outline" size="sm" onClick={onCopy}>
+    <Button aria-label="Copy" variant="outline" size="sm" onClick={onCopy}>
       {isCopied ? <Check className="text-green-500" /> : <Clipboard />}
     </Button>
   );

@@ -24,7 +24,7 @@ const ConfirmationDialog = ({ id }: Props) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="border-red-500" variant="outline" size="sm">
+        <Button aria-label="Delete" className="border-red-500" variant="outline" size="sm">
           <Trash className="text-red-500" />
         </Button>
       </DialogTrigger>
