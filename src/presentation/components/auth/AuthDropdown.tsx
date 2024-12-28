@@ -33,7 +33,8 @@ const AuthDropdown = ({ name, lastName }: Props) => {
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={(val) => setDropdownOpen(val)}>
       <DropdownMenuTrigger asChild onClick={() => { setDropdownOpen((val) => !val); }}>
-        <Avatar aria-label='Logged user avatar' className="w-8 h-8 flex items-center justify-center bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
+        <Avatar aria-label={lastName ? `${name} ${lastName}` : `${name}`}
+          className="w-8 h-8 flex items-center justify-center bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
           { lastName
             ? `${name.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`
             : `${name.charAt(0).toUpperCase()}`
