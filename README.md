@@ -96,11 +96,13 @@ Ensure you have the following installed:
 
 ### Installation
 
-1. Clone the repo
+1. Start the ClipLink Rest API following the next instructions: [https://github.com/ososuna/cliplink-rest?tab=readme-ov-file#getting-started](https://github.com/ososuna/cliplink-rest?tab=readme-ov-file#getting-started)
+
+2. Clone the repo
    ```sh
    git clone https://github.com/ososuna/cliplink-ui.git
    ```
-2. Install NPM packages
+3. Install NPM packages
     #### Using pnpm
     ```bash
     pnpm install
@@ -113,18 +115,18 @@ Ensure you have the following installed:
     ```bash
     yarn
     ```
-3. Create a .env file in the root of the project and enter your own environment variables
+4. Create a .env file in the root of the project and enter your own environment variables
    ```.env
     PUBLIC_API_BASE_URL=
     PUBLIC_API_DOMAIN=
     PUBLIC_APP_NAME=
    ```
-4. Change git remote url to avoid accidental pushes to base project
+5. Change git remote url to avoid accidental pushes to base project
    ```sh
    git remote set-url origin github_username/repo_name
    git remote -v # confirm the changes
    ```
-5. Start the Development server
+6. Start the Development server
     #### Using pnpm
     ```bash
     pnpm run dev
