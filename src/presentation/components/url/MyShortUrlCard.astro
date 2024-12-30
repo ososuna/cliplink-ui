@@ -1,5 +1,5 @@
 ---
-import { Clipboard, ExternalLink, Trash } from 'lucide-react';
+import { Clipboard, ExternalLink, TextCursorInput, Trash } from 'lucide-react';
 
 import type { Url } from '@/domain';
 
@@ -8,6 +8,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/pres
 import DeleteUrlDialog from '@/presentation/components/url/DeleteUrlDialog';
 import MyShortUrlCopyButton from '@/presentation/components/url/MyShortUrlCopyButton';
 import MyShortUrlNameTooltip from '@/presentation/components/url/MyShortUrlNameTooltip';
+import MyShortUrlRenameButton from '@/presentation/components/url/MyShortUrlRenameButton';
 
 interface Props {
   url: Url
@@ -52,6 +53,11 @@ const { url } = Astro.props;
           <ExternalLink />
         </Button>
       </a>
+      <MyShortUrlRenameButton client:only urlId={url.id} name={url.name}>
+        <Button slot="fallback" disabled variant="outline" size="sm">
+          <TextCursorInput />
+        </Button>
+      </MyShortUrlRenameButton>
     </div>
     <DeleteUrlDialog client:only id={url.id}>
       <Button slot="fallback" disabled className="border-red-500" variant="outline" size="sm">

@@ -1,6 +1,8 @@
 ---
 import type { Url } from '@/domain';
+
 import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+
 import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard.astro';
 import {
   Pagination,
@@ -20,57 +22,68 @@ interface Props {
 }
 const { pageNumber, limit, search } = Astro.props;
 
+// workaround for view transition bug
+// sometimes when the logout use case is called the token is not cleared at time
+// so '/' is redirecting to dashboard instead of home
+// this is happening around 1 of 10 times the user logs out.
+let isAuthenticated = true;
+
 const token = Astro.cookies.get('access_token')?.value;
+if (!token) isAuthenticated = false;
 
 const page = await urlService.getUrls(pageNumber, limit, search, token);
 
 ---
-{ page && (
-  page.items.length === 0 ? (
-    search ? (
-      <p class="px-8 text-center text-sm text-muted-foreground">
-        No URLs found matching "<strong>{search}</strong>". Please try a
-        different search term
-      </p>
+{!isAuthenticated ? (
+  <script>window.location.href = '/';</script>
+) : (
+  page && (
+    page.items.length === 0 ? (
+      search ? (
+        <p class="px-8 text-center text-sm text-muted-foreground">
+          No URLs found matching "<strong>{search}</strong>". Please try a
+          different search term
+        </p>
+      ) : (
+        <p class="px-8 text-center text-sm text-muted-foreground">
+          You haven't shortened any URLs yet. Click the <strong>"Shorten
+            URL"</strong> button to shorten your first URL
+        </p>
+      )
     ) : (
-      <p class="px-8 text-center text-sm text-muted-foreground">
-        You haven't shortened any URLs yet. Click the <strong>"Shorten
-          URL"</strong> button to shorten your first URL
-      </p>
-    )
-  ) : (
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {page.items.map((url: Url) => (
-        <MyShortUrlCard url={url} />
-      ))}
-    </div>
-    <div class="mt-6">
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              disabled={pageNumber === 1}
-              href={`/dashboard?page=${pageNumber-1}&limit=${limit}&search=${search}`}
-            />
-          </PaginationItem>
-          {Array.from({ length: page.totalPages }, (_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                href={`/dashboard?page=${index+1}&limit=${limit}&search=${search}`}
-                isActive={index + 1 === pageNumber}
-              >
-                {index + 1}
-              </PaginationLink>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {page.items.map((url: Url) => (
+          <MyShortUrlCard url={url} />
+        ))}
+      </div>
+      <div class="mt-6">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                disabled={pageNumber === 1}
+                href={`/dashboard?page=${pageNumber-1}&limit=${limit}&search=${search}`}
+              />
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              disabled={pageNumber === page.totalPages}
-              href={`/dashboard?page=${pageNumber+1}&limit=${limit}&search=${search}`}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    </div>
+            {Array.from({ length: page.totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href={`/dashboard?page=${index+1}&limit=${limit}&search=${search}`}
+                  isActive={index + 1 === pageNumber}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                disabled={pageNumber === page.totalPages}
+                href={`/dashboard?page=${pageNumber+1}&limit=${limit}&search=${search}`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    )
   )
 )}

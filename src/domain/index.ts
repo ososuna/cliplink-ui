@@ -28,6 +28,7 @@ export * from './use-cases/auth/update-password.use-case';
 export * from './use-cases/url/create-url.use-case';
 export * from './use-cases/url/get-urls.use-case';
 export * from './use-cases/url/delete-url.use-case';
+export * from './use-cases/url/rename-url.use-case';
 
 export * from './view-services/auth.view-service';
 export * from './view-services/url.view-service';
