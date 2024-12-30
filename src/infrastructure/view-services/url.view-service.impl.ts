@@ -23,6 +23,7 @@ export class UrlViewServiceImpl implements UrlViewService {
   private handleError = (error: unknown) => {
     if (error instanceof CustomError) {
       this.notifyUiError({ type: 'error', message: error.message });
+      return;
     }
     this.notifyUiError({ type: 'error', message: Messages.INTERNAL_SERVER_ERROR });
   }
