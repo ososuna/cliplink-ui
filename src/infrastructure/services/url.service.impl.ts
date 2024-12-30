@@ -22,4 +22,8 @@ export class UrlServiceImpl implements UrlService {
     return HttpClient.delete<void>(`/url/${ urlId }`);
   }
 
+  rename(urlId: string, name: string): Promise<Url> {
+    return HttpClient.put<Url>(`/url/${ urlId }`, { name });
+  }
+
 }

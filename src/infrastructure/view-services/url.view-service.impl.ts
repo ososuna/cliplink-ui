@@ -1,4 +1,15 @@
-import { CreateUrl, CreateUrlDto, CustomError, DeleteUrl, GetUrls, Url, type Page, type UrlService, type UrlViewService } from '@/domain';
+import {
+  CreateUrl,
+  CreateUrlDto,
+  CustomError,
+  DeleteUrl,
+  GetUrls,
+  Url,
+  RenameUrl,
+  type Page,
+  type UrlService,
+  type UrlViewService
+} from '@/domain';
 import { Messages } from '@/config';
 import { setUiError } from '@/infrastructure';
 
@@ -41,6 +52,12 @@ export class UrlViewServiceImpl implements UrlViewService {
   async deleteUrl(urlId: string): Promise<void> {
     return new DeleteUrl(this.urlService)
       .execute(urlId)
+      .catch(this.handleError);
+  }
+
+  async rename(urlId: string, name: string): Promise<void | Url> {
+    return new RenameUrl(this.urlService)
+      .execute(urlId, name)
       .catch(this.handleError);
   }
 }
