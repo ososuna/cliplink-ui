@@ -30,8 +30,11 @@ const CreateShortUrlDialog = () => {
   const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
     const { name, longUrl } = values;
     setIsLoading(true);
-    await new UrlViewServiceImpl(new UrlServiceImpl()).createUrl(longUrl, name);
-    navigate(window.location.href);
+    const url = await new UrlViewServiceImpl(new UrlServiceImpl()).createUrl(longUrl, name);
+    if ( url ) {
+      await navigate(window.location.href);
+    }
+    setIsLoading(false);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
