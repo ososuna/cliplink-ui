@@ -25,7 +25,7 @@ import { setUiError } from '@/infrastructure';
 export class AuthViewServiceImpl implements AuthViewService {
   constructor(
     private readonly authService: AuthService,
-    private readonly navigateTo: (url: string) => void = navigate,
+    private readonly navigateTo: (url: string) => Promise<unknown> = navigate,
     private readonly notifyUiError: (error: { message: string; type: string; }) => void = setUiError,
   ) {}
 
@@ -87,8 +87,8 @@ export class AuthViewServiceImpl implements AuthViewService {
   async logout(): Promise<void> {
     return new Logout(this.authService)
       .execute()
-      .then(() => {
-        this.navigateTo('/');
+      .then(async() => {
+        await this.navigateTo('/');
       })
       .catch(this.handleError);
   }
