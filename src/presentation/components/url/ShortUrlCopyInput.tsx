@@ -1,5 +1,5 @@
 import { CopyInput } from '@/presentation/components/ui/copy-input';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   shortId: string;
