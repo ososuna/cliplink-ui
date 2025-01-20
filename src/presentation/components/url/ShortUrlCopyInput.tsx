@@ -1,5 +1,6 @@
-import { CopyInput } from '@/presentation/components/ui/copy-input';
 import { useEffect, useState } from 'react';
+import { envs } from '@/config';
+import { CopyInput } from '@/presentation/components/ui/copy-input';
 
 interface Props {
   shortId: string;
@@ -11,7 +12,8 @@ const ShortUrlCopyInput = ({ shortId }: Props) => {
   useEffect(() => {
     // Check if window is available (client-side)
     if (typeof window !== 'undefined') {
-      setShortUrl(`${window.location.origin}/${shortId}`);
+      const domain = envs.PUBLIC_APP_DOMAIN || window.location.origin;
+      setShortUrl(`${domain}/${shortId}`);
     }
   }, [shortId]); // Recalculate shortUrl when shortId changes
 

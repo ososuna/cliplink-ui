@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check, Clipboard } from 'lucide-react';
+import { envs } from '@/config';
 import { Button } from '@/presentation/components/ui/button';
 import { useToast } from '@/presentation/hooks/use-toast';
 
@@ -13,7 +14,8 @@ const MyShortUrlCopyButton = ({ id }: Props) => {
   const { toast } = useToast();
 
   const onCopy = () => {
-    navigator.clipboard.writeText(`${window.location.hostname}/${id}`).then(() => {
+    const domain = envs.PUBLIC_APP_DOMAIN || window.location.hostname;
+    navigator.clipboard.writeText(`${domain}/${id}`).then(() => {
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
