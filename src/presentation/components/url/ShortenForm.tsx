@@ -7,7 +7,7 @@ import { navigate } from 'astro:transitions/client';
 
 import { Messages } from '@/config';
 
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
 import { Button } from '@/presentation/components/ui/button';
@@ -24,7 +24,7 @@ const formSchema = z.object({
 const ShortenForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const urlService = useService(UrlServiceImpl, UrlViewServiceImpl);
+  const urlService = useService(UrlRepositoryImpl, UrlServiceImpl);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

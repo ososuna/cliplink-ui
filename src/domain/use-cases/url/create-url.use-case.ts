@@ -1,4 +1,4 @@
-import type { UrlService, Url, CreateUrlDto } from '@/domain';
+import type { UrlRepository, Url, CreateUrlDto } from '@/domain';
 
 interface CreateUrlUseCase {
   execute(createUrlDto: CreateUrlDto): Promise<Url>;
@@ -6,10 +6,10 @@ interface CreateUrlUseCase {
 
 export class CreateUrl implements CreateUrlUseCase {
 
-  constructor(private readonly urlService: UrlService) {}
+  constructor(private readonly urlRepository: UrlRepository) {}
 
   async execute(createUrlDto: CreateUrlDto): Promise<Url> {
-    const url = await this.urlService.create(createUrlDto);
+    const url = await this.urlRepository.create(createUrlDto);
     return url;
   }
 }

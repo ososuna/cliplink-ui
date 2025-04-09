@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { Messages } from '@/config';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
@@ -23,7 +23,7 @@ const PasswordForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);  
   const emailToLogin = useRef<string | null>('');
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

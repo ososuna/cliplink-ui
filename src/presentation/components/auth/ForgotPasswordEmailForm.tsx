@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { Messages } from '@/config';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
@@ -26,7 +26,7 @@ interface Props {
 const ForgotPasswordEmailForm = ({ buttonText }: Props) => {
 
   const { toast } = useToast();
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

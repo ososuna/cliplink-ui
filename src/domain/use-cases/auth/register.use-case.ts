@@ -1,4 +1,4 @@
-import type { AuthService, RegisterUserDto, User } from '@/domain';
+import type { AuthRepository, RegisterUserDto, User } from '@/domain';
 
 interface RegisterUseCase {
   execute(registerUserDto: RegisterUserDto): Promise<User>;
@@ -6,10 +6,10 @@ interface RegisterUseCase {
 
 export class Register implements RegisterUseCase {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(registerUserDto: RegisterUserDto): Promise<User> {
-    const user = await this.authService.register(registerUserDto);
+    const user = await this.authRepository.register(registerUserDto);
     return user;
   }
 }

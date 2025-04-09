@@ -4,7 +4,7 @@ import { navigate } from 'astro:transitions/client';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 interface Props {
   id: string
@@ -17,7 +17,7 @@ const ConfirmationDialog = ({ id }: Props) => {
 
   const onConfirm = async () => {
     setIsLoading(true);
-    await new UrlViewServiceImpl(new UrlServiceImpl()).deleteUrl(id);
+    await new UrlServiceImpl(new UrlRepositoryImpl()).deleteUrl(id);
     navigate(window.location.href);
   };
 

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { navigate } from 'astro:transitions/client';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
@@ -29,7 +29,7 @@ interface Props {
 const ResetPasswordForm = ({ token }: Props) => {
 
   const [ isLoading, setIsLoading ] = useState(false);
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({

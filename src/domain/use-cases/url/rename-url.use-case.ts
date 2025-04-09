@@ -1,4 +1,4 @@
-import type { Url, UrlService } from '@/domain';
+import type { Url, UrlRepository } from '@/domain';
 
 export interface RenameUrlUseCase {
   execute(urlId: string, name: string): Promise<Url>;
@@ -6,9 +6,9 @@ export interface RenameUrlUseCase {
 
 export class RenameUrl implements RenameUrlUseCase {
   
-  constructor( private readonly urlService: UrlService ) {}
+  constructor( private readonly urlRepository: UrlRepository ) {}
   
   async execute(urlId: string, name: string): Promise<Url> {
-    return await this.urlService.rename(urlId, name);
+    return await this.urlRepository.rename(urlId, name);
   }
 }

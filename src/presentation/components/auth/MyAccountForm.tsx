@@ -6,7 +6,7 @@ import * as z from 'zod';
 
 import type { User } from '@/domain';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
@@ -46,7 +46,7 @@ const formSchema = z.object({
 const MyAccountForm = ({user: initialUser}: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
   const { toast } = useToast();
 
   const defaultValues = {

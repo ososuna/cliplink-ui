@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { Messages } from '@/config';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
@@ -30,7 +30,7 @@ const DeleteAccountButton = () => {
     }
   });
 
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
 
   const onSubmit = async() => {
     await authService.deleteAccount(); 

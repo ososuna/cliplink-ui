@@ -1,4 +1,4 @@
-import type { AuthService } from '@/domain';
+import type { AuthRepository } from '@/domain';
 
 interface DeleteAccountUseCase {
   execute(): Promise<void>;
@@ -6,10 +6,10 @@ interface DeleteAccountUseCase {
 
 export class DeleteAccount implements DeleteAccountUseCase {
   constructor(
-    private readonly authService: AuthService
+    private readonly authRepository: AuthRepository
   ) {}
 
   async execute(): Promise<void> {
-    await this.authService.deleteAccount();
+    await this.authRepository.deleteAccount();
   }
 }

@@ -1,9 +1,9 @@
 ---
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 const token = Astro.cookies.get('access_token')?.value;
 
-const page = await new UrlViewServiceImpl(new UrlServiceImpl()).getUrls(1, 1, '', token);
+const page = await new UrlServiceImpl(new UrlRepositoryImpl()).getUrls(1, 1, '', token);
 const urlsCount = page?.total;
 
 ---
