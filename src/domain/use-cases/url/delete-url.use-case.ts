@@ -1,4 +1,4 @@
-import type { UrlService } from '@/domain';
+import type { UrlRepository } from '@/domain';
 
 interface DeleteUrlUseCase {
   execute(urlId: string): Promise<void>;
@@ -7,10 +7,10 @@ interface DeleteUrlUseCase {
 export class DeleteUrl implements DeleteUrlUseCase {
 
   constructor(
-    private readonly urlService: UrlService
+    private readonly urlRepository: UrlRepository
   ) {}
 
   async execute(urlId: string): Promise<void> {
-    await this.urlService.delete(urlId);
+    await this.urlRepository.delete(urlId);
   }
 }

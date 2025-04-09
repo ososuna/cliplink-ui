@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LogOut } from 'lucide-react';
 
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
 import { Avatar } from '@/presentation/components/ui/avatar';
@@ -21,7 +21,7 @@ interface Props {
 
 const AuthDropdown = ({ name, lastName }: Props) => {
 
-  const authService = useService(AuthServiceImpl, AuthViewServiceImpl);
+  const authService = useService(AuthRepositoryImpl, AuthServiceImpl);
   
   // Workaround for https://github.com/withastro/astro/issues/10863
   const [dropdownOpen, setDropdownOpen] = useState(false);

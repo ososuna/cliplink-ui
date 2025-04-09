@@ -1,7 +1,7 @@
 ---
 import type { Url } from '@/domain';
 
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard.astro';
 import {
@@ -13,7 +13,7 @@ import {
   PaginationPrevious
 } from '@/presentation/components/ui/pagination';
 
-const urlService = new UrlViewServiceImpl(new UrlServiceImpl());
+const urlService = new UrlServiceImpl(new UrlRepositoryImpl());
 
 interface Props {
   pageNumber: number;

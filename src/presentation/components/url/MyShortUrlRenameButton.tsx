@@ -7,7 +7,7 @@ import { TextCursorInput } from 'lucide-react';
 
 import { Messages } from '@/config';
 
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 import {
   Dialog,
@@ -66,7 +66,7 @@ const MyShortUrlRenameButton = ({ urlId, name: initialName }: Props) => {
       return;
     }
     setIsLoading(true);
-    const url = await new UrlViewServiceImpl(new UrlServiceImpl()).rename(urlId, name);
+    const url = await new UrlServiceImpl(new UrlRepositoryImpl()).rename(urlId, name);
     if (url) {
       await navigate(window.location.href);
       toast({

@@ -1,4 +1,4 @@
-import type { AuthService, LoginUserDto, User } from '@/domain';
+import type { AuthRepository, LoginUserDto, User } from '@/domain';
 
 interface LoginUseCase {
   execute(loginUserDto: LoginUserDto): Promise<User>;
@@ -6,10 +6,10 @@ interface LoginUseCase {
 
 export class Login implements LoginUseCase {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(loginUserDto: LoginUserDto): Promise<User> {
-    const user = await this.authService.login(loginUserDto);
+    const user = await this.authRepository.login(loginUserDto);
     return user;
   }
 }

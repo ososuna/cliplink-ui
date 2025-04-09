@@ -1,4 +1,4 @@
-import type { AuthService } from '@/domain';
+import type { AuthRepository } from '@/domain';
 
 interface LogoutUseCase {
   execute(): Promise<void>;
@@ -6,9 +6,9 @@ interface LogoutUseCase {
 
 export class Logout implements LogoutUseCase {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(): Promise<void> {
-    await this.authService.logout();
+    await this.authRepository.logout();
   }
 }

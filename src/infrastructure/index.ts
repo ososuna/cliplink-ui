@@ -1,7 +1,13 @@
-export * from './services/url.service.impl';
-export * from './services/auth.service.impl';
+import { AuthRepositoryImpl } from './repositories/auth.repository.impl';
+import { AuthServiceImpl } from './services/auth.service.impl';
+import { UrlRepositoryImpl } from './repositories/url.repository.impl';
+import { UrlServiceImpl } from './services/url.service.impl';
 
-export * from './view-services/auth.view-service.impl';
-export * from './view-services/url.view-service.impl';
+export {
+  AuthRepositoryImpl,
+  AuthServiceImpl,
+  UrlRepositoryImpl,
+  UrlServiceImpl,
+};
 
 export * from './store/ui.store';

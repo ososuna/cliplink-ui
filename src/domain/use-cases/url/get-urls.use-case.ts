@@ -1,4 +1,4 @@
-import type { Page, Url, UrlService } from '@/domain';
+import type { Page, Url, UrlRepository } from '@/domain';
 
 interface GetUrlsUseCase {
   execute(page: number, limit: number, search: string, token?: string): Promise<Page<Url>>;
@@ -6,10 +6,10 @@ interface GetUrlsUseCase {
 
 export class GetUrls implements GetUrlsUseCase {
 
-  constructor(private readonly urlService: UrlService) {}
+  constructor(private readonly urlRepository: UrlRepository) {}
 
   async execute(page: number, limit: number, search: string, token?: string): Promise<Page<Url>> {
-    const data = await this.urlService.getUrls(page, limit, search, token);
+    const data = await this.urlRepository.getUrls(page, limit, search, token);
     return data;
   }
 }

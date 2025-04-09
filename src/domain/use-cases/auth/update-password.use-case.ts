@@ -1,4 +1,4 @@
-import type { AuthService, User } from '@/domain';
+import type { AuthRepository, User } from '@/domain';
 
 interface UpdatePasswordUseCase {
   execute(token: string, password: string): Promise<User>;
@@ -6,10 +6,11 @@ interface UpdatePasswordUseCase {
 
 export class UpdatePassword implements UpdatePasswordUseCase {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(token: string, password: string): Promise<User> {
-    return await this.authService.updatePassword(token, password);
+    const user = await this.authRepository.updatePassword(token, password);
+    return user;
   }
 
 }

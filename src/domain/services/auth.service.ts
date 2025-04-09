@@ -1,13 +1,14 @@
-import { LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User } from '@/domain';
+import type { ResetPasswordToken, User } from '@/domain';
+
 export interface AuthService {
-  login(loginUserDto: LoginUserDto): Promise<User>;
-  register(registerUSerDto: RegisterUserDto): Promise<User>;
-  checkToken(token?: string): Promise<User>;
+  loginByEmail(email: string, password: string): Promise<void | User>;
+  registerByEmail(email: string, name: string, lastName: string, password: string): Promise<User | void>;
+  checkToken(token?: string): Promise<User | void>;
   logout(): Promise<void>;
-  update(updateUserDto: UpdateUserDto): Promise<User>;
-  authGithub(): Promise<void>;
+  update(name?: string, lastName?: string, email?: string): Promise<User | void>;
+  authGithub(): void;
   deleteAccount(): Promise<void>;
   forgotPassword(email: string): Promise<void>;
-  checkPasswordToken(token: string): Promise<ResetPasswordToken>;
-  updatePassword(token: string, password: string): Promise<User>;
+  checkPasswordToken(token: string): Promise<ResetPasswordToken | void>;
+  updatePassword(token: string, password: string): Promise<User | void>;
 }

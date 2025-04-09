@@ -1,4 +1,4 @@
-import type { AuthService } from '@/domain';
+import type { AuthRepository } from '@/domain';
 
 interface ForgotPasswordUseCase {
   execute(email: string): Promise<void>;
@@ -6,10 +6,10 @@ interface ForgotPasswordUseCase {
 
 export class ForgotPassword implements ForgotPasswordUseCase {
   
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(email: string): Promise<void>{
-    await this.authService.forgotPassword(email);
+    await this.authRepository.forgotPassword(email);
   }
 
 }

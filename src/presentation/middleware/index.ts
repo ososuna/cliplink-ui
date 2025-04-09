@@ -1,12 +1,12 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
-import { AuthServiceImpl, AuthViewServiceImpl } from '@/infrastructure';
+import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
 
 const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service']);
-const authService = new AuthServiceImpl();
-const authViewService = new AuthViewServiceImpl(authService);
+const authRepository = new AuthRepositoryImpl();
+const authViewService = new AuthServiceImpl(authRepository);
 
 export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
   const url = new URL(request.url);

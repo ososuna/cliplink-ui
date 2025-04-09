@@ -1,13 +1,16 @@
-import type { AuthService, ResetPasswordToken } from '@/domain';
+import type { AuthRepository, ResetPasswordToken } from '@/domain';
 
 interface CheckPasswordTokenUseCase {
   execute(token: string): Promise<ResetPasswordToken>;
 }
 
 export class CheckPasswordToken implements CheckPasswordTokenUseCase {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authRepository: AuthRepository
+  ) {}
 
   async execute(token: string): Promise<ResetPasswordToken> {
-    return await this.authService.checkPasswordToken(token);
+    const resetPasswordToken = await this.authRepository.checkPasswordToken(token);
+    return resetPasswordToken;
   }
 }

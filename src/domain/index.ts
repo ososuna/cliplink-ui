@@ -11,8 +11,8 @@ export * from './entities/user.entity';
 export * from './entities/url.entity';
 export * from './entities/reset-password-token.entity';
 
-export * from './services/url.service';
-export * from './services/auth.service';
+export * from './repositories/url.repository';
+export * from './repositories/auth.repository';
 
 export * from './use-cases/auth/login.use-case';
 export * from './use-cases/auth/register.use-case';
@@ -30,7 +30,7 @@ export * from './use-cases/url/get-urls.use-case';
 export * from './use-cases/url/delete-url.use-case';
 export * from './use-cases/url/rename-url.use-case';
 
-export * from './view-services/auth.view-service';
-export * from './view-services/url.view-service';
+export * from './services/auth.service';
+export * from './services/url.service';
 
 export * from './interfaces/page';

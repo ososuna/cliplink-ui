@@ -1,25 +1,17 @@
-import type { AuthService, UpdateUserDto } from '@/domain';
-
-interface User {
-  id: string,
-  name: string,
-  email: string,
-  role: string[],
-  img?: string,
-}
+import type { AuthRepository, UpdateUserDto, User } from '@/domain';
 
 interface UpdateUserUseCase {
-  execute(updateUserDto: UpdateUserDto): Promise<User | void>
+  execute(updateUserDto: UpdateUserDto): Promise<User>;
 }
 
 export class UpdateUser implements UpdateUserUseCase {
 
   constructor(
-    private readonly authService: AuthService
+    private readonly authRepository: AuthRepository
   ) {}
 
   async execute(updateUserDto: UpdateUserDto) {
-    const user = await this.authService.update(updateUserDto);
+    const user = await this.authRepository.update(updateUserDto);
     return user;
   }
 }

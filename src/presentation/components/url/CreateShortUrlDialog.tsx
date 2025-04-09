@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { Messages } from '@/config';
 
-import { UrlServiceImpl, UrlViewServiceImpl } from '@/infrastructure';
+import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 import { Button } from '@/presentation/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
@@ -30,7 +30,7 @@ const CreateShortUrlDialog = () => {
   const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
     const { name, longUrl } = values;
     setIsLoading(true);
-    const url = await new UrlViewServiceImpl(new UrlServiceImpl()).createUrl(longUrl, name);
+    const url = await new UrlServiceImpl(new UrlRepositoryImpl()).createUrl(longUrl, name);
     if ( url ) {
       await navigate(window.location.href);
     }

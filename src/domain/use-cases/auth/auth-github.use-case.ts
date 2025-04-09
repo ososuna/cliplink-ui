@@ -1,4 +1,4 @@
-import type { AuthService } from '@/domain';
+import type { AuthRepository } from '@/domain';
 
 interface AuthGithubUseCase {
   execute(): Promise<void>;
@@ -6,9 +6,9 @@ interface AuthGithubUseCase {
 
 export class AuthGithub implements AuthGithubUseCase {
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authRepository: AuthRepository) {}
 
   async execute(): Promise<void> {
-    await this.authService.authGithub();
+    await this.authRepository.authGithub();
   }
 }
