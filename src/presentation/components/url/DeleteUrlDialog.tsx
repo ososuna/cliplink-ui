@@ -1,9 +1,17 @@
+import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { Trash } from 'lucide-react';
-import { navigate } from 'astro:transitions/client';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/presentation/styled-components';
 
-import { Button } from '@/presentation/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
 import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
 
 interface Props {

@@ -4,7 +4,7 @@ import { LogOut } from 'lucide-react';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 import { useService } from '@/presentation/hooks/use-service';
-import { Avatar } from '@/presentation/components/ui/avatar';
+import { Avatar } from '@/presentation/styled-components';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/presentation/components/ui/dropdown-menu';
+} from '@/presentation/styled-components';
 
 interface Props {
   name: string;

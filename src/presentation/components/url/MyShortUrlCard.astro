@@ -1,14 +1,18 @@
 ---
 import { Clipboard, ExternalLink, TextCursorInput, Trash } from 'lucide-react';
-
 import type { Url } from '@/domain';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import DeleteUrlDialog from '@/presentation/components/url/DeleteUrlDialog';
 import MyShortUrlCopyButton from '@/presentation/components/url/MyShortUrlCopyButton';
 import MyShortUrlNameTooltip from '@/presentation/components/url/MyShortUrlNameTooltip';
 import MyShortUrlRenameButton from '@/presentation/components/url/MyShortUrlRenameButton';
+import {
+  Button,
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/presentation/styled-components';
 
 interface Props {
   url: Url

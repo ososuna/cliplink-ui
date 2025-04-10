@@ -1,5 +1,10 @@
-import { CardTitle } from '@/presentation/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/presentation/components/ui/tooltip';
+import {
+  CardTitle,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/presentation/styled-components';
 
 interface Props {
   name: string;

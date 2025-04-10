@@ -2,16 +2,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trash2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Messages } from '@/config';
-
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input
+} from '@/presentation/styled-components';
 
 const confirmPhrase = 'Delete my account';
 

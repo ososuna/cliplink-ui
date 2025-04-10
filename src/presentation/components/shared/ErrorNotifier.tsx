@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
-
 import { setUiError, uiError } from '@/infrastructure';
-
-import { Toaster } from '@/presentation/components/ui/toaster';
 import { useToast } from '@/presentation/hooks/use-toast';
+import { Toaster } from '@/presentation/styled-components';
 
 const ErrorNotifier = () => {
 

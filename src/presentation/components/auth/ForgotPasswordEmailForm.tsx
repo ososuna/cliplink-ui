@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Messages } from '@/config';
-
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
 import { useToast } from '@/presentation/hooks/use-toast';
 import { useService } from '@/presentation/hooks/use-service';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input
+} from '@/presentation/styled-components';
 
 const formSchema = z.object({
   email: z.string().email({

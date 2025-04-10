@@ -1,22 +1,22 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-
 import type { User } from '@/domain';
-
 import { Messages } from '@/config';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
+  FormMessage,
+  Input,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/presentation/styled-components';
 
 interface Props {
   user: User

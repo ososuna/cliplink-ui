@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Check, Clipboard } from 'lucide-react';
 import { envs } from '@/config';
-import { Button } from '@/presentation/components/ui/button';
 import { useToast } from '@/presentation/hooks/use-toast';
+import { Button } from '@/presentation/styled-components';
 
 interface Props {
   id: string;

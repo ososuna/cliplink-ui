@@ -1,4 +1,11 @@
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/presentation/components/ui/pagination';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/presentation/styled-components';
 
 interface Props {
   currentPage: number;
@@ -21,6 +28,7 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
+            size="sm"
             onClick={(e) => {
               e.preventDefault();
               handlePrevious();
@@ -31,6 +39,7 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
         {Array.from({ length: totalPages }, (_, index) => (
           <PaginationItem key={index}>
             <PaginationLink
+              size="sm"
               onClick={(e) => {
                 e.preventDefault();
                 onPageChange(index + 1);
@@ -43,6 +52,7 @@ const CardsPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
         ))}
         <PaginationItem>
           <PaginationNext
+            size="sm"
             onClick={(e) => {
               e.preventDefault();
               handleNext();

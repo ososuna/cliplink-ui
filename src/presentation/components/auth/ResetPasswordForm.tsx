@@ -4,14 +4,19 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { navigate } from 'astro:transitions/client';
-
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
 import { useService } from '@/presentation/hooks/use-service';
 import { useToast } from '@/presentation/hooks/use-toast';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Button
+} from '@/presentation/styled-components';
 
 const formSchema = z.object({
   password: z.string().min(8).max(128),

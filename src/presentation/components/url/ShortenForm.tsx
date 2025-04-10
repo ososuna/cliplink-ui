@@ -1,19 +1,24 @@
+import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
-import { navigate } from 'astro:transitions/client';
-
 import { Messages } from '@/config';
-
 import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
-
 import { useService } from '@/presentation/hooks/use-service';
-import { Button } from '@/presentation/components/ui/button';
-import { CardContent, CardFooter } from '@/presentation/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
+import {
+  Button,
+  CardContent,
+  CardFooter,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input
+} from '@/presentation/styled-components';
 
 const formSchema = z.object({
   originalUrl: z.string().url({

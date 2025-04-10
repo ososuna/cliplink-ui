@@ -1,17 +1,27 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
-
 import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/presentation/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Button
+} from '@/presentation/styled-components';
 
 const formSchema = z.object({
   name: z.string().trim().max(80, {

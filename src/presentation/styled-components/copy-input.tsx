@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Check, Copy } from 'lucide-react'
-import { Input } from "@/presentation/components/ui/input"
+import { Input } from "@/presentation/styled-components"
 import { cn } from "@/presentation/lib/utils"
 
 interface CopyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {

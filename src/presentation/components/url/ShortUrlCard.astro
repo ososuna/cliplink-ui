@@ -1,6 +1,7 @@
 ---
 import { ExternalLink } from 'lucide-react';
-
+import ClipLinkLogo from '@/presentation/components/shared/ClipLinkLogo.astro';
+import ShortUrlCopyInput from '@/presentation/components/url/ShortUrlCopyInput';
 import {
   Card,
   CardContent,
@@ -8,11 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/presentation/components/ui/card';
-import { Button } from '@/presentation/components/ui/button';
-import { Label } from '@/presentation/components/ui/label';
-import ClipLinkLogo from '@/presentation/components/shared/ClipLinkLogo.astro';
-import ShortUrlCopyInput from './ShortUrlCopyInput';
+  Label,
+  Button
+} from '@/presentation/styled-components';
 
 interface Props {
 	id: string

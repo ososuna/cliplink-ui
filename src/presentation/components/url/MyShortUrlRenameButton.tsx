@@ -1,14 +1,12 @@
-import { useState } from 'react';
 import { navigate } from 'astro:transitions/client';
-import { z } from 'zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { TextCursorInput } from 'lucide-react';
-
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
-
 import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
-
+import { useToast } from '@/presentation/hooks/use-toast';
 import {
   Dialog,
   DialogContent,
@@ -16,12 +14,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/presentation/components/ui/dialog';
-import { Button } from '@/presentation/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
-import { useToast } from '@/presentation/hooks/use-toast';
+  DialogTrigger,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Button
+} from '@/presentation/styled-components';
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {

@@ -1,27 +1,27 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-
 import type { User } from '@/domain';
-
+import { Messages } from '@/config';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
-
-import { Button } from '@/presentation/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
+import { useService } from '@/presentation/hooks/use-service';
+import { useToast } from '@/presentation/hooks/use-toast';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
-import { useService } from '@/presentation/hooks/use-service';
-import { useToast } from '@/presentation/hooks/use-toast';
-import { Messages } from '@/config';
+  FormMessage,
+  Input,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from '@/presentation/styled-components';
 
 interface Props {
   user: User

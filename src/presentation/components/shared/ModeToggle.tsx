@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
-
-import { Button } from '@/presentation/components/ui/button'
+import { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/presentation/components/ui/dropdown-menu'
+} from '@/presentation/styled-components';
 
 const ModeToggle = () => {
   // Workaround for https://github.com/withastro/astro/issues/10863

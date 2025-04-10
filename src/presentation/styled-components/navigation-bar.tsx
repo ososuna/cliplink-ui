@@ -3,7 +3,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList
-} from '@/presentation/components/ui/navigation-menu';
+} from '@/presentation/styled-components';
 
 export function NavigationBar() {
   return (

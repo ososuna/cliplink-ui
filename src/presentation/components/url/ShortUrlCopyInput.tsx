@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { envs } from '@/config';
-import { CopyInput } from '@/presentation/components/ui/copy-input';
+import { CopyInput } from '@/presentation/styled-components';
 
 interface Props {
   shortId: string;

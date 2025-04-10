@@ -1,6 +1,6 @@
-import { useState, type ChangeEvent } from 'react';
 import { navigate } from 'astro:transitions/client';
-import { Input } from '@/presentation/components/ui/input';
+import { useState, type ChangeEvent } from 'react';
+import { Input } from '@/presentation/styled-components';
 
 interface Props {
   searchTerm: string;

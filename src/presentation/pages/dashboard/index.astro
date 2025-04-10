@@ -1,11 +1,10 @@
 ---
-import { Button } from '@/presentation/components/ui/button';
-import { Input } from '@/presentation/components/ui/input';
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
 import CreateShortUrlDialog from '@/presentation/components/url/CreateShortUrlDialog';
 import MyShortUrlCards from '@/presentation/components/url/MyShortUrlCards.astro';
 import MyShortUrlCardsSkeleton from '@/presentation/components/url/MyShortUrlCardsSkeleton.astro';
 import UrlSearchBar from '@/presentation/components/url/UrlSearchBar';
-import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
+import { Button, Input } from '@/presentation/styled-components';
 
 const defaultPageNumber = 1;
 const defaultLimit = 9;

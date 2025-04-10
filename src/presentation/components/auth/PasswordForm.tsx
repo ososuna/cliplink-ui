@@ -8,9 +8,17 @@ import { Messages } from '@/config';
 
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
-import { Button } from '@/presentation/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/presentation/components/ui/form';
-import { Input } from '@/presentation/components/ui/input';
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input,
+  Button
+} from '@/presentation/styled-components';
+
 import { useService } from '@/presentation/hooks/use-service';
 
 const formSchema = z.object({

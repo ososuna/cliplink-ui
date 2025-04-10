@@ -1,12 +1,17 @@
 ---
+import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
+import ShortUrlsCount from '@/presentation/components/url/ShortUrlsCount.astro';
 import DeleteAccountButton from '@/presentation/components/auth/DeleteAccountButton';
 import MyAccountForm from '@/presentation/components/auth/MyAccountForm';
 import MyAccountFormPreview from '@/presentation/components/auth/MyAccountFormPreview';
 import MyAccountView from '@/presentation/components/auth/MyAccountView';
-import { Card, CardContent, CardHeader, CardTitle } from '@/presentation/components/ui/card';
-import { Skeleton } from '@/presentation/components/ui/skeleton';
-import ShortUrlsCount from '@/presentation/components/url/ShortUrlsCount.astro';
-import HomeLayout from '@/presentation/layouts/HomeLayout.astro';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@/presentation/styled-components';
 
 const user = Astro.locals.user;
 

@@ -1,8 +1,6 @@
 ---
 import type { Url } from '@/domain';
-
 import { UrlRepositoryImpl, UrlServiceImpl } from '@/infrastructure';
-
 import MyShortUrlCard from '@/presentation/components/url/MyShortUrlCard.astro';
 import {
   Pagination,
@@ -11,7 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious
-} from '@/presentation/components/ui/pagination';
+} from '@/presentation/styled-components';
 
 const urlService = new UrlServiceImpl(new UrlRepositoryImpl());
 
