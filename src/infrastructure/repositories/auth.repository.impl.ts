@@ -21,13 +21,13 @@ export class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  refreshToken(token?: string): Promise<UserToken> {
+  refreshToken(token?: string): Promise<User> {
     if (token) {
-      return HttpClient.get<UserToken>('/auth/refresh-token', { headers: {
+      return HttpClient.get<User>('/auth/refresh-token', { headers: {
         Cookie: `refresh_token=${token}`
       }});
     } else {
-      return HttpClient.get<UserToken>('/auth/refresh-token');
+      return HttpClient.get<User>('/auth/refresh-token');
     }
   }
 

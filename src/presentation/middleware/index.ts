@@ -10,8 +10,6 @@ const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy
 const authRepository = new AuthRepositoryImpl();
 const authService = new AuthServiceImpl(authRepository);
 
-const isProduction = () => import.meta.env.PROD;
-
 export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
   const url = new URL(request.url);
 
@@ -60,27 +58,31 @@ const validateToken = async (accessToken: string, refreshToken: string, cookies:
 
 const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
   try {
-    const userToken = await authService.refreshToken(token);
-    if (!userToken) {
+    const user = await authService.refreshToken(token);
+    if (!user) {
       return null;
     }
-    cookies.delete('access_token');
-    cookies.delete('refresh_token');
-    cookies.set('access_token', userToken.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: '.cliplink.app',
-      maxAge: 60 * 60 * 1000, // 1 hour
-    });
-    cookies.set('refresh_token', userToken.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      domain: '.cliplink.app',
-      maxAge: 60 * 60 * 24 * 7 * 1000, // 7 days
-    });
-    return userToken.user;
+    // Get the response headers from the last request
+    const response = await fetch(`${import.meta.env.PUBLIC_API_BASE_URL}/auth/refresh-token`, {
+      credentials: 'include',
+      headers: {
+        Cookie: `refresh_token=${token}`
+      }
+    });  
+    const setCookieHeader = response.headers.get('set-cookie');
+    if (!setCookieHeader) {
+      return null;
+    }
+    const [accessTokenCookie, refreshTokenCookie] = setCookieHeader.split('refresh_token=');
+    const accessTokenMatch = accessTokenCookie.match(/access_token=([^;]+)/);
+    if (accessTokenMatch) {
+      cookies.set('access_token', accessTokenMatch[1], CookieConfig.authCookieOptions());
+    }
+    const refreshTokenMatch = refreshTokenCookie.match(/^([^;]+)/);
+    if (refreshTokenMatch) {
+      cookies.set('refresh_token', refreshTokenMatch[1], CookieConfig.authCookieOptions(60 * 60 * 24 * 7 * 1000));
+    }
+    return user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
     return null;
