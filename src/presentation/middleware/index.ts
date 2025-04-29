@@ -64,10 +64,22 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
     if (!userToken) {
       return null;
     }
-    cookies.delete('access_token', CookieConfig.authClearCookieOptions(isProduction()));
-    cookies.delete('refresh_token', CookieConfig.authClearCookieOptions(isProduction()));
-    cookies.set('access_token', userToken.accessToken, CookieConfig.authCookieOptions(isProduction()));
-    cookies.set('refresh_token', userToken.refreshToken, CookieConfig.authCookieOptions(isProduction(), 60 * 60 * 24 * 7 * 1000)); // 7 days
+    cookies.delete('access_token');
+    cookies.delete('refresh_token');
+    cookies.set('access_token', userToken.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      domain: '.cliplink.app',
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+    cookies.set('refresh_token', userToken.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      domain: '.cliplink.app',
+      maxAge: 60 * 60 * 24 * 7 * 1000, // 7 days
+    });
     return userToken.user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
@@ -76,8 +88,8 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
 };
 
 const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext, cookies: AstroCookies) => {
-  cookies.delete('access_token', CookieConfig.authClearCookieOptions(isProduction()));
-  cookies.delete('refresh_token', CookieConfig.authClearCookieOptions(isProduction()));
+  cookies.delete('access_token');
+  cookies.delete('refresh_token');
   if (['/dashboard', '/my-account'].includes(pathname)) {
     return redirect('/auth/login');
   }
