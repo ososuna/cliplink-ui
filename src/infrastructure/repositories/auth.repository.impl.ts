@@ -1,4 +1,4 @@
-import type { AuthRepository, LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User } from '@/domain';
+import type { AuthRepository, LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User, UserToken } from '@/domain';
 import { HttpClient } from '@/config';
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -18,6 +18,16 @@ export class AuthRepositoryImpl implements AuthRepository {
       }});
     } else {
       return HttpClient.get<User>('/auth/token');
+    }
+  }
+
+  refreshToken(token?: string): Promise<UserToken> {
+    if (token) {
+      return HttpClient.get<UserToken>('/auth/refresh-token', { headers: {
+        Cookie: `refresh_token=${token}`
+      }});
+    } else {
+      return HttpClient.get<UserToken>('/auth/refresh-token');
     }
   }
 

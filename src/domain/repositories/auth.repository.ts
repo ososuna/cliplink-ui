@@ -1,8 +1,9 @@
-import { LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User } from '@/domain';
+import { LoginUserDto, RegisterUserDto, ResetPasswordToken, UpdateUserDto, User, type UserToken } from '@/domain';
 export interface AuthRepository {
   login(loginUserDto: LoginUserDto): Promise<User>;
   register(registerUSerDto: RegisterUserDto): Promise<User>;
   checkToken(token?: string): Promise<User>;
+  refreshToken(token?: string): Promise<UserToken>;
   logout(): Promise<void>;
   update(updateUserDto: UpdateUserDto): Promise<User>;
   authGithub(): Promise<void>;
