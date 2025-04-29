@@ -91,7 +91,7 @@ export class AuthServiceImpl implements AuthService {
       });
   }
 
-  async refreshToken(token?: string): Promise<UserToken | void> {
+  async refreshToken(token?: string): Promise<User | void> {
     return new RefreshToken(this.authRepository)
       .execute(token)
       .then((data) => data)
