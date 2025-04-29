@@ -1,6 +1,7 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 import { CustomError } from '@/domain';
+import { CookieConfig } from '@/config';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
@@ -61,8 +62,8 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
     if (!userToken) {
       return null;
     }
-    cookies.set('access_token', userToken.accessToken);
-    cookies.set('refresh_token', userToken.refreshToken);
+    cookies.set('access_token', userToken.accessToken, CookieConfig.authCookieOptions());
+    cookies.set('refresh_token', userToken.refreshToken, CookieConfig.authCookieOptions(60 * 60 * 24 * 7 * 1000));
     return userToken.user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
