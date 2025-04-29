@@ -1,6 +1,7 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
 import { CustomError } from '@/domain';
+import { CookieConfig } from '@/config';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
@@ -8,6 +9,8 @@ type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300
 const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service']);
 const authRepository = new AuthRepositoryImpl();
 const authService = new AuthServiceImpl(authRepository);
+
+const isProduction = () => import.meta.env.PROD;
 
 export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
   const url = new URL(request.url);
@@ -61,8 +64,22 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
     if (!userToken) {
       return null;
     }
-    cookies.set('access_token', userToken.accessToken);
-    cookies.set('refresh_token', userToken.refreshToken);
+    cookies.delete('access_token');
+    cookies.delete('refresh_token');
+    cookies.set('access_token', userToken.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      domain: '.cliplink.app',
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+    cookies.set('refresh_token', userToken.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      domain: '.cliplink.app',
+      maxAge: 60 * 60 * 24 * 7 * 1000, // 7 days
+    });
     return userToken.user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
@@ -70,9 +87,9 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
   }
 };
 
-// Handle redirection based on path
 const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext, cookies: AstroCookies) => {
   cookies.delete('access_token');
+  cookies.delete('refresh_token');
   if (['/dashboard', '/my-account'].includes(pathname)) {
     return redirect('/auth/login');
   }
