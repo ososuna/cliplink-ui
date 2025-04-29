@@ -8,6 +8,7 @@ interface CookieOptions {
 
 export class CookieConfig {
   static authCookieOptions(isProduction: boolean, maxAge?: number): CookieOptions {
+    console.log('isProduction', isProduction);
     return {
       httpOnly: true,
       secure: isProduction,
@@ -17,6 +18,7 @@ export class CookieConfig {
     };
   }
   static authClearCookieOptions(isProduction: boolean): CookieOptions {
+    console.log('isProduction', isProduction);
     return {
       httpOnly: true,
       secure: isProduction,
