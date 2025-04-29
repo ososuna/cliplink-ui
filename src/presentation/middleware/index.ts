@@ -1,6 +1,6 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
-import { CustomError, type UserToken } from '@/domain';
+import { CustomError } from '@/domain';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
