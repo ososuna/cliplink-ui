@@ -18,6 +18,8 @@ import {
   ResetPasswordToken,
   CheckPasswordToken,
   UpdatePassword,
+  RefreshToken,
+  type UserToken,
 } from '@/domain';
 import { Messages } from '@/config';
 import { setUiError } from '@/infrastructure';
@@ -74,14 +76,26 @@ export class AuthServiceImpl implements AuthService {
       .execute(token)
       .then((data) => data)
       .catch((error) => {
-        if (!(error instanceof CustomError)) {
-          this.notifyUiError({
-            type: 'error',
-            message:
-              'An unexpected error has happened. If the issue persists please talk to the admin.',
-          });
+        if (error instanceof CustomError) {
+          if (error.statusCode === 401) {
+            throw CustomError.unauthorized('Unauthorized access');
+          }
+          this.notifyUiError({ type: 'error', message: error.message });
+          return;
         }
+        this.notifyUiError({
+          type: 'error',
+          message:
+            'An unexpected error has happened. If the issue persists please talk to the admin.',
+        });
       });
+  }
+
+  async refreshToken(token?: string): Promise<UserToken | void> {
+    return new RefreshToken(this.authRepository)
+      .execute(token)
+      .then((data) => data)
+      .catch((error) => this.handleError(error));
   }
 
   async logout(): Promise<void> {

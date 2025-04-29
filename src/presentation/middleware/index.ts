@@ -1,12 +1,13 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
+import { CustomError, type UserToken } from '@/domain';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
 
 const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy', '/terms-of-service']);
 const authRepository = new AuthRepositoryImpl();
-const authViewService = new AuthServiceImpl(authRepository);
+const authService = new AuthServiceImpl(authRepository);
 
 export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
   const url = new URL(request.url);
@@ -16,14 +17,16 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
     return next();
   }
 
-  const token = cookies.get('access_token')?.value;
+  const accessToken = cookies.get('access_token')?.value;
+  const refreshToken = cookies.get('refresh_token')?.value;
 
-  if (!token) {
-    console.log('Access token cookie is missing ❌');
+  if (!accessToken || !refreshToken) {
+    console.log('Tokens are missing ❌');
     return handleRedirect(url.pathname, redirect, next, cookies);
   }
 
-  const user = await validateToken(token);
+  const user = await validateToken(accessToken, refreshToken, cookies);
+
   if (!user) {
     console.log('User not found or token invalid ❌');
     return handleRedirect(url.pathname, redirect, next, cookies);
@@ -38,11 +41,31 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
   return next();
 });
 
-const validateToken = async (token: string) => {
+const validateToken = async (accessToken: string, refreshToken: string, cookies: AstroCookies) => {
   try {
-    return await authViewService.checkToken(token);
+    return await authService.checkToken(accessToken);
   } catch (error) {
-    console.error('Token validation failed ❌', error);
+    if (!(error instanceof CustomError)) {
+      console.error('Token validation failed ❌', error);
+      return null;
+    }
+    if (error.statusCode === 401) {
+      return await refreshAccessToken(refreshToken, cookies);
+    }
+  }
+};
+
+const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
+  try {
+    const userToken = await authService.refreshToken(token);
+    if (!userToken) {
+      return null;
+    }
+    cookies.set('access_token', userToken.accessToken);
+    cookies.set('refresh_token', userToken.refreshToken);
+    return userToken.user;
+  } catch (error) {
+    console.error('Token refresh failed ❌', error);
     return null;
   }
 };

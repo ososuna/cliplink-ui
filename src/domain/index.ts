@@ -24,7 +24,7 @@ export * from './use-cases/auth/delete-account.use-case';
 export * from './use-cases/auth/forgot-password.use-case';
 export * from './use-cases/auth/check-password-token.use-case';
 export * from './use-cases/auth/update-password.use-case';
-
+export * from './use-cases/auth/refresh-token.use-case';
 export * from './use-cases/url/create-url.use-case';
 export * from './use-cases/url/get-urls.use-case';
 export * from './use-cases/url/delete-url.use-case';
@@ -34,3 +34,4 @@ export * from './services/auth.service';
 export * from './services/url.service';
 
 export * from './interfaces/page';
+export * from './interfaces/user-token';
