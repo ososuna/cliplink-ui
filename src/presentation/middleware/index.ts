@@ -10,6 +10,8 @@ const SCOPED_PATHS = new Set(['/dashboard', '/', '/my-account', '/privacy-policy
 const authRepository = new AuthRepositoryImpl();
 const authService = new AuthServiceImpl(authRepository);
 
+const isProduction = () => import.meta.env.PROD;
+
 export const onRequest = defineMiddleware(async ({ request, cookies, locals, redirect }, next) => {
   const url = new URL(request.url);
 
@@ -62,8 +64,10 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
     if (!userToken) {
       return null;
     }
-    cookies.set('access_token', userToken.accessToken, CookieConfig.authCookieOptions());
-    cookies.set('refresh_token', userToken.refreshToken, CookieConfig.authCookieOptions(60 * 60 * 24 * 7 * 1000));
+    cookies.delete('access_token', CookieConfig.authClearCookieOptions(isProduction()));
+    cookies.delete('refresh_token', CookieConfig.authClearCookieOptions(isProduction()));
+    cookies.set('access_token', userToken.accessToken, CookieConfig.authCookieOptions(isProduction()));
+    cookies.set('refresh_token', userToken.refreshToken, CookieConfig.authCookieOptions(isProduction(), 60 * 60 * 24 * 7 * 1000)); // 7 days
     return userToken.user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
@@ -71,9 +75,9 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
   }
 };
 
-// Handle redirection based on path
 const handleRedirect = (pathname: string, redirect: ContextRedirect, next: MiddlewareNext, cookies: AstroCookies) => {
-  cookies.delete('access_token');
+  cookies.delete('access_token', CookieConfig.authClearCookieOptions(isProduction()));
+  cookies.delete('refresh_token', CookieConfig.authClearCookieOptions(isProduction()));
   if (['/dashboard', '/my-account'].includes(pathname)) {
     return redirect('/auth/login');
   }
