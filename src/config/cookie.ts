@@ -16,7 +16,7 @@ export class CookieConfig {
       secure: this.isProduction,
       sameSite: this.isProduction ? 'none' : 'lax',
       domain: this.isProduction ? '.cliplink.app' : undefined,
-      maxAge: maxAge || 60 * 60 * 1000, // 1 hour in milliseconds
+      maxAge: maxAge || 60 * 60, // 1 hour in seconds
     };
   }
   static authClearCookieOptions(): CookieOptions {

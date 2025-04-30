@@ -80,7 +80,7 @@ const refreshAccessToken = async (token: string, cookies: AstroCookies) => {
     }
     const refreshTokenMatch = refreshTokenCookie.match(/^([^;]+)/);
     if (refreshTokenMatch) {
-      cookies.set('refresh_token', refreshTokenMatch[1], CookieConfig.authCookieOptions(60 * 60 * 24 * 7 * 1000));
+      cookies.set('refresh_token', refreshTokenMatch[1], CookieConfig.authCookieOptions(60 * 60 * 24 * 7)); // 7 days in seconds
     }
     return user;
   } catch (error) {
