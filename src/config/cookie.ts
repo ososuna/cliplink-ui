@@ -7,7 +7,7 @@ interface CookieOptions {
 }
 
 export class CookieConfig {
-  
+
   private static readonly isProduction = import.meta.env.PROD;
 
   static authCookieOptions(maxAge?: number): CookieOptions { 
