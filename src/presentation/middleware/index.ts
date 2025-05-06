@@ -1,6 +1,6 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
-import { CustomError } from '@/domain';
+import { CustomError, User } from '@/domain';
 import { CookieConfig } from '@/config';
 import { AuthRepositoryImpl, AuthServiceImpl } from '@/infrastructure';
 
@@ -21,12 +21,18 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
   const accessToken = cookies.get('access_token')?.value;
   const refreshToken = cookies.get('refresh_token')?.value;
 
-  if (!accessToken || !refreshToken) {
-    console.log('Tokens are missing ❌');
+  if (!refreshToken) {
+    console.log('Refresh token is missing ❌');
     return handleRedirect(url.pathname, redirect, next, cookies);
   }
 
-  const user = await validateToken(accessToken, refreshToken, cookies);
+  let user: User | null | void = null;
+
+  if (!accessToken) {
+    user = await refreshAccessToken(refreshToken, cookies);
+  } else {
+    user = await validateToken(accessToken, refreshToken, cookies);
+  }
 
   if (!user) {
     console.log('User not found or token invalid ❌');
