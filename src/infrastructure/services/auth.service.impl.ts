@@ -19,7 +19,6 @@ import {
   CheckPasswordToken,
   UpdatePassword,
   RefreshToken,
-  type UserToken,
 } from '@/domain';
 import { Messages } from '@/config';
 import { setUiError } from '@/infrastructure';

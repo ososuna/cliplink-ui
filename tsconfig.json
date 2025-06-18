@@ -8,6 +8,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@test/*": [
+        "./test/*"
       ]
     }
   },
@@ -16,6 +19,8 @@
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
-    "src/**/*.astro"
+    "src/**/*.astro",
+    "test/**/*.ts",
+    "test/**/*.tsx"
   ]
 }
