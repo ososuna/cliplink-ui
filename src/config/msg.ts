@@ -1,6 +1,9 @@
 export const Messages = {
+  BAD_CREDENTIALS: 'Invalid email or password. Please double-check your credentials and try again.',
+  MISSING_EMAIL: 'Enter your email to continue.',
   VALID_EMAIL: 'Enter a valid email address.',
   PASSWORD_REQUIRED: 'Enter your password to continue.',
+  PASSWORD_TOO_SHORT: 'Password must be at least 6 characters long.',
   CONFIRM_PHRASE: (confirmPhrase: string) => `Type "${confirmPhrase}" to confirm your action.`,
   STRING_MIN: (field: string, min: number) => `The ${field} must be at least ${min} character(s) long`,
   STRING_MAX: (field: string, max: number) => `The ${field} must be no more than ${max} character(s) long`,

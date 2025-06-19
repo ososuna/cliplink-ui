@@ -1,4 +1,4 @@
-import { Validators } from '@/config';
+import { Messages, Validators } from '@/config';
 
 export class LoginUserDto {
 
@@ -7,10 +7,10 @@ export class LoginUserDto {
   static create(object: {[key: string]: any}): [string?, LoginUserDto?] {
     const { email, password } = object;
     
-    if ( !email ) return ['missing email', undefined];
+    if ( !email ) return [Messages.MISSING_EMAIL, undefined];
     if ( !Validators.email.test(email) ) return ['email is not valid']
-    if ( !password ) return ['missing password', undefined];
-    if ( password.length < 6 ) return ['password too short', undefined];
+    if ( !password ) return [Messages.PASSWORD_REQUIRED, undefined];
+    if ( password.length < 6 ) return [Messages.PASSWORD_TOO_SHORT, undefined];
 
     return [undefined, new LoginUserDto(email, password)];
   }
