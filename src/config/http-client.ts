@@ -1,4 +1,11 @@
-import { CustomError } from '@/domain';
+class CustomError extends Error {
+  constructor(public statusCode: number, message: string) {
+    super(message);
+    this.name = 'CustomError';
+  }
+}
+
+export { CustomError };
 
 const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
 

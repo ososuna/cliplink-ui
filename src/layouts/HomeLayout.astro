@@ -1,0 +1,18 @@
+---
+import { Messages, envs } from "@/config";
+import Navbar from "@/components/features/shared/Navbar.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Footer from "@/components/features/shared/Footer.astro";
+
+const user = Astro.locals.user;
+const appName = envs.PUBLIC_APP_NAME + " - URL Shortener";
+const description = Messages.APP_DESCRIPTION;
+---
+
+<BaseLayout title={appName} description={description}>
+  <Navbar user={user} />
+  <main class="flex items-center justify-center min-h-[calc(100vh-3rem)]">
+    <slot />
+  </main>
+  <Footer user={user} />
+</BaseLayout>

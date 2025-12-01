@@ -1,0 +1,44 @@
+---
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import ShortUrlsCount from "@/components/features/url/ShortUrlsCount.astro";
+import DeleteAccountButton from "@/components/react/auth/DeleteAccountButton";
+import MyAccountForm from "@/components/react/auth/MyAccountForm";
+import MyAccountFormPreview from "@/components/react/auth/MyAccountFormPreview";
+import MyAccountView from "@/components/react/auth/MyAccountView";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const user = Astro.locals.user;
+---
+
+<HomeLayout>
+  <div class="container mx-auto p-4 self-start">
+    <h1 class="text-2xl font-bold mb-8">My Account</h1>
+    <div class="grid gap-8 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Profile Information</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <MyAccountView user={user} />
+          <div>
+            <ShortUrlsCount server:defer>
+              <Skeleton slot="fallback" className="h-8 w-[150px]" />
+            </ShortUrlsCount>
+          </div>
+          <DeleteAccountButton client:only>
+            <Skeleton slot="fallback" className="mt-5 h-9 w-[160px]" />
+          </DeleteAccountButton>
+        </CardContent>
+      </Card>
+      <MyAccountForm transition:persist user={user} client:only>
+        <MyAccountFormPreview user={user} slot="fallback" />
+      </MyAccountForm>
+    </div>
+  </div>
+</HomeLayout>
