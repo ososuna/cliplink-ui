@@ -1,10 +1,10 @@
 ---
-import HomeLayout from '@/layouts/HomeLayout.astro';
-import ShortUrlCard from '@/components/features/url/ShortUrlCard.astro';
+import HomeLayout from "@/layouts/HomeLayout.astro";
+import ShortUrlCard from "@/url/components/ShortUrlCard.astro";
 
 const { id } = Astro.params;
-
 ---
+
 <HomeLayout>
-	{ id ? <ShortUrlCard id={id} /> : <h1>Not found URL</h1> }
+	{id ? <ShortUrlCard id={id} /> : <h1>Not found URL</h1>}
 </HomeLayout>

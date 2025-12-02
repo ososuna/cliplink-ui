@@ -1,0 +1,15 @@
+---
+import { envs } from "@/adapters";
+import ClipLinkIcon from "@/assets/icons/ClipLinkIcon.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<a href="/">
+  <ClipLinkIcon class={`inline mb-1 ${className}`} />
+  {envs.PUBLIC_APP_NAME}
+</a>

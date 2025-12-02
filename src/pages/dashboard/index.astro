@@ -1,11 +1,10 @@
 ---
 import HomeLayout from "@/layouts/HomeLayout.astro";
-import CreateShortUrlDialog from "@/components/react/url/CreateShortUrlDialog";
-import MyShortUrlCards from "@/components/features/url/MyShortUrlCards.astro";
-import MyShortUrlCardsSkeleton from "@/components/features/url/MyShortUrlCardsSkeleton.astro";
-import UrlSearchBar from "@/components/react/url/UrlSearchBar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import MyShortUrlCards from "@/url/components/MyShortUrlCards.astro";
+import MyShortUrlCardsSkeleton from "@/url/components/MyShortUrlCardsSkeleton.astro";
+import CreateShortUrlDialog from "@/url/components/islands/CreateShortUrlDialog";
+import UrlSearchBar from "@/url/components/islands/UrlSearchBar";
+import { Button, Input } from "@/styled-components";
 
 const defaultPageNumber = 1;
 const defaultLimit = 9;

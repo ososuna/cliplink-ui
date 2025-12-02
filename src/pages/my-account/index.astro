@@ -1,17 +1,17 @@
 ---
 import HomeLayout from "@/layouts/HomeLayout.astro";
-import ShortUrlsCount from "@/components/features/url/ShortUrlsCount.astro";
-import DeleteAccountButton from "@/components/react/auth/DeleteAccountButton";
-import MyAccountForm from "@/components/react/auth/MyAccountForm";
-import MyAccountFormPreview from "@/components/react/auth/MyAccountFormPreview";
-import MyAccountView from "@/components/react/auth/MyAccountView";
+import ShortUrlsCount from "@/url/components/ShortUrlsCount.astro";
+import DeleteAccountButton from "@/auth/components/islands/DeleteAccountButton";
+import MyAccountForm from "@/auth/components/islands/MyAccountForm";
+import MyAccountFormPreview from "@/auth/components/islands/MyAccountFormPreview";
+import MyAccountView from "@/auth/components/islands/MyAccountView";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+  Skeleton,
+} from "@/styled-components";
 
 const user = Astro.locals.user;
 ---

@@ -1,0 +1,45 @@
+---
+import type { User } from "@/auth/entities/User";
+import AuthDropdown from "@/auth/components/islands/AuthDropdown";
+import ModeToggle from "@/components/islands/ModeToggle";
+import ClipLinkLogo from "@/components/ClipLinkLogo.astro";
+import { Button, Skeleton } from "@/styled-components";
+import UserIcon from "@/assets/icons/UserIcon.astro";
+
+interface Props {
+  user: User;
+}
+
+const { user } = Astro.props;
+---
+
+<header
+  transition:persist
+  class="sticky top-0 z-50 w-full transition-all duration-300 ease-in-out bg-background"
+>
+  <div class="container mx-auto px-4">
+    <div class="flex h-12 items-center justify-between">
+      <div class="text-lg font-bold">
+        <ClipLinkLogo class="w-8 h-8" />
+      </div>
+      <nav class="flex justify-center items-center gap-x-4">
+        {
+          user ? (
+            <AuthDropdown name={user.name} lastName={user.lastName} client:only>
+              <Skeleton slot="fallback" className="w-8 h-8 rounded-full" />
+            </AuthDropdown>
+          ) : (
+            <a href="/auth/login">
+              <Button variant="ghost">
+                <UserIcon /> Log in
+              </Button>
+            </a>
+          )
+        }
+        <ModeToggle client:only>
+          <Skeleton slot="fallback" className="w-9 h-9 rounded-md" />
+        </ModeToggle>
+      </nav>
+    </div>
+  </div>
+</header>

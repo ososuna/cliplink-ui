@@ -1,41 +1,55 @@
-export class HttpClient {
-  constructor(
-    private baseUrl: string,
-    private headers: Record<string, string> = {}
-  ) {}
+import { envs } from '@/adapters';
 
-  private async request<T>(path: string, method: string, body?: any): Promise<T> {
-    const res = await fetch(`${this.baseUrl}${path}`, {
-      method,
+const API_BASE_URL = envs.PUBLIC_API_BASE_URL;
+
+export class HttpClient {
+  
+  private static readonly baseURL = API_BASE_URL;
+
+  private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
+    
+    const headers = {
+      'Content-Type': 'application/json',
+      'Cookie': '',
+      ...options.headers,
+    };
+
+    const response = await fetch(`${this.baseURL}${url}`, {
+      ...options,
       credentials: 'include',
-      headers: {
-        ...this.headers,
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : undefined,
+      headers
     });
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || errorData.error || `HTTP Error ${res.status}`);
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || error.message);
     }
 
-    return res.json() as Promise<T>;
+    return response.json();
   }
 
-  async get<T>(path: string): Promise<T> {
-    return this.request<T>(path, 'GET');
-  }
+  static async get<T>(url: string, options: RequestInit = {}) {
+    return this.request<T>(url, { ...options, method: 'GET' });
+  };
 
-  async post<T>(path: string, body?: any): Promise<T> {
-    return this.request<T>(path, 'POST', body);
-  }
+  static async post<T>(url: string, body: any, options: RequestInit = {}) {
+    return this.request<T>(url, {
+      ...options,
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+  };
 
-  async put<T>(path: string, body?: any): Promise<T> {
-    return this.request<T>(path, 'PUT', body);
-  }
+  static async put<T>(url: string, body: any, options: RequestInit = {}) {
+    return this.request<T>(url, {
+      ...options,
+      method: 'PUT',
+      body: JSON.stringify(body),
+    });
+  };
 
-  async delete<T>(path: string): Promise<T> {
-    return this.request<T>(path, 'DELETE');
-  }
-}
+  static async delete<T>(url: string, options: RequestInit = {}) {
+    return this.request<T>(url, { ...options, method: 'DELETE' });
+  };
+
+};
