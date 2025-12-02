@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { envs } from '@/config';
+import { envs } from '@/adapters';
 import { CopyInput } from '@/components/ui/copy-input';;
 
 interface Props {

@@ -102,10 +102,10 @@ const CreateShortUrlDialog = () => {
             />
             <DialogFooter>
               <Button disabled={isLoading} className="w-full mt-2" type="submit">
-                { isLoading
+                {isLoading
                   ? 'Loading...'
                   : 'Shorten URL'
-                } 
+                }
               </Button>
             </DialogFooter>
           </form>

@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { setUiError } from '@/store/ui.store';
 import { Messages } from '@/config';
-import { makeCreateGuestUrl } from '@/lib/client-container';
+import { makeCreateUrlAsGuest } from '@/lib/client-container';
 import { Button } from '@/components/ui/button';
 import {
   CardContent,
@@ -44,7 +44,7 @@ const ShortenForm: React.FC = () => {
     const { originalUrl } = values;
     setIsLoading(true);
 
-    const createGuestUrlUseCase = makeCreateGuestUrl();
+    const createGuestUrlUseCase = makeCreateUrlAsGuest();
     const result = await createGuestUrlUseCase.execute({ originalUrl });
 
     setIsLoading(false);

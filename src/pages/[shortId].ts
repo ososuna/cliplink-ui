@@ -1,4 +1,4 @@
-import { envs } from '@/config';
+import { envs } from '@/adapters';
 
 export async function GET({ params }: { params: { shortId: string } }) {
   const { shortId } = params;

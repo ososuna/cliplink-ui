@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Check, Clipboard } from 'lucide-react';
-import { envs } from '@/config';
+import { envs } from '@/adapters';
 import { useToast } from '@/components/hooks/use-toast';
 import { Button } from '@/components/ui/button';;
 

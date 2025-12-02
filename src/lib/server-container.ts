@@ -1,4 +1,4 @@
-import { HttpClient } from '@/adapters/http/HttpClient';
+import { HttpClient } from '@/adapters/http-client';
 import { ServerAuthRepository } from '@/repositories/server/ServerAuthRepository';
 import { ServerUrlRepository } from '@/repositories/server/ServerUrlRepository';
 import { LoginUseCase } from '@/use-cases/auth/login';
@@ -11,10 +11,11 @@ import { DeleteAccountUseCase } from '@/use-cases/auth/delete-account';
 import { ForgotPasswordUseCase } from '@/use-cases/auth/forgot-password';
 import { CheckPasswordTokenUseCase } from '@/use-cases/auth/check-password-token';
 import { UpdatePasswordUseCase } from '@/use-cases/auth/update-password';
-import { CreateGuestUrlUseCase } from '@/use-cases/url/create-guest-url';
+import { CreateUrlAsGuestUseCase } from '@/use-cases/url/create-url-as-guest';
 import { GetUrlsUseCase } from '@/use-cases/url/get-urls';
 import { DeleteUrlUseCase } from '@/use-cases/url/delete-url';
 import { RenameUrlUseCase } from '@/use-cases/url/rename-url';
+import { CreateUrlUseCase } from '@/use-cases/url/create-url';
 
 const API_BASE = import.meta.env.PUBLIC_API_BASE_URL;
 
@@ -90,7 +91,12 @@ export const makeUpdatePassword = (accessToken?: string) => {
 // URL Use Cases
 export const makeCreateGuestUrl = () => {
   const repo = createUrlRepository();
-  return new CreateGuestUrlUseCase(repo);
+  return new CreateUrlAsGuestUseCase(repo);
+};
+
+export const makeCreateUrl = (accessToken?: string) => {
+  const repo = createUrlRepository(accessToken);
+  return new CreateUrlUseCase(repo);
 };
 
 export const makeGetUrls = (accessToken?: string) => {

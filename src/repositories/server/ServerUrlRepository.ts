@@ -3,7 +3,7 @@ import type { Url } from '@/entities/Url';
 import type { Page } from '@/entities/Page';
 import type { Result } from '@/types/Result';
 import { success, failure } from '@/types/Result';
-import { HttpClient } from '@/adapters/http/HttpClient';
+import { HttpClient } from '@/adapters/http-client';
 
 export class ServerUrlRepository implements IUrlRepository {
   constructor(private httpClient: HttpClient) {}

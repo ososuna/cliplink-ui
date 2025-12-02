@@ -3,7 +3,7 @@ import type { Url } from '@/entities/Url';
 import type { Page } from '@/entities/Page';
 import type { Result } from '@/types/Result';
 import { success, failure } from '@/types/Result';
-import { HttpClient } from '@/adapters/http/HttpClient';
+import { HttpClient } from '@/adapters/http-client';
 
 export class ClientUrlRepository implements IUrlRepository {
   constructor(private httpClient: HttpClient) {}
@@ -11,6 +11,15 @@ export class ClientUrlRepository implements IUrlRepository {
   async createAsGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
     try {
       const url = await this.httpClient.post<Url>('/api/url/guest', data);
+      return success(url);
+    } catch (e) {
+      return failure(e instanceof Error ? e : new Error('URL creation failed'));
+    }
+  }
+
+  async create(data: CreateUrlRequest): Promise<Result<Url>> {
+    try {
+      const url = await this.httpClient.post<Url>('/api/url', data);
       return success(url);
     } catch (e) {
       return failure(e instanceof Error ? e : new Error('URL creation failed'));

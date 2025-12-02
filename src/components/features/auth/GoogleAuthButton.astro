@@ -9,7 +9,8 @@ import GoogleIcon from '@/components/icons/GoogleIcon.astro';
 
 <script>
   import { navigate } from 'astro:transitions/client';
-  import { Messages, envs } from '@/config';
+  import { Messages } from '@/config';
+  import { envs } from '@/adapters';
   import { setUiError } from '@/store/ui.store';
 
   function initializeGoogleButton() {

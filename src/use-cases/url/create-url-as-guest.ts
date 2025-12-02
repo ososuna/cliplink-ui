@@ -2,7 +2,7 @@ import type { IUrlRepository, CreateGuestUrlRequest } from '@/repositories/inter
 import type { Result } from '@/types/Result';
 import type { Url } from '@/entities/Url';
 
-export class CreateGuestUrlUseCase {
+export class CreateUrlAsGuestUseCase {
   constructor(private urlRepo: IUrlRepository) {}
 
   async execute(data: CreateGuestUrlRequest): Promise<Result<Url>> {

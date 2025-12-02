@@ -3,7 +3,7 @@ import type { User } from '@/entities/User';
 import type { ResetPasswordToken } from '@/entities/ResetPasswordToken';
 import type { Result } from '@/types/Result';
 import { success, failure } from '@/types/Result';
-import { HttpClient } from '@/adapters/http/HttpClient';
+import { HttpClient } from '@/adapters/http-client';
 
 export class ServerAuthRepository implements IAuthRepository {
   constructor(private httpClient: HttpClient) {}
