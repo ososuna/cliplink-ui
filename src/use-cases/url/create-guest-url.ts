@@ -6,6 +6,6 @@ export class CreateGuestUrlUseCase {
   constructor(private urlRepo: IUrlRepository) {}
 
   async execute(data: CreateGuestUrlRequest): Promise<Result<Url>> {
-    return this.urlRepo.createGuest(data);
+    return this.urlRepo.createAsGuest(data);
   }
 }

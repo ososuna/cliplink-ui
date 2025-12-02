@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { setUiError } from '@/store/ui.store';
 import { Messages } from '@/config';
 import { makeCreateGuestUrl } from '@/lib/client-container';
 import { Button } from '@/components/ui/button';
@@ -51,8 +52,10 @@ const ShortenForm: React.FC = () => {
     if (result.ok) {
       navigate(`/short/${result.value.shortId}`);
     } else {
-      // Handle error - could show toast notification
-      console.error(result.error.message);
+      setUiError({
+        message: result.error.message,
+        type: 'error'
+      });
     }
   }
 

@@ -17,7 +17,7 @@ export class ServerUrlRepository implements IUrlRepository {
     }
   }
 
-  async createGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
+  async createAsGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
     try {
       const url = await this.httpClient.post<Url>('/url/guest', data);
       return success(url);

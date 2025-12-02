@@ -8,7 +8,7 @@ import { HttpClient } from '@/adapters/http/HttpClient';
 export class ClientUrlRepository implements IUrlRepository {
   constructor(private httpClient: HttpClient) {}
 
-  async createGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
+  async createAsGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
     try {
       const url = await this.httpClient.post<Url>('/api/url/guest', data);
       return success(url);
