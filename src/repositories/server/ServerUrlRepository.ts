@@ -1,16 +1,25 @@
-import type { IHttpClient } from '@/adapters/http/IHttpClient';
-import type { IUrlRepository, CreateUrlRequest } from '@/repositories/interfaces/IUrlRepository';
+import type { IUrlRepository, CreateUrlRequest, CreateGuestUrlRequest } from '@/repositories/interfaces/IUrlRepository';
 import type { Url } from '@/entities/Url';
 import type { Page } from '@/entities/Page';
 import type { Result } from '@/types/Result';
 import { success, failure } from '@/types/Result';
+import { HttpClient } from '@/adapters/http/HttpClient';
 
 export class ServerUrlRepository implements IUrlRepository {
-  constructor(private http: IHttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   async create(data: CreateUrlRequest): Promise<Result<Url>> {
     try {
-      const url = await this.http.post<Url>('/urls', data);
+      const url = await this.httpClient.post<Url>('/url', data);
+      return success(url);
+    } catch (e) {
+      return failure(e instanceof Error ? e : new Error('URL creation failed'));
+    }
+  }
+
+  async createGuest(data: CreateGuestUrlRequest): Promise<Result<Url>> {
+    try {
+      const url = await this.httpClient.post<Url>('/url/guest', data);
       return success(url);
     } catch (e) {
       return failure(e instanceof Error ? e : new Error('URL creation failed'));
@@ -24,7 +33,7 @@ export class ServerUrlRepository implements IUrlRepository {
         limit: limit.toString(),
         ...(search && { search }),
       });
-      const urls = await this.http.get<Page<Url>>(`/urls?${params}`);
+      const urls = await this.httpClient.get<Page<Url>>(`/url?${params}`);
       return success(urls);
     } catch (e) {
       return failure(e instanceof Error ? e : new Error('Failed to fetch URLs'));
@@ -33,7 +42,7 @@ export class ServerUrlRepository implements IUrlRepository {
 
   async delete(urlId: string): Promise<Result<void>> {
     try {
-      await this.http.delete<void>(`/urls/${urlId}`);
+      await this.httpClient.delete<void>(`/url/${urlId}`);
       return success(undefined);
     } catch (e) {
       return failure(e instanceof Error ? e : new Error('URL deletion failed'));
@@ -42,7 +51,7 @@ export class ServerUrlRepository implements IUrlRepository {
 
   async rename(urlId: string, name: string): Promise<Result<Url>> {
     try {
-      const url = await this.http.put<Url>(`/urls/${urlId}`, { name });
+      const url = await this.httpClient.put<Url>(`/url/${urlId}`, { name });
       return success(url);
     } catch (e) {
       return failure(e instanceof Error ? e : new Error('URL rename failed'));

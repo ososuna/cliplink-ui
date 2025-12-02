@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
-import { makeCreateUrl } from '@/lib/client-container';
+import { makeCreateGuestUrl } from '@/lib/client-container';
 import { Button } from '@/components/ui/button';
 import {
   CardContent,
@@ -19,7 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';;
+import { Input } from '@/components/ui/input';
+
 
 const formSchema = z.object({
   originalUrl: z.string().url({
@@ -27,7 +28,7 @@ const formSchema = z.object({
   })
 });
 
-const ShortenForm = () => {
+const ShortenForm: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,8 +43,8 @@ const ShortenForm = () => {
     const { originalUrl } = values;
     setIsLoading(true);
 
-    const createUrlUseCase = makeCreateUrl();
-    const result = await createUrlUseCase.execute({ originalUrl });
+    const createGuestUrlUseCase = makeCreateGuestUrl();
+    const result = await createGuestUrlUseCase.execute({ originalUrl });
 
     setIsLoading(false);
 

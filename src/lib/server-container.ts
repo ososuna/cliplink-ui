@@ -1,4 +1,4 @@
-import { FetchHttpClient } from '@/adapters/http/HttpClient';
+import { HttpClient } from '@/adapters/http/HttpClient';
 import { ServerAuthRepository } from '@/repositories/server/ServerAuthRepository';
 import { ServerUrlRepository } from '@/repositories/server/ServerUrlRepository';
 import { LoginUseCase } from '@/use-cases/auth/login';
@@ -11,7 +11,7 @@ import { DeleteAccountUseCase } from '@/use-cases/auth/delete-account';
 import { ForgotPasswordUseCase } from '@/use-cases/auth/forgot-password';
 import { CheckPasswordTokenUseCase } from '@/use-cases/auth/check-password-token';
 import { UpdatePasswordUseCase } from '@/use-cases/auth/update-password';
-import { CreateUrlUseCase } from '@/use-cases/url/create-url';
+import { CreateGuestUrlUseCase } from '@/use-cases/url/create-guest-url';
 import { GetUrlsUseCase } from '@/use-cases/url/get-urls';
 import { DeleteUrlUseCase } from '@/use-cases/url/delete-url';
 import { RenameUrlUseCase } from '@/use-cases/url/rename-url';
@@ -21,7 +21,7 @@ const API_BASE = import.meta.env.PUBLIC_API_BASE_URL;
 // Factory: Builds the Clean Architecture stack per request
 const createHttpClient = (accessToken?: string) => {
   const headers: Record<string, string> = accessToken ? { Cookie: `access_token=${accessToken}` } : {};
-  return new FetchHttpClient(API_BASE, headers);
+  return new HttpClient(API_BASE, headers);
 };
 
 const createAuthRepository = (accessToken?: string) => {
@@ -52,7 +52,7 @@ export const makeCheckToken = (accessToken?: string) => {
 
 export const makeRefreshToken = (refreshToken?: string) => {
   const headers: Record<string, string> = refreshToken ? { Cookie: `refresh_token=${refreshToken}` } : {};
-  const httpClient = new FetchHttpClient(API_BASE, headers);
+  const httpClient = new HttpClient(API_BASE, headers);
   const repo = new ServerAuthRepository(httpClient);
   return new RefreshTokenUseCase(repo);
 };
@@ -88,9 +88,9 @@ export const makeUpdatePassword = (accessToken?: string) => {
 };
 
 // URL Use Cases
-export const makeCreateUrl = (accessToken?: string) => {
-  const repo = createUrlRepository(accessToken);
-  return new CreateUrlUseCase(repo);
+export const makeCreateGuestUrl = () => {
+  const repo = createUrlRepository();
+  return new CreateGuestUrlUseCase(repo);
 };
 
 export const makeGetUrls = (accessToken?: string) => {

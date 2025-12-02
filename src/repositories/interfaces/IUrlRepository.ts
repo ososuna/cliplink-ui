@@ -7,8 +7,12 @@ export interface CreateUrlRequest {
   name?: string;
 }
 
+export interface CreateGuestUrlRequest {
+  originalUrl: string;
+}
+
 export interface IUrlRepository {
-  create(data: CreateUrlRequest): Promise<Result<Url>>;
+  createGuest(data: CreateGuestUrlRequest): Promise<Result<Url>>;
   getUrls(page: number, limit: number, search: string, token?: string): Promise<Result<Page<Url>>>;
   delete(urlId: string): Promise<Result<void>>;
   rename(urlId: string, name: string): Promise<Result<Url>>;

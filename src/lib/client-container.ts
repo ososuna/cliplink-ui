@@ -1,3 +1,4 @@
+import { HttpClient } from '@/adapters/http/HttpClient';
 import { ClientAuthRepository } from '@/repositories/client/ClientAuthRepository';
 import { ClientUrlRepository } from '@/repositories/client/ClientUrlRepository';
 import { LoginUseCase } from '@/use-cases/auth/login';
@@ -10,14 +11,15 @@ import { DeleteAccountUseCase } from '@/use-cases/auth/delete-account';
 import { ForgotPasswordUseCase } from '@/use-cases/auth/forgot-password';
 import { CheckPasswordTokenUseCase } from '@/use-cases/auth/check-password-token';
 import { UpdatePasswordUseCase } from '@/use-cases/auth/update-password';
-import { CreateUrlUseCase } from '@/use-cases/url/create-url';
+import { CreateGuestUrlUseCase } from '@/use-cases/url/create-guest-url';
 import { GetUrlsUseCase } from '@/use-cases/url/get-urls';
 import { DeleteUrlUseCase } from '@/use-cases/url/delete-url';
 import { RenameUrlUseCase } from '@/use-cases/url/rename-url';
 
 // Singleton instances for client-side
-const authRepo = new ClientAuthRepository();
-const urlRepo = new ClientUrlRepository();
+const httpClient = new HttpClient('');
+const authRepo = new ClientAuthRepository(httpClient);
+const urlRepo = new ClientUrlRepository(httpClient);
 
 // Auth Use Cases
 export const makeLogin = () => new LoginUseCase(authRepo);
@@ -32,7 +34,7 @@ export const makeCheckPasswordToken = () => new CheckPasswordTokenUseCase(authRe
 export const makeUpdatePassword = () => new UpdatePasswordUseCase(authRepo);
 
 // URL Use Cases
-export const makeCreateUrl = () => new CreateUrlUseCase(urlRepo);
+export const makeCreateGuestUrl = () => new CreateGuestUrlUseCase(urlRepo);
 export const makeGetUrls = () => new GetUrlsUseCase(urlRepo);
 export const makeDeleteUrl = () => new DeleteUrlUseCase(urlRepo);
 export const makeRenameUrl = () => new RenameUrlUseCase(urlRepo);

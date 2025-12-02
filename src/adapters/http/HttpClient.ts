@@ -1,11 +1,4 @@
-interface IHttpClient {
-  get<T>(path: string): Promise<T>;
-  post<T>(path: string, body?: any): Promise<T>;
-  put<T>(path: string, body?: any): Promise<T>;
-  delete<T>(path: string): Promise<T>;
-}
-
-export class FetchHttpClient implements IHttpClient {
+export class HttpClient {
   constructor(
     private baseUrl: string,
     private headers: Record<string, string> = {}

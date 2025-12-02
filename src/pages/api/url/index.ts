@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { makeCreateUrl, makeGetUrls } from '@/lib/server-container';
+import { makeCreateGuestUrl, makeGetUrls } from '@/lib/server-container';
 
 export const GET: APIRoute = async ({ url, cookies }) => {
   try {
@@ -43,8 +43,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       });
     }
 
-    const createUrlUseCase = makeCreateUrl(accessToken);
-    const result = await createUrlUseCase.execute({ originalUrl, name });
+    const createUrlUseCase = makeCreateGuestUrl(accessToken);
+    const result = await createUrlUseCase.execute({ originalUrl });
 
     if (!result.ok) {
       return new Response(JSON.stringify({ error: result.error.message }), {
