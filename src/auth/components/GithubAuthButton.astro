@@ -10,9 +10,9 @@ import GitHubIcon from "@/assets/icons/GitHubIcon.astro";
 
 <script>
   import { navigate } from "astro:transitions/client";
+  import { setUiError } from "@/stores/ui.store";
   import { Messages } from "@/config";
   import { envs } from "@/adapters";
-  import { setUiError } from "@/store/ui.store";
 
   function initializeGithubButton() {
     const githubAuthButton = document.getElementById(

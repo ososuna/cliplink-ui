@@ -1,20 +1,18 @@
-import { envs } from '@/adapters';
-
-const API_BASE_URL = envs.PUBLIC_API_BASE_URL;
-
 export class HttpClient {
-  
-  private static readonly baseURL = API_BASE_URL;
+
+  private static getBaseURL(): string {
+    return import.meta.env.PUBLIC_API_BASE_URL;
+  }
 
   private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
-    
+
     const headers = {
       'Content-Type': 'application/json',
       'Cookie': '',
       ...options.headers,
     };
 
-    const response = await fetch(`${this.baseURL}${url}`, {
+    const response = await fetch(`${this.getBaseURL()}${url}`, {
       ...options,
       credentials: 'include',
       headers

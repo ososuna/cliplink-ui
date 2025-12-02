@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import type { User } from "@/auth/entities/User";
+import type { User } from "@/auth/entities/user.entity";
 import { Messages } from '@/config';
 import { useToast } from '@/hooks/use-toast';
 import {

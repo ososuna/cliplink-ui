@@ -1,5 +1,5 @@
 import { useToast } from "@/hooks/use-toast"
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast"
+import type { ToastActionElement, ToastProps } from "@/styled-components/toast"
 import {
   Toast,
   ToastClose,
@@ -7,7 +7,7 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
+} from "@/styled-components"
 import * as React from "react"
 
 type ToasterToast = ToastProps & {

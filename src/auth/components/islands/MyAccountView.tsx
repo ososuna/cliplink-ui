@@ -1,4 +1,4 @@
-import type { User } from '@/auth/entities/User';
+import type { User } from '@/auth/entities/user.entity';
 import { Avatar, Badge } from '@/styled-components';
 import GithubIcon from '@/assets/icons/GithubIcon';
 import GoogleIcon from '@/assets/icons/GoogleIcon';

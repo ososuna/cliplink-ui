@@ -1,11 +1,10 @@
 import { navigate } from 'astro:transitions/client';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { setUiError } from '@/stores/ui.store';
 import { Messages } from '@/config';
+import useUrlAsGuest from "@/url/components/islands/hooks/use-url-as-guest";
 import {
   Button,
   CardContent,
@@ -27,7 +26,7 @@ const formSchema = z.object({
 
 const ShortenForm: React.FC = () => {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, createUrlAsGuest } = useUrlAsGuest();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,21 +37,8 @@ const ShortenForm: React.FC = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { originalUrl } = values;
-    setIsLoading(true);
-
-    // const createGuestUrlUseCase = makeCreateUrlAsGuest();
-    // const result = await createGuestUrlUseCase.execute({ originalUrl });
-
-    setIsLoading(false);
-
-    // if (result.ok) {
-    //   navigate(`/short/${result.value.shortId}`);
-    // } else {
-    //   setUiError({
-    //     message: result.error.message,
-    //     type: 'error'
-    //   });
-    // }
+    const createdUrl = await createUrlAsGuest(originalUrl);
+    navigate(`/short/${createdUrl.shortId}`);
   }
 
   return (

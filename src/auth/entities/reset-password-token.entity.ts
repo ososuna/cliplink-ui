@@ -1,4 +1,4 @@
-import type { User } from '../auth/entities/User';
+import type { User } from './user.entity';
 
 export interface ResetPasswordToken {
   id: string;

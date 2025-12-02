@@ -3,16 +3,16 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from '@/components/ui/navigation-menu';;
+} from '@/styled-components/navigation-menu';;
 
 export function NavigationBar() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-            <NavigationMenuLink >
-              Documentation
-            </NavigationMenuLink>
+          <NavigationMenuLink >
+            Documentation
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
