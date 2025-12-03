@@ -1,6 +1,7 @@
 import type { AstroCookies, MiddlewareNext } from 'astro';
 import { defineMiddleware } from 'astro:middleware';
-import type { User } from '@/auth/entities/user.entity';
+import type { User } from '@/auth/entities';
+import { AuthService, UserService } from '@/auth/services';
 
 type ContextRedirect = (path: string, status?: 301 | 302 | 303 | 307 | 308 | 300 | 304 | undefined) => Response;
 
@@ -27,7 +28,7 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
   if (!accessToken) {
     user = await refreshAccessToken(refreshToken, cookies);
   } else {
-    user = await validateToken(accessToken, refreshToken, cookies);
+    user = await validateToken(refreshToken, cookies);
   }
 
   if (!user) {
@@ -44,72 +45,48 @@ export const onRequest = defineMiddleware(async ({ request, cookies, locals, red
   return next();
 });
 
-const validateToken = async (accessToken: string, refreshToken: string, cookies: AstroCookies): Promise<User | null> => {
+const validateToken = async (refreshToken: string, cookies: AstroCookies): Promise<User | null> => {
   try {
-    // const checkTokenUseCase = makeCheckToken(accessToken);
-    // const result = await checkTokenUseCase.execute(accessToken);
-    const result = { ok: true, value: { id: 1, name: 'John Doe', email: 'john.doe@example.com' } };
+    const result = await UserService.getUser();
     if (!result.ok) {
       console.log('Access token validation failed, attempting refresh...');
       return await refreshAccessToken(refreshToken, cookies);
     }
-
-    return result.value;
+    return result.data;
   } catch (error) {
     console.error('Token validation failed ❌', error);
     return await refreshAccessToken(refreshToken, cookies);
   }
 };
 
-const refreshAccessToken = async (token: string, cookies: AstroCookies): Promise<User | null> => {
+const refreshAccessToken = async (refreshToken: string, cookies: AstroCookies): Promise<User | null> => {
   try {
-    // const refreshTokenUseCase = makeRefreshToken(token);
-    // const result = await refreshTokenUseCase.execute(token);
-    const result = { ok: true, value: { id: 1, name: 'John Doe', email: 'john.doe@example.com' } };
+    const result = await AuthService.refreshToken(refreshToken);
+
     if (!result.ok) {
-      console.error('Token refresh failed:', result.error.message);
+      console.error('Token refresh failed:', result.error);
       return null;
     }
 
-    // Get the response headers from the refresh token request
-    const response = await fetch(`${import.meta.env.PUBLIC_API_BASE_URL}/auth/refresh-token`, {
-      credentials: 'include',
-      headers: {
-        Cookie: `refresh_token=${token}`
-      }
+    const { accessToken, refreshToken: newRefreshToken, user } = result.data!;
+
+    cookies.set('access_token', accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour in seconds
     });
 
-    const setCookieHeader = response.headers.get('set-cookie');
-    if (!setCookieHeader) {
-      console.error('No set-cookie header in refresh response');
-      return null;
-    }
+    cookies.set('refresh_token', newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
+    });
 
-    // Parse and set new tokens
-    const [accessTokenCookie, refreshTokenCookie] = setCookieHeader.split('refresh_token=');
-    const accessTokenMatch = accessTokenCookie.match(/access_token=([^;]+)/);
-    if (accessTokenMatch) {
-      cookies.set('access_token', accessTokenMatch[1], {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60, // 1 hour in seconds
-      });
-    }
-
-    const refreshTokenMatch = refreshTokenCookie.match(/^([^;]+)/);
-    if (refreshTokenMatch) {
-      cookies.set('refresh_token', refreshTokenMatch[1], {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
-      });
-    }
-
-    return result.value;
+    return user;
   } catch (error) {
     console.error('Token refresh failed ❌', error);
     return null;

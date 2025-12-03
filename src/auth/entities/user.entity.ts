@@ -1,11 +1,9 @@
-export interface User {
-  id: string;
-  name: string;
-  lastName: string;
-  email: string;
-  role: string[];
-  password?: string;
-  img?: string;
-  githubId?: string;
-  googleId?: string;
+export class User {
+  constructor(
+    public id: string,
+    public firstName: string,
+    public lastName: string,
+    public email: string,
+    public role: string
+  ) {}
 }

@@ -1,29 +1,50 @@
+export type HttpResponse<T> = {
+  ok: boolean;
+  data: T | null;
+  status: number;
+  error?: string;
+};
+
 export class HttpClient {
 
   private static getBaseURL(): string {
     return import.meta.env.PUBLIC_API_BASE_URL;
   }
 
-  private static async request<T>(url: string, options: RequestInit = {}): Promise<T> {
+  private static async request<T>(url: string, options: RequestInit = {}): Promise<HttpResponse<T>> {
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Cookie': '',
+        ...options.headers,
+      };
 
-    const headers = {
-      'Content-Type': 'application/json',
-      'Cookie': '',
-      ...options.headers,
-    };
+      const response = await fetch(`${this.getBaseURL()}${url}`, {
+        ...options,
+        credentials: 'include',
+        headers
+      });
 
-    const response = await fetch(`${this.getBaseURL()}${url}`, {
-      ...options,
-      credentials: 'include',
-      headers
-    });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        return {
+          ok: false,
+          data: null as any,
+          status: response.status,
+          error: errorData.message || JSON.stringify(errorData)
+        };
+      }
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || error.message);
+      const data = await response.json();
+      return { ok: true, data, status: response.status };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 0,
+        error: error instanceof Error ? error.message : 'Network error'
+      };
     }
-
-    return response.json();
   }
 
   static async get<T>(url: string, options: RequestInit = {}) {

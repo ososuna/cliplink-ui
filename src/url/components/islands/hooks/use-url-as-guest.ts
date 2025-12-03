@@ -1,24 +1,20 @@
 import { useState } from "react";
+import type { Url } from "@/url/entities";
 import { setUiError } from "@/stores/ui.store";
 import { UrlService } from "@/url/services";
-import type { Url } from "@/url/entities";
 
 export default function useUrlAsGuest() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const createUrlAsGuest = async (originalUrl: string): Promise<Url> => {
-    try {
-      setIsLoading(true);
-      const createdUrl = await UrlService.createUrlAsGuest(originalUrl);
-      return createdUrl;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to create URL';
-      setUiError({ message: errorMessage, type: 'error' });
-      throw error;
-    } finally {
-      setIsLoading(false);
+  const createUrlAsGuest = async (originalUrl: string): Promise<Url | null> => {
+    setIsLoading(true);
+    const response = await UrlService.createUrlAsGuest(originalUrl);
+    if (!response.ok) {
+      setUiError({ message: response.error || 'Failed to create URL', type: 'error' });
     }
+    setIsLoading(false);
+    return response.data;
   };
 
   return {

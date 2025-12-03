@@ -38,7 +38,9 @@ const ShortenForm: React.FC = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { originalUrl } = values;
     const createdUrl = await createUrlAsGuest(originalUrl);
-    navigate(`/short/${createdUrl.shortId}`);
+    if (createdUrl) {
+      navigate(`/short/${createdUrl.shortId}`);
+    }
   }
 
   return (
