@@ -5,16 +5,16 @@ import { Input } from '@/styled-components';
 interface Props {
   searchTerm: string;
   pageNumber: number;
-  limit: number;
+  size: number;
 }
 
-const UrlSearchBar = ({ searchTerm: initialSearchTerm, pageNumber, limit }: Props) => {
+const UrlSearchBar = ({ searchTerm: initialSearchTerm, pageNumber, size }: Props) => {
 
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-    navigate(`/dashboard?page=${pageNumber}&limit=${limit}&search=${event.target.value}`);
+    navigate(`/dashboard?page=${pageNumber}&size=${size}&search=${event.target.value}`);
   }
 
   return (

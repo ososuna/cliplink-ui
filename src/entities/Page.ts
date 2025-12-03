@@ -1,7 +1,28 @@
+interface Sort {
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
+}
+
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: Sort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
 export interface Page<T> {
-  page: number;
-  limit: number;
-  total: number;
+  content: T[];
+  pageable: Pageable;
+  totalElements: number;
   totalPages: number;
-  items: T[];
+  last: boolean;
+  numberOfElements: number;
+  sort: Sort;
+  first: boolean;
+  size: number;
+  number: number;
+  empty: boolean;
 }

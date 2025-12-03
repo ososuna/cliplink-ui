@@ -11,13 +11,18 @@ export class HttpClient {
     return import.meta.env.PUBLIC_API_BASE_URL;
   }
 
-  private static async request<T>(url: string, options: RequestInit = {}): Promise<HttpResponse<T>> {
+  private static async request<T>(url: string, options: RequestInit = {}, token?: string): Promise<HttpResponse<T>> {
     try {
-      const headers = {
-        'Content-Type': 'application/json',
-        'Cookie': '',
-        ...options.headers,
-      };
+      const headers = new Headers(options.headers);
+
+      if (!headers.has('Content-Type')) {
+        headers.set('Content-Type', 'application/json');
+      }
+
+      // Add Authorization header if token is provided (for server-side calls)
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
 
       const response = await fetch(`${this.getBaseURL()}${url}`, {
         ...options,
@@ -47,28 +52,28 @@ export class HttpClient {
     }
   }
 
-  static async get<T>(url: string, options: RequestInit = {}) {
-    return this.request<T>(url, { ...options, method: 'GET' });
+  static async get<T>(url: string, options: RequestInit = {}, token?: string) {
+    return this.request<T>(url, { ...options, method: 'GET' }, token);
   };
 
-  static async post<T>(url: string, body: any, options: RequestInit = {}) {
+  static async post<T>(url: string, body: any, options: RequestInit = {}, token?: string) {
     return this.request<T>(url, {
       ...options,
       method: 'POST',
       body: JSON.stringify(body),
-    });
+    }, token);
   };
 
-  static async put<T>(url: string, body: any, options: RequestInit = {}) {
+  static async put<T>(url: string, body: any, options: RequestInit = {}, token?: string) {
     return this.request<T>(url, {
       ...options,
       method: 'PUT',
       body: JSON.stringify(body),
-    });
+    }, token);
   };
 
-  static async delete<T>(url: string, options: RequestInit = {}) {
-    return this.request<T>(url, { ...options, method: 'DELETE' });
+  static async delete<T>(url: string, options: RequestInit = {}, token?: string) {
+    return this.request<T>(url, { ...options, method: 'DELETE' }, token);
   };
 
 };

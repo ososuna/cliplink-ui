@@ -1,5 +1,6 @@
 ---
 import type { Url } from "@/url/entities";
+import { UrlService } from "@/url/services";
 import MyShortUrlCard from '@/url/components/MyShortUrlCard.astro';
 import {
   Pagination,
@@ -12,10 +13,10 @@ import {
 
 interface Props {
   pageNumber: number;
-  limit: number;
+  size: number;
   search: string;
 }
-const { pageNumber, limit, search } = Astro.props;
+const { pageNumber, size, search } = Astro.props;
 
 // workaround for view transition bug
 // sometimes when the logout use case is called the token is not cleared at time
@@ -26,31 +27,19 @@ let isAuthenticated = true;
 const token = Astro.cookies.get('access_token')?.value;
 if (!token) isAuthenticated = false;
 
-// const getUrlsUseCase = makeGetUrls(token);
-// const result = await getUrlsUseCase.execute(pageNumber, limit, search);
-// const page = result.ok ? result.value : null;
-
-const page = {
-  items: [],
-  totalPages: 1,
-  totalItems: 0,
-};
-
-const urls: Url[] = [
-  {
-    id: '1',
-    shortId: '1',
-    originalUrl: 'https://www.google.com',
-    name: 'Google',
-  },
-];
+const response = await UrlService.getUrls(pageNumber, size, search, token);
+const page = response.ok ? response.data : null;
 
 ---
 {!isAuthenticated ? (
   <script>window.location.href = '/';</script>
+) : !response.ok ? (
+  <p class="px-8 text-center text-sm text-muted-foreground">
+    There was an error retrieving the data. Please try again later. If the problem persists, please contact support.
+  </p>
 ) : (
   page && (
-    page.items.length === 0 ? (
+    page.content.length === 0 ? (
       search ? (
         <p class="px-8 text-center text-sm text-muted-foreground">
           No URLs found matching "<strong>{search}</strong>". Please try a
@@ -64,7 +53,7 @@ const urls: Url[] = [
       )
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {page.items.map((url: Url) => (
+        {page.content.map((url: Url) => (
           <MyShortUrlCard url={url} />
         ))}
       </div>
@@ -73,16 +62,16 @@ const urls: Url[] = [
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                disabled={pageNumber === 1}
-                href={`/dashboard?page=${pageNumber-1}&limit=${limit}&search=${search}`}
+                disabled={page.first}
+                href={`/dashboard?page=${pageNumber}&size=${size}&search=${search}`}
                 size="default"
               />
             </PaginationItem>
             {Array.from({ length: page.totalPages }, (_, index) => (
               <PaginationItem key={index}>
                 <PaginationLink
-                  href={`/dashboard?page=${index+1}&limit=${limit}&search=${search}`}
-                  isActive={index + 1 === pageNumber}
+                  href={`/dashboard?page=${index}&size=${size}&search=${search}`}
+                  isActive={index === pageNumber}
                   size="icon"
                 >
                   {index + 1}
@@ -91,8 +80,8 @@ const urls: Url[] = [
             ))}
             <PaginationItem>
               <PaginationNext
-                disabled={pageNumber === page.totalPages}
-                href={`/dashboard?page=${pageNumber+1}&limit=${limit}&search=${search}`}
+                disabled={page.last}
+                href={`/dashboard?page=${pageNumber}&size=${size}&search=${search}`}
                 size="default"
               />
             </PaginationItem>
