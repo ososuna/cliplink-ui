@@ -5,7 +5,7 @@ import { UserMapper } from "@/auth/mappers";
 
 export class UserService {
 
-  private static readonly API_URL = '/api/v1/user';
+  private static readonly API_URL = '/user';
 
   static async getUser(): Promise<HttpResponse<User | null>> {
     try {

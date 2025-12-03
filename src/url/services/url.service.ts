@@ -4,6 +4,9 @@ import { HttpClient, type HttpResponse } from '@/adapters';
 import { UrlMapper } from '@/url/mappers';
 
 export class UrlService {
+
+  private static readonly API_URL = '/url';
+
   /**
    * Creates a shortened URL as a guest user.
    * 
@@ -12,7 +15,7 @@ export class UrlService {
    */
   static async createUrlAsGuest(originalUrl: string): Promise<HttpResponse<Url | null>> {
     try {
-      const response = await HttpClient.post<HttpResponse<UrlResponseDto>>('/url/guest', { originalUrl });
+      const response = await HttpClient.post<HttpResponse<UrlResponseDto>>(`${this.API_URL}/guest`, { originalUrl });
       if (!response.ok) {
         return {
           ok: false,

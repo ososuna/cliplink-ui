@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { navigate } from 'astro:transitions/client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Messages } from '@/config';
+import useLogin from '@/auth/components/islands/hooks/use-login';
 import {
   Form,
   FormControl,
@@ -22,7 +23,7 @@ const formSchema = z.object({
 
 const PasswordForm = () => {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, login } = useLogin();
   const emailToLogin = useRef<string | null>('');
 
   useEffect(() => {
@@ -39,20 +40,10 @@ const PasswordForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
-    setIsLoading(true);
-
-    // const loginUseCase = makeLogin();
-    // const result = await loginUseCase.execute({
-    //   email: emailToLogin.current!,
-    //   password
-    // });
-
-    // if (result.ok) {
-    //   navigate('/dashboard');
-    //   return;
-    // }
-
-    setIsLoading(false);
+    const user = await login(emailToLogin.current!, password);
+    if (user) {
+      navigate('/dashboard');
+    }
   }
 
   return (
