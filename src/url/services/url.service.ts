@@ -39,4 +39,31 @@ export class UrlService {
       };
     }
   }
+
+  static async createUrlAsUser(originalUrl: string, name?: string): Promise<HttpResponse<Url | null>> {
+    try {
+      const response = await HttpClient.post<HttpResponse<UrlResponseDto>>(`${this.API_URL}`, { originalUrl, name });
+      if (!response.ok) {
+        return {
+          ok: false,
+          data: null,
+          status: response.status,
+          error: response.error
+        };
+      }
+      const url = UrlMapper.urlEntityFromObject(response.data!);
+      return {
+        ok: true,
+        data: url,
+        status: response.status
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
+import useCreateUrl from '@/url/components/islands/hooks/use-create-url';
 import {
   Dialog,
   DialogContent,
@@ -34,21 +35,14 @@ const formSchema = z.object({
 const CreateShortUrlDialog = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, createUrl } = useCreateUrl();
 
   const onShortenUrl = async (values: z.infer<typeof formSchema>) => {
-    const { name, longUrl } = values;
-    setIsLoading(true);
-
-    // const createUrlUseCase = makeCreateUrl();
-    // const result = await createUrlUseCase.execute({ originalUrl: longUrl, name });
-
-    // if (result.ok) {
-    //   await navigate(window.location.href);
-    // } else {
-    //   console.error('Create URL failed:', result.error.message);
-    // }
-    setIsLoading(false);
+    const { longUrl, name } = values;
+    const url = await createUrl(longUrl, name);
+    if (url) {
+      await navigate(window.location.href);
+    }
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
