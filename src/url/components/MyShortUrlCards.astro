@@ -63,7 +63,7 @@ const page = response.ok ? response.data : null;
             <PaginationItem>
               <PaginationPrevious
                 disabled={page.first}
-                href={`/dashboard?page=${pageNumber}&size=${size}&search=${search}`}
+                href={`/dashboard?page=${pageNumber-1}&size=${size}&search=${search}`}
                 size="default"
               />
             </PaginationItem>
@@ -81,7 +81,7 @@ const page = response.ok ? response.data : null;
             <PaginationItem>
               <PaginationNext
                 disabled={page.last}
-                href={`/dashboard?page=${pageNumber}&size=${size}&search=${search}`}
+                href={`/dashboard?page=${pageNumber+1}&size=${size}&search=${search}`}
                 size="default"
               />
             </PaginationItem>
