@@ -7,9 +7,9 @@ export class UserService {
 
   private static readonly API_URL = '/user';
 
-  static async getUser(): Promise<HttpResponse<User | null>> {
+  static async getUser(token?: string): Promise<HttpResponse<User | null>> {
     try {
-      const response = await HttpClient.get<HttpResponse<UserDto>>(this.API_URL);
+      const response = await HttpClient.get<HttpResponse<UserDto>>(this.API_URL, {}, token);
       if (!response.ok) {
         return {
           ok: false,
