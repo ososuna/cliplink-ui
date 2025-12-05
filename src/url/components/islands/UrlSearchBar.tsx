@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client';
-import { useState, type ChangeEvent } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
+import { Loader2 } from 'lucide-react';
 import { Input } from '@/styled-components';
 
 interface Props {
@@ -11,14 +12,30 @@ interface Props {
 const UrlSearchBar = ({ searchTerm: initialSearchTerm, pageNumber, size }: Props) => {
 
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    if (searchTerm === initialSearchTerm) {
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+
+    const timeoutId = setTimeout(() => {
+      navigate(`/dashboard?page=${pageNumber}&size=${size}&search=${searchTerm}`);
+      setIsSearching(false);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, pageNumber, size, initialSearchTerm]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-    navigate(`/dashboard?page=${pageNumber}&size=${size}&search=${event.target.value}`);
   }
 
   return (
-    <div className="flex-grow">
+    <div className="flex-grow relative">
       <Input
         type="text"
         placeholder="Search URLs..."
@@ -26,6 +43,11 @@ const UrlSearchBar = ({ searchTerm: initialSearchTerm, pageNumber, size }: Props
         onChange={handleSearchChange}
         className="w-full"
       />
+      {isSearching && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        </div>
+      )}
     </div>
   );
 }
