@@ -97,4 +97,30 @@ export class UrlService {
       };
     }
   }
+
+  static async updateUrl(urlId: string, name: string): Promise<HttpResponse<Url | null>> {
+    try {
+      const response = await HttpClient.put<UrlResponseDto>(`${this.API_URL}/${urlId}`, { name });
+      if (!response.ok) {
+        return {
+          ...response,
+          ok: false,
+          data: null,
+        };
+      }
+      const url = UrlMapper.urlEntityFromObject(response.data!);
+      return {
+        ...response,
+        ok: true,
+        data: url,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
 }

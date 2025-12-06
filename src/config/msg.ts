@@ -8,5 +8,6 @@ export const Messages = {
   VALID_URL: 'Enter a valid URL.',
   INTERNAL_SERVER_ERROR: 'Something went wrong. Please try again later. If the problem persists, contact support.',
   APP_DESCRIPTION: 'ClipLink - The ultimate URL shortener for seamless link management. Shorten, customize, and track your links with ease. Boost your branding and analytics with a fast, reliable, and user-friendly solution. Try ClipLink today!',
-  RENAME_SUCCESSFUL: 'Your URL was renamed successfully'
+  RENAME_SUCCESSFUL: 'Your URL was renamed successfully',
+  RENAME_FAILED: 'Failed to rename URL'
 };

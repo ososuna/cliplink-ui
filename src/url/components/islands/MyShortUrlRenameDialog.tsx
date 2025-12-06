@@ -23,6 +23,7 @@ import {
   Input,
   Button,
 } from '@/styled-components';
+import { useUpdateUrl } from './hooks/use-update-url';
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
@@ -40,7 +41,7 @@ interface Props {
 const MyShortUrlRenameButton = ({ urlId, name: initialName }: Props) => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { renameUrl, isLoading } = useUpdateUrl();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,21 +67,20 @@ const MyShortUrlRenameButton = ({ urlId, name: initialName }: Props) => {
       });
       return;
     }
-    setIsLoading(true);
-
-    // const renameUrlUseCase = makeRenameUrl();
-    // const result = await renameUrlUseCase.execute(urlId, name);
-
-    // if (result.ok) {
-    //   await navigate(window.location.href);
-    //   toast({
-    //     title: 'URL renamed 🎉',
-    //     description: Messages.RENAME_SUCCESSFUL
-    //   });
-    // } else {
-    //   console.error('Rename URL failed:', result.error.message);
-    // }
-    setIsLoading(false);
+    const updatedUrl = await renameUrl(urlId, name);
+    if (updatedUrl) {
+      await navigate(window.location.href);
+      toast({
+        title: 'URL renamed 🎉',
+        description: Messages.RENAME_SUCCESSFUL
+      });
+    } else {
+      toast({
+        title: 'URL rename failed',
+        description: Messages.RENAME_FAILED,
+        variant: 'destructive'
+      });
+    }
   };
 
   return (

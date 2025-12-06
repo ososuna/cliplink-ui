@@ -4,7 +4,7 @@ import type { Url } from "@/url/entities";
 import DeleteUrlDialog from "@/url/components/islands/DeleteUrlDialog";
 import MyShortUrlCopyButton from "@/url/components/islands/MyShortUrlCopyButton";
 import MyShortUrlNameTooltip from "@/url/components/islands/MyShortUrlNameTooltip";
-import MyShortUrlRenameButton from "@/url/components/islands/MyShortUrlRenameButton";
+import MyShortUrlRenameDialog from "@/url/components/islands/MyShortUrlRenameDialog";
 import {
   Button,
   Card,
@@ -61,11 +61,11 @@ const { url } = Astro.props;
           <ExternalLink />
         </Button>
       </a>
-      <MyShortUrlRenameButton client:only urlId={url.id} name={url.name}>
+      <MyShortUrlRenameDialog client:only urlId={url.id} name={url.name}>
         <Button slot="fallback" disabled variant="outline" size="sm">
           <TextCursorInput />
         </Button>
-      </MyShortUrlRenameButton>
+      </MyShortUrlRenameDialog>
     </div>
     <DeleteUrlDialog client:only id={url.id}>
       <Button
