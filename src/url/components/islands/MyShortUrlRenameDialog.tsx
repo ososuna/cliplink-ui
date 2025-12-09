@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
 import { useToast } from '@/hooks/use-toast';
+import { useUpdateUrl } from '@/url/components/islands/hooks/use-update-url';
 import {
   Dialog,
   DialogContent,
@@ -23,7 +24,6 @@ import {
   Input,
   Button,
 } from '@/styled-components';
-import { useUpdateUrl } from './hooks/use-update-url';
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {

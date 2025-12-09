@@ -123,4 +123,29 @@ export class UrlService {
       };
     }
   }
+
+  static async deleteUrl(urlId: string): Promise<HttpResponse<void>> {
+    try {
+      const response = await HttpClient.delete<UrlResponseDto>(`${this.API_URL}/${urlId}`);
+      if (!response.ok) {
+        return {
+          ...response,
+          ok: false,
+          data: null,
+        };
+      }
+      return {
+        ...response,
+        ok: true,
+        data: null,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
 }

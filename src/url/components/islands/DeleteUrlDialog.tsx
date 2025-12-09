@@ -1,5 +1,6 @@
 import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
+import useDeleteUrl from '@/url/components/islands/hooks/use-delete-url';
 import { Trash } from 'lucide-react';
 import {
   Button,
@@ -11,28 +12,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/styled-components';
+import { useToast } from '@/hooks/use-toast';
 
 interface Props {
   id: string
 }
 
-const ConfirmationDialog = ({ id }: Props) => {
+const DeleteUrlDialog = ({ id }: Props) => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { deleteUrl, isLoading } = useDeleteUrl();
+  const { toast } = useToast();
 
   const onConfirm = async () => {
-    setIsLoading(true);
-
-    // const deleteUrlUseCase = makeDeleteUrl();
-    // const result = await deleteUrlUseCase.execute(id);
-
-    // if (result.ok) {
-    //   navigate(window.location.href);
-    // } else {
-    //   console.error('Delete URL failed:', result.error.message);
-    // }
-    setIsLoading(false);
+    const result = await deleteUrl(id);
+    if (result.ok) {
+      navigate(window.location.href);
+    } else {
+      toast({
+        title: 'Error',
+        description: result.error || 'Failed to delete URL',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -60,4 +62,4 @@ const ConfirmationDialog = ({ id }: Props) => {
   );
 }
 
-export default ConfirmationDialog;
+export default DeleteUrlDialog;

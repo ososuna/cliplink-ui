@@ -39,7 +39,9 @@ export class HttpClient {
           error: errorData.message || JSON.stringify(errorData)
         };
       }
-
+      if (response.status === 204) {
+        return { ok: true, data: null, status: response.status };
+      }
       const data = await response.json();
       return { ok: true, data, status: response.status };
     } catch (error) {
