@@ -23,10 +23,10 @@ interface Props {
 }
 
 const formSchema = z.object({
-  name: z.string().trim().min(2, {
-    message: Messages.STRING_MIN('name', 2)
+  firstName: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('first name', 2)
   }).max(60, {
-    message: Messages.STRING_MAX('name', 60)
+    message: Messages.STRING_MAX('first name', 60)
   }),
   lastName: z.string().trim().min(2, {
     message: Messages.STRING_MIN('last name', 2)
@@ -41,7 +41,7 @@ const formSchema = z.object({
 const MyAccountFormPreview = ({ user: initialUser }: Props) => {
 
   const defaultValues = {
-    name: initialUser.name,
+    firstName: initialUser.firstName,
     lastName: initialUser.lastName,
     email: initialUser.email,
   };
@@ -61,10 +61,10 @@ const MyAccountFormPreview = ({ user: initialUser }: Props) => {
           <form className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>First name</FormLabel>
                   <FormControl>
                     <Input disabled {...field} />
                   </FormControl>

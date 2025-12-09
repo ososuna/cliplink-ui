@@ -178,4 +178,29 @@ export class UrlService {
       };
     }
   }
+
+  static async getUrlsCount(token?: string): Promise<HttpResponse<number>> {
+    try {
+      const response = await HttpClient.get<number>(`${this.API_URL}/count`, {}, token);
+      if (!response.ok) {
+        return {
+          ...response,
+          ok: false,
+          data: null,
+        };
+      }
+      return {
+        ...response,
+        ok: true,
+        data: response.data!,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
 }

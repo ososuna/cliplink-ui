@@ -1,4 +1,3 @@
-import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,10 +25,10 @@ interface Props {
 }
 
 const formSchema = z.object({
-  name: z.string().trim().min(2, {
-    message: Messages.STRING_MIN('name', 2)
+  firstName: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('first name', 2)
   }).max(60, {
-    message: Messages.STRING_MAX('name', 60)
+    message: Messages.STRING_MAX('first name', 60)
   }),
   lastName: z.string().trim().min(2, {
     message: Messages.STRING_MIN('last name', 2)
@@ -47,7 +46,7 @@ const MyAccountForm = ({ user: initialUser }: Props) => {
   const { toast } = useToast();
 
   const defaultValues = {
-    name: initialUser.name,
+    firstName: initialUser.firstName,
     lastName: initialUser.lastName,
     email: initialUser.email,
   };
@@ -99,10 +98,10 @@ const MyAccountForm = ({ user: initialUser }: Props) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>First name</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>

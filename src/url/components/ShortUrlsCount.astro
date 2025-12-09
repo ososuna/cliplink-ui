@@ -1,10 +1,9 @@
 ---
-const token = Astro.cookies.get("access_token")?.value;
+import { UrlService } from "@/url/services";
 
-// const getUrlsUseCase = makeGetUrls(token);
-// const result = await getUrlsUseCase.execute(1, 1, '');
-// const urlsCount = result.ok ? result.value.total : 0;
-const urlsCount = 0;
+const token = Astro.cookies.get("access_token")?.value;
+const response = await UrlService.getUrlsCount(token);
+const urlsCount = response.ok ? response.data : 0;
 ---
 
 <p class="flex items-center">
