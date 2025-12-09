@@ -1,5 +1,5 @@
+import type { ReactNode } from 'react';
 import {
-  CardTitle,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -8,16 +8,15 @@ import {
 
 interface Props {
   name: string;
+  children: ReactNode;
 }
 
-const MyShortUrlNameTooltip = ({ name }: Props) => {
+const MyShortUrlNameTooltip = ({ name, children }: Props) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <CardTitle className="text-lg truncate flex-1">
-            {name}
-          </CardTitle>
+          {children}
         </TooltipTrigger>
         <TooltipContent>
           <p>{name}</p>

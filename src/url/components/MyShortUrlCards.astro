@@ -1,7 +1,7 @@
 ---
 import type { Url } from "@/url/entities";
 import { UrlService } from "@/url/services";
-import MyShortUrlCard from '@/url/components/MyShortUrlCard.astro';
+import MyShortUrlCard from '@/url/components/islands/MyShortUrlCard';
 import {
   Pagination,
   PaginationContent,
@@ -55,7 +55,7 @@ const page = response.ok ? response.data : null;
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {page.content.map((url: Url) => (
-          <MyShortUrlCard url={url} />
+          <MyShortUrlCard client:load url={url} />
         ))}
       </div>
       <div class="mt-6">
