@@ -4,6 +4,7 @@ import type { Url } from "@/url/entities";
 import DeleteUrlDialog from "@/url/components/islands/DeleteUrlDialog";
 import MyShortUrlCopyButton from "@/url/components/islands/MyShortUrlCopyButton";
 import MyShortUrlNameTooltip from "@/url/components/islands/MyShortUrlNameTooltip";
+import MyShortUrlNavigateButton from "@/url/components/islands/MyShortUrlNavigateButton";
 import MyShortUrlRenameDialog from "@/url/components/islands/MyShortUrlRenameDialog";
 import {
   Button,
@@ -49,6 +50,12 @@ const { url } = Astro.props;
       <CardDescription className="truncate">{url.originalUrl}</CardDescription>
     </div>
   </CardHeader>
+  <div class="px-6 py-2">
+    <div class="flex items-center gap-2">
+      <span class="text-sm font-medium text-muted-foreground">Clicks:</span>
+      <span class="text-sm font-semibold">{url.clicks ?? 0}</span>
+    </div>
+  </div>
   <CardFooter className="flex justify-between">
     <div class="flex gap-2">
       <MyShortUrlCopyButton client:only id={url.shortId}>
@@ -56,11 +63,15 @@ const { url } = Astro.props;
           <Clipboard />
         </Button>
       </MyShortUrlCopyButton>
-      <a href={url.originalUrl} target="_blank">
-        <Button aria-label="Navigate" variant="outline" size="sm">
+      <MyShortUrlNavigateButton
+        client:only
+        url={url.originalUrl}
+        shortId={url.shortId}
+      >
+        <Button slot="fallback" disabled variant="outline" size="sm">
           <ExternalLink />
         </Button>
-      </a>
+      </MyShortUrlNavigateButton>
       <MyShortUrlRenameDialog client:only urlId={url.id} name={url.name}>
         <Button slot="fallback" disabled variant="outline" size="sm">
           <TextCursorInput />

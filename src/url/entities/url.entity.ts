@@ -7,5 +7,6 @@ export class Url {
     public originalUrl: string,
     public user: User,
     public name?: string,
+    public clicks?: number,
   ) {}
 }

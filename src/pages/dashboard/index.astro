@@ -9,15 +9,18 @@ import { Button, Input } from "@/styled-components";
 const defaultPageNumber = 0;
 const defaultPageSize = 9;
 const defaultSearchTerm = "";
+const defaultSort = "createdDate,desc";
 
 const url = new URL(Astro.request.url);
 const pageParam = url.searchParams.get("page");
 const sizeParam = url.searchParams.get("size");
 const searchParam = url.searchParams.get("search");
+const sortParam = url.searchParams.get("sort");
 
 const pageNumber = pageParam ? parseInt(pageParam, 10) : defaultPageNumber;
 const pageSize = sizeParam ? parseInt(sizeParam, 10) : defaultPageSize;
 const search = searchParam ? searchParam : defaultSearchTerm;
+const sort = sortParam ? sortParam : defaultSort;
 ---
 
 <HomeLayout>
@@ -51,6 +54,7 @@ const search = searchParam ? searchParam : defaultSearchTerm;
       pageNumber={pageNumber}
       size={pageSize}
       search={search}
+      sort={sort}
     >
       <MyShortUrlCardsSkeleton slot="fallback" cardsNumber={9} />
     </MyShortUrlCards>

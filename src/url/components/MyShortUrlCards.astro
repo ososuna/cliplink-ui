@@ -15,8 +15,9 @@ interface Props {
   pageNumber: number;
   size: number;
   search: string;
+  sort: string;
 }
-const { pageNumber, size, search } = Astro.props;
+const { pageNumber, size, search, sort } = Astro.props;
 
 // workaround for view transition bug
 // sometimes when the logout use case is called the token is not cleared at time
@@ -27,7 +28,7 @@ let isAuthenticated = true;
 const token = Astro.cookies.get('access_token')?.value;
 if (!token) isAuthenticated = false;
 
-const response = await UrlService.getUrls(pageNumber, size, search, token);
+const response = await UrlService.getUrls({pageNumber, size, search, sort, token});
 const page = response.ok ? response.data : null;
 
 ---

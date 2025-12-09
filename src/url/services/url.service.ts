@@ -68,9 +68,13 @@ export class UrlService {
     }
   }
 
-  static async getUrls(pageNumber: number, size: number, search?: string, token?: string): Promise<HttpResponse<Page<Url> | null>> {
+  static async getUrls(
+    {pageNumber, size, search, sort, token}:
+    {pageNumber: number, size: number, search?: string, sort?: string, token?: string}
+    ): Promise<HttpResponse<Page<Url> | null>> {
     try {
-      const response = await HttpClient.get<Page<UrlResponseDto>>(`${this.API_URL}?page=${pageNumber}&size=${size}&search=${search}`, {}, token);
+      const defaultSort = "createdDate,desc";
+      const response = await HttpClient.get<Page<UrlResponseDto>>(`${this.API_URL}?page=${pageNumber}&size=${size}&search=${search}&sort=${sort || defaultSort}`, {}, token);
       if (!response.ok) {
         return {
           ok: false,
@@ -138,6 +142,32 @@ export class UrlService {
         ...response,
         ok: true,
         data: null,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
+
+  static async incrementUrlClicks(urlId: string): Promise<HttpResponse<Url | null>> {
+    try {
+      const response = await HttpClient.post<UrlResponseDto>(`${this.API_URL}/${urlId}/clicks`, {});
+      if (!response.ok) {
+        return {
+          ...response,
+          ok: false,
+          data: null,
+        };
+      }
+      const url = UrlMapper.urlEntityFromObject(response.data!);
+      return {
+        ...response,
+        ok: true,
+        data: url,
       };
     } catch (error) {
       return {
