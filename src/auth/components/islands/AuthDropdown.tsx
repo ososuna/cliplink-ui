@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { LogOut } from 'lucide-react';
+import useLogout from '@/auth/components/islands/hooks/use-logout';
+import { useToast } from '@/hooks/use-toast';
+import { Messages } from '@/config';
 import { Avatar } from '@/styled-components';
 import {
   DropdownMenu,
@@ -19,16 +22,20 @@ const AuthDropdown = ({ name, lastName }: Props) => {
 
   // Workaround for https://github.com/withastro/astro/issues/10863
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { logout } = useLogout();
+  const { toast } = useToast();
 
   const onLogout = async () => {
-    // const logoutUseCase = makeLogout();
-    // const result = await logoutUseCase.execute();
-
-    // if (result.ok) {
-    //   window.location.href = '/';
-    // } else {
-    //   console.error('Logout failed:', result.error.message);
-    // }
+    const result = await logout();
+    if (result.ok) {
+      window.location.href = '/';
+    } else {
+      toast({
+        title: 'Error',
+        description: result.error || Messages.INTERNAL_SERVER_ERROR,
+        variant: 'destructive',
+      });
+    }
   }
 
   return (

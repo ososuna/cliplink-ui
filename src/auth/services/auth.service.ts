@@ -60,4 +60,30 @@ export class AuthService {
       };
     }
   }
+
+  static async logout(): Promise<HttpResponse<void>> {
+    try {
+      const response = await HttpClient.post<HttpResponse<void>>(`${this.API_URL}/logout`, {});
+      if (!response.ok) {
+        return {
+          ok: false,
+          data: null,
+          status: response.status,
+          error: response.error
+        };
+      }
+      return {
+        ok: true,
+        data: null,
+        status: response.status
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        data: null,
+        status: 500,
+        error: error instanceof Error ? error.message : 'Error processing response'
+      };
+    }
+  }
 }

@@ -39,10 +39,15 @@ export class HttpClient {
           error: errorData.message || JSON.stringify(errorData)
         };
       }
-      if (response.status === 204) {
+      // Handle responses with no body (204 or empty response)
+      const contentLength = response.headers.get('Content-Length');
+      if (response.status === 204 || contentLength === '0') {
         return { ok: true, data: null, status: response.status };
       }
-      const data = await response.json();
+
+      // Try to parse JSON, but handle empty bodies gracefully
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : null;
       return { ok: true, data, status: response.status };
     } catch (error) {
       return {
