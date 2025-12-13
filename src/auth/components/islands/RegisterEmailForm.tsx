@@ -1,9 +1,11 @@
 import { navigate } from 'astro:transitions/client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Messages } from '@/config';
+import useRegister from '@/auth/components/islands/hooks/use-register';
+import { toast } from '@/hooks/use-toast';
 import {
   Form,
   FormControl,
@@ -16,10 +18,10 @@ import {
 } from '@/styled-components';
 
 const formSchema = z.object({
-  name: z.string().trim().min(2, {
-    message: Messages.STRING_MIN('name', 2)
+  firstName: z.string().trim().min(2, {
+    message: Messages.STRING_MIN('first name', 2)
   }).max(60, {
-    message: Messages.STRING_MAX('name', 60)
+    message: Messages.STRING_MAX('first name', 60)
   }),
   lastName: z.string().trim().min(2, {
     message: Messages.STRING_MIN('last name', 2)
@@ -36,7 +38,7 @@ const formSchema = z.object({
 
 const RegisterEmailForm = () => {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, register } = useRegister();
   const emailToRegister = useRef<string | null>('');
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const RegisterEmailForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      firstName: '',
       lastName: '',
       password: '',
       confirmPassword: '',
@@ -55,23 +57,25 @@ const RegisterEmailForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { name, lastName, password } = values;
-    setIsLoading(true);
+    const { firstName, lastName, password } = values;
 
-    // const registerUseCase = makeRegister();
-    // const result = await registerUseCase.execute({
-    //   email: emailToRegister.current!,
-    //   name,
-    //   lastName,
-    //   password
-    // });
+    const { ok, error } = await register({
+      email: emailToRegister.current!,
+      firstName,
+      lastName,
+      password
+    });
 
-    // if (result.ok) {
-    //   await navigate('/dashboard');
-    //   return;
-    // }
+    if (ok) {
+      await navigate('/dashboard');
+      return;
+    }
 
-    setIsLoading(false);
+    toast({
+      title: 'Registration failed',
+      description: error || Messages.INTERNAL_SERVER_ERROR,
+      variant: 'destructive'
+    });
   }
 
   return (
@@ -79,10 +83,10 @@ const RegisterEmailForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
         <FormField
           control={form.control}
-          name="name"
+          name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>First name</FormLabel>
               <FormControl>
                 <Input type="text" autoComplete='off' {...field} />
               </FormControl>
