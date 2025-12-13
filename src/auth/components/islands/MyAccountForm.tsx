@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import type { User } from "@/auth/entities/user.entity";
+import type { User } from '@/auth/entities';
 import { Messages } from '@/config';
 import { useToast } from '@/hooks/use-toast';
+import useEditProfile from '@/auth/components/islands/hooks/use-edit-profile';
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/styled-components';
+import { navigate } from 'astro:transitions/client';
 
 interface Props {
   user: User
@@ -35,20 +36,20 @@ const formSchema = z.object({
   }).max(120, {
     message: Messages.STRING_MAX('last name', 120)
   }),
-  email: z.string().email({
-    message: Messages.VALID_EMAIL
-  }),
+  // email: z.string().email({
+  //   message: Messages.VALID_EMAIL
+  // }),
 });
 
 const MyAccountForm = ({ user: initialUser }: Props) => {
 
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, editProfile } = useEditProfile();
   const { toast } = useToast();
 
   const defaultValues = {
     firstName: initialUser.firstName,
     lastName: initialUser.lastName,
-    email: initialUser.email,
+    // email: initialUser.email,
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,21 +72,25 @@ const MyAccountForm = ({ user: initialUser }: Props) => {
       });
       return;
     }
-    setIsLoading(true);
 
-    // const updateUserUseCase = makeUpdateUser();
-    // const result = await updateUserUseCase.execute(fieldsToUpdate);
+    const user = await editProfile({
+      firstName: values.firstName,
+      lastName: values.lastName,
+    });
 
-    // if (result.ok) {
-    //   await navigate(window.location.href);
-    //   toast({
-    //     title: 'Profile updated 🎉',
-    //     description: 'Your profile has been successfully updated',
-    //   });
-    // } else {
-    //   console.error('Update user failed:', result.error.message);
-    // }
-    setIsLoading(false);
+    if (user) {
+      await navigate(window.location.href);
+      toast({
+        title: 'Profile updated 🎉',
+        description: Messages.UPDATE_PROFILE_SUCCESSFUL,
+      });
+    } else {
+      toast({
+        title: 'Profile update failed',
+        description: Messages.UPDATE_PROFILE_FAILED,
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -122,7 +127,7 @@ const MyAccountForm = ({ user: initialUser }: Props) => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -134,7 +139,7 @@ const MyAccountForm = ({ user: initialUser }: Props) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Updating..." : "Update Profile"}
             </Button>

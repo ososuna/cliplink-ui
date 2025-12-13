@@ -33,9 +33,9 @@ const formSchema = z.object({
   }).max(120, {
     message: Messages.STRING_MAX('last name', 120)
   }),
-  email: z.string().email({
-    message: Messages.VALID_EMAIL
-  }),
+  // email: z.string().email({
+  //   message: Messages.VALID_EMAIL
+  // }),
 });
 
 const MyAccountFormPreview = ({ user: initialUser }: Props) => {
@@ -85,7 +85,7 @@ const MyAccountFormPreview = ({ user: initialUser }: Props) => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
@@ -97,7 +97,7 @@ const MyAccountFormPreview = ({ user: initialUser }: Props) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <Button type="submit" disabled>
               Loading...
             </Button>
