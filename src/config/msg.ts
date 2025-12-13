@@ -12,4 +12,5 @@ export const Messages = {
   RENAME_FAILED: 'Failed to rename URL',
   UPDATE_PROFILE_SUCCESSFUL: 'Your profile was updated successfully',
   UPDATE_PROFILE_FAILED: 'Something went wrong while updating your profile. Please try again later. If the problem persists, contact support.',
+  DELETE_ACCOUNT_FAILED: 'Something went wrong while deleting your account. Please try again later. If the problem persists, contact support.',
 };

@@ -3,6 +3,7 @@ import { Trash2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Messages } from '@/config';
+import useDeleteAccount from '@/auth/components/islands/hooks/use-delete-account';
 import {
   Button,
   Dialog,
@@ -20,6 +21,7 @@ import {
   FormMessage,
   Input,
 } from '@/styled-components';
+import { useToast } from '@/hooks/use-toast';
 
 const confirmPhrase = 'Delete my account';
 
@@ -31,6 +33,9 @@ const formSchema = z.object({
 
 const DeleteAccountButton = () => {
 
+  const { deleteAccount, isLoading } = useDeleteAccount();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,14 +44,16 @@ const DeleteAccountButton = () => {
   });
 
   const onSubmit = async () => {
-    // const deleteAccountUseCase = makeDeleteAccount();
-    // const result = await deleteAccountUseCase.execute();
-
-    // if (result.ok) {
-    //   window.location.href = '/';
-    // } else {
-    //   console.error('Delete account failed:', result.error.message);
-    // }
+    const { ok, error } = await deleteAccount();
+    if (ok) {
+      window.location.href = '/';
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Delete account failed',
+        description: error || Messages.DELETE_ACCOUNT_FAILED,
+      });
+    }
   }
 
   return (
@@ -80,8 +87,8 @@ const DeleteAccountButton = () => {
               )}
             />
             <DialogFooter className="sm:justify-start">
-              <Button variant="destructive" className="mt-2" type="submit">
-                Delete Account
+              <Button variant="destructive" className="mt-2" type="submit" disabled={isLoading}>
+                {isLoading ? 'Deleting...' : 'Delete Account'}
               </Button>
             </DialogFooter>
           </form>
