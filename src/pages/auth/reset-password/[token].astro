@@ -1,7 +1,7 @@
 ---
-import { makeCheckPasswordToken } from "@/lib/server-container";
 import AuthLayout from "@/layouts/AuthLayout.astro";
 import ResetPasswordForm from "@/auth/components/islands/ResetPasswordForm";
+import { AuthService } from "@/auth/services/auth.service";
 
 export const prerender = false;
 
@@ -9,8 +9,7 @@ const { token } = Astro.params;
 let isValidToken = false;
 
 if (token) {
-  const checkPasswordTokenUseCase = makeCheckPasswordToken();
-  const result = await checkPasswordTokenUseCase.execute(token);
+  const result = await AuthService.verifyResetToken(token);
   if (result.ok) isValidToken = true;
 }
 

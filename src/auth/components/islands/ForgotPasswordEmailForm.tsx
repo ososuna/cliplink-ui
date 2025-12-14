@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { navigate } from 'astro:transitions/client';
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Messages } from '@/config';
+import useForgotPassword from '@/auth/components/islands/hooks/use-forgot-password';
 import { useToast } from '@/hooks/use-toast';
+import { Messages } from '@/config';
 import {
   Input,
   Button,
@@ -27,7 +29,7 @@ interface Props {
 const ForgotPasswordEmailForm = ({ buttonText }: Props) => {
 
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, sendForgotPasswordEmail } = useForgotPassword();
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -50,22 +52,19 @@ const ForgotPasswordEmailForm = ({ buttonText }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // const { email } = values;
-    // setIsLoading(true);
+    const { email } = values;
 
-    // const forgotPasswordUseCase = makeForgotPassword();
-    // const result = await forgotPasswordUseCase.execute(email);
+    const response = await sendForgotPasswordEmail({ email });
 
-    // setIsLoading(false);
-
-    // if (!result.ok) {
-    //   toast({
-    //     title: 'Error',
-    //     description: result.error.message,
-    //     variant: 'destructive'
-    //   });
-    // }
-    // Note: The BFF endpoint handles navigation on success
+    if (!response) {
+      toast({
+        title: 'Something went wrong',
+        description: Messages.INTERNAL_SERVER_ERROR,
+        variant: 'destructive'
+      });
+    } else {
+      navigate(`/auth/forgot-password/confirm?email=${encodeURIComponent(email)}`)
+    }
   }
 
   return (

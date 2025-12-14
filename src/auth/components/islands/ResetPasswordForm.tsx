@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { navigate } from 'astro:transitions/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { navigate } from 'astro:transitions/client';
 import { useToast } from '@/hooks/use-toast';
+import useResetPassword from '@/auth/components/islands/hooks/use-reset-password';
 import {
   Form,
   FormControl,
@@ -31,8 +31,8 @@ interface Props {
 
 const ResetPasswordForm = ({ token }: Props) => {
 
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { isLoading, resetPassword } = useResetPassword();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,21 +44,22 @@ const ResetPasswordForm = ({ token }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { password } = values;
-    setIsLoading(true);
+    const result = await resetPassword({ token, newPassword: password });
 
-    // const updatePasswordUseCase = makeUpdatePassword();
-    // const result = await updatePasswordUseCase.execute(token, password);
+    if (result.ok) {
+      await navigate('/auth/login');
+      toast({
+        title: 'Password updated 🎉',
+        description: 'Your password has been successfully updated',
+      });
+      return;
+    }
 
-    // if (result.ok) {
-    //   await navigate('/dashboard');
-    //   toast({
-    //     title: 'Password updated 🎉',
-    //     description: 'Your password has been successfully updated',
-    //   });
-    //   return;
-    // }
-
-    setIsLoading(false);
+    toast({
+      variant: 'destructive',
+      title: 'Error',
+      description: result.error || 'Failed to reset password. Please try again.',
+    });
   }
 
   return (
@@ -90,7 +91,7 @@ const ResetPasswordForm = ({ token }: Props) => {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={isLoading}>
           {isLoading ? (
             <><Loader2 className="animate-spin" /> Loading...</>
           ) : (
