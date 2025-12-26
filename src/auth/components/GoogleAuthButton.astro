@@ -25,7 +25,7 @@ import GoogleIcon from "@/assets/icons/GoogleIcon.astro";
         googleAuthButton.disabled = true;
         googleButtonLabel.textContent = "Loading...";
         try {
-          await navigate(envs.PUBLIC_API_BASE_URL + "/auth/google");
+          await navigate(envs.PUBLIC_API_BASE_URL + "/oauth2/authorization/google");
         } catch (error) {
           console.error("Navigation error:", error);
           googleAuthButton.disabled = false;

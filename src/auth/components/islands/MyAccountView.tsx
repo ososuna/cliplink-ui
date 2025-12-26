@@ -1,4 +1,4 @@
-import type { User } from '@/auth/entities/user.entity';
+import { Provider, type User } from '@/auth/entities/user.entity';
 import { Avatar, Badge } from '@/styled-components';
 import GithubIcon from '@/assets/icons/GithubIcon';
 import GoogleIcon from '@/assets/icons/GoogleIcon';
@@ -6,7 +6,7 @@ import GoogleIcon from '@/assets/icons/GoogleIcon';
 interface Props {
   user: User;
 }
-const ProfileView = ({ user }: Props) => {
+const MyAccountView = ({ user }: Props) => {
 
   return (
     <>
@@ -23,16 +23,16 @@ const ProfileView = ({ user }: Props) => {
               ? <h2 className="text-2xl font-bold">{user.firstName} {user.lastName}</h2>
               : <h2 className="text-2xl font-bold">{user.firstName}</h2>
             }
-            {/* {user.githubId && (
+            {user.provider === Provider.GITHUB && (
               <Badge variant="secondary" className="flex items-center space-x-1">
                 <GithubIcon className="h-3 w-3" /><span>GitHub</span>
               </Badge>
             )}
-            {user.googleId && (
+            {user.provider === Provider.GOOGLE && (
               <Badge variant="secondary" className="flex items-center space-x-1">
                 <GoogleIcon className="h-3 w-3" /><span>Google</span>
               </Badge>
-            )} */}
+            )}
           </div>
           <p className="text-muted-foreground">{user.email}</p>
         </div>
@@ -41,4 +41,4 @@ const ProfileView = ({ user }: Props) => {
   );
 }
 
-export default ProfileView;
+export default MyAccountView;

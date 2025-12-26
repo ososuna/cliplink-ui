@@ -25,7 +25,9 @@ import GitHubIcon from "@/assets/icons/GitHubIcon.astro";
         githubAuthButton.disabled = true;
         buttonLabel.textContent = "Loading...";
         try {
-          await navigate(envs.PUBLIC_API_BASE_URL + "/auth/github");
+          await navigate(
+            envs.PUBLIC_API_BASE_URL + "/oauth2/authorization/github",
+          );
         } catch (error) {
           console.error("Navigation error:", error);
           githubAuthButton.disabled = false;
