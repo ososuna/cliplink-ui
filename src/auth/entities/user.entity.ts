@@ -1,6 +1,7 @@
 export enum Provider {
   GOOGLE = "GOOGLE",
   GITHUB = "GITHUB",
+  LOCAL = "LOCAL",
 }
 
 export class User {
@@ -10,6 +11,6 @@ export class User {
     public lastName: string,
     public email: string,
     public role: string,
-    public provider: Provider | null,
+    public linkedProviders: Provider[],
   ) {}
 }

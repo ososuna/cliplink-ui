@@ -23,12 +23,12 @@ const MyAccountView = ({ user }: Props) => {
               ? <h2 className="text-2xl font-bold">{user.firstName} {user.lastName}</h2>
               : <h2 className="text-2xl font-bold">{user.firstName}</h2>
             }
-            {user.provider === Provider.GITHUB && (
+            {user.linkedProviders.includes(Provider.GITHUB) && (
               <Badge variant="secondary" className="flex items-center space-x-1">
                 <GithubIcon className="h-3 w-3" /><span>GitHub</span>
               </Badge>
             )}
-            {user.provider === Provider.GOOGLE && (
+            {user.linkedProviders.includes(Provider.GOOGLE) && (
               <Badge variant="secondary" className="flex items-center space-x-1">
                 <GoogleIcon className="h-3 w-3" /><span>Google</span>
               </Badge>

@@ -83,7 +83,7 @@ const refreshAccessToken = async (refreshToken: string, cookies: AstroCookies): 
 
       cookies.set('access_token', accessToken, {
         httpOnly: true,
-        secure: true,
+        secure: import.meta.env.PROD,
         sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60, // 1 hour in seconds
@@ -91,7 +91,7 @@ const refreshAccessToken = async (refreshToken: string, cookies: AstroCookies): 
 
       cookies.set('refresh_token', newRefreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: import.meta.env.PROD,
         sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
