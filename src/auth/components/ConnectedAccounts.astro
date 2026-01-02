@@ -1,0 +1,73 @@
+---
+import { Provider } from "@/auth/entities/user.entity";
+import ConnectedAccountItem from "@/auth/components/ConnectedAccountItem.astro";
+import SetPasswordDialog from "@/auth/components/islands/SetPasswordDialog";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/styled-components";
+
+interface Props {
+  linkedProviders: Provider[];
+}
+const { linkedProviders } = Astro.props;
+
+const hasLocalProvider = linkedProviders.includes(Provider.LOCAL);
+const hasOnlyOneProvider = linkedProviders.length === 1;
+---
+
+<Card>
+  <CardHeader>
+    <CardTitle>Connected Accounts</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p class="mb-6 text-sm text-zinc-600 dark:text-zinc-300">
+      Connect multiple accounts to sign in with your preferred method.
+      {hasOnlyOneProvider && !hasLocalProvider && (
+        <span class="block mt-2 text-amber-600 dark:text-amber-400 font-medium">
+          We recommend adding password authentication as a backup sign-in method.
+        </span>
+      )}
+    </p>
+    <div class="space-y-3">
+      <ConnectedAccountItem
+        provider={Provider.LOCAL}
+        connected={hasLocalProvider}
+      />
+      <ConnectedAccountItem
+        provider={Provider.GOOGLE}
+        connected={linkedProviders.includes(Provider.GOOGLE)}
+      />
+      <ConnectedAccountItem
+        provider={Provider.GITHUB}
+        connected={linkedProviders.includes(Provider.GITHUB)}
+      />
+    </div>
+  </CardContent>
+</Card>
+
+<SetPasswordDialog client:load />
+
+<script>
+  // Handle password setup dialog
+  document.addEventListener('DOMContentLoaded', () => {
+    const localProviderDiv = document.querySelector('[data-provider="LOCAL"]');
+    if (!localProviderDiv) return;
+
+    const button = localProviderDiv.querySelector('.provider-action-btn');
+    const isConnected = localProviderDiv.querySelector('.inline-flex')?.textContent?.includes('Connected');
+
+    if (button && !isConnected) {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Trigger dialog open via custom event
+        const event = new CustomEvent('openSetPasswordDialog');
+        window.dispatchEvent(event);
+      });
+    }
+  });
+</script>

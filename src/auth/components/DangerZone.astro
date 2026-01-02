@@ -1,0 +1,17 @@
+---
+import DeleteAccountButton from "@/auth/components/islands/DeleteAccountButton";
+import { Card, CardContent, CardHeader, CardTitle, Skeleton } from "@/styled-components";
+---
+<Card>
+  <CardHeader>
+    <CardTitle>Danger Zone</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p class="text-sm text-zinc-500 dark:text-zinc-400">
+      Be careful with these options
+    </p>
+    <DeleteAccountButton client:only>
+      <Skeleton slot="fallback" className="mt-5 h-9 w-[160px]" />
+    </DeleteAccountButton>
+  </CardContent>
+</Card>

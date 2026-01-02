@@ -1,7 +1,5 @@
-import { Provider, type User } from '@/auth/entities/user.entity';
-import { Avatar, Badge } from '@/styled-components';
-import GithubIcon from '@/assets/icons/GithubIcon';
-import GoogleIcon from '@/assets/icons/GoogleIcon';
+import { type User } from '@/auth/entities/user.entity';
+import { Avatar } from '@/styled-components';
 
 interface Props {
   user: User;
@@ -23,16 +21,6 @@ const MyAccountView = ({ user }: Props) => {
               ? <h2 className="text-2xl font-bold">{user.firstName} {user.lastName}</h2>
               : <h2 className="text-2xl font-bold">{user.firstName}</h2>
             }
-            {user.linkedProviders.includes(Provider.GITHUB) && (
-              <Badge variant="secondary" className="flex items-center space-x-1">
-                <GithubIcon className="h-3 w-3" /><span>GitHub</span>
-              </Badge>
-            )}
-            {user.linkedProviders.includes(Provider.GOOGLE) && (
-              <Badge variant="secondary" className="flex items-center space-x-1">
-                <GoogleIcon className="h-3 w-3" /><span>Google</span>
-              </Badge>
-            )}
           </div>
           <p className="text-muted-foreground">{user.email}</p>
         </div>

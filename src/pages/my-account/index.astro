@@ -1,6 +1,7 @@
 ---
 import HomeLayout from "@/layouts/HomeLayout.astro";
 import ShortUrlsCount from "@/url/components/ShortUrlsCount.astro";
+import ConnectedAccounts from "@/auth/components/ConnectedAccounts.astro";
 import DeleteAccountButton from "@/auth/components/islands/DeleteAccountButton";
 import MyAccountForm from "@/auth/components/islands/MyAccountForm";
 import MyAccountFormPreview from "@/auth/components/islands/MyAccountFormPreview";
@@ -12,6 +13,7 @@ import {
   CardTitle,
   Skeleton,
 } from "@/styled-components";
+import DangerZone from "@/auth/components/DangerZone.astro";
 
 const user = Astro.locals.user;
 ---
@@ -31,14 +33,17 @@ const user = Astro.locals.user;
               <Skeleton slot="fallback" className="h-8 w-[150px]" />
             </ShortUrlsCount>
           </div>
-          <DeleteAccountButton client:only>
-            <Skeleton slot="fallback" className="mt-5 h-9 w-[160px]" />
-          </DeleteAccountButton>
         </CardContent>
       </Card>
       <MyAccountForm transition:persist user={user} client:only>
         <MyAccountFormPreview user={user} slot="fallback" />
       </MyAccountForm>
+    </div>
+    <div class="mt-6">
+      <ConnectedAccounts linkedProviders={user.linkedProviders} />
+    </div>
+    <div class="mt-6">
+      <DangerZone />
     </div>
   </div>
 </HomeLayout>

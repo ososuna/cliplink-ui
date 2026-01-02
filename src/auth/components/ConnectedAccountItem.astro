@@ -1,0 +1,87 @@
+---
+import { Provider } from '@/auth/entities/user.entity';
+import GitHubIcon from '@/assets/icons/GitHubIcon.astro';
+import GoogleIcon from '@/assets/icons/GoogleIcon.astro';
+import KeyIcon from '@/assets/icons/KeyIcon.astro';
+import { Button } from '@/styled-components';
+
+interface Props {
+  provider: Provider;
+  connected: boolean;
+}
+
+const { provider, connected } = Astro.props;
+const providerNames: Record<Provider, string> = {
+  [Provider.GOOGLE]: "Google",
+  [Provider.GITHUB]: "GitHub",
+  [Provider.LOCAL]: "Email & Password",
+}
+const providerName = providerNames[provider];
+
+const providerDescriptions: Record<Provider, { connected: string; notConnected: string }> = {
+  [Provider.GOOGLE]: {
+    connected: "Sign in with your Google account",
+    notConnected: "Connect to enable Google sign-in",
+  },
+  [Provider.GITHUB]: {
+    connected: "Sign in with your GitHub account",
+    notConnected: "Connect to enable GitHub sign-in",
+  },
+  [Provider.LOCAL]: {
+    connected: "Sign in with email and password",
+    notConnected: "Set up password authentication",
+  },
+};
+
+const handleProviderClick = (provider: Provider) => {
+  console.log(`Provider clicked: ${provider}`);
+}
+---
+
+<div
+  class="flex items-center justify-between rounded-lg border border-zinc-200
+bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900"
+  data-provider={provider}
+>
+  <div class="flex items-center gap-4">
+    <div
+      class="flex h-9 w-9 items-center justify-center rounded-md border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      {provider === Provider.GOOGLE && <GoogleIcon class="h-5 w-5" />}
+      {provider === Provider.GITHUB && <GitHubIcon class="h-5 w-5" />}
+      {provider === Provider.LOCAL && <KeyIcon class="h-5 w-5" />}
+    </div>
+    <div>
+      <div class="flex items-center gap-2">
+        <h3 class="font-semibold text-zinc-900 dark:text-zinc-100">{providerName}</h3>
+        {
+          connected ? (
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
+              Connected
+            </span>
+          ) : (
+            <span class="inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              Not connected
+            </span>
+          )
+        }
+      </div>
+      <p class="text-sm text-zinc-500 dark:text-zinc-400">
+        {
+          connected
+            ? providerDescriptions[provider].connected
+            : providerDescriptions[provider].notConnected
+        }
+      </p>
+    </div>
+  </div>
+  <Button
+    variant={connected ? "ghost" : "default"}
+    className={`provider-action-btn ${connected
+      ? "text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/30 dark:hover:text-red-300"
+      : "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"}`}
+    onClick={() => handleProviderClick(provider)}
+  >
+    {connected ? "Disconnect" : (provider === Provider.LOCAL ? "Set Password" : "Connect")}
+  </Button>
+</div>
